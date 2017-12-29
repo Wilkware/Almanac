@@ -70,7 +70,7 @@ class AlmanacControl extends IPSModule
     	Array(0, "Nein", "Close", 0xFF0000),
     	Array(1, "Ja",   "Ok", 0x00FF00)
     );
-    $this->RegisterProfile(IPSVarType::vtBoolean, "ALMANAC.Question", "Bulb", "", "", 0, 0, 0, 0, $associations);
+    $this->RegisterProfile(IPSVarType::vtBoolean, "ALMANAC.Question", "Bulb", "", "", 0, 0, 0, 0, $association);
 
     /*
     $association =  Array(
