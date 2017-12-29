@@ -324,7 +324,7 @@ class Almanac extends IPSModule
         $now = date("Ymd") . "\n";
         if (($now >= $start) and ( $now <= $end)) {
           $vacation = explode(' ', $name)[0];
-          $this->SendDebug('FOUND', $vacation 0);
+          $this->SendDebug('FOUND', $vacation, 0);
         }
       }
     }
