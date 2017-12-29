@@ -64,7 +64,7 @@ class AlmanacControl extends IPSModule
     $holiday  = $this->ReadPropertyBoolean("UpdateHoliday");
     $vacation = $this->ReadPropertyBoolean("UpdateVacation");
     $date = $this->ReadPropertyBoolean("UpdateDate");
-    $this->SendDebug("ApplyChanges", "federal state=".$state." (".$this->$States[$state]."), url=".$url.", updates=".($holiday?'Y':'N')."|".($vacation?'Y':'N')."|".($date?'Y':'N'), 0);
+    $this->SendDebug("ApplyChanges", "federal state=".$state." (".static::$States[$state]."), url=".$url.", updates=".($holiday?'Y':'N')."|".($vacation?'Y':'N')."|".($date?'Y':'N'), 0);
 
     $association =  Array(
     	Array(0, "Nein", "Close", 0xFF0000),
