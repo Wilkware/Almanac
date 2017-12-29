@@ -61,10 +61,10 @@ class AlmanacControl extends IPSModule
 
     $state = $this->ReadPropertyString("State");
     $url  = $this->ReadPropertyString("BaseURL");
-    $holiday  = $this->ReadPropertyString("UpdateHoliday");
-    $vacation = $this->ReadPropertyString("UpdateVacation");
-    $date = $this->ReadPropertyString("UpdateDate");
-    $this->SendDebug("ApplyChanges", "federal state=".$state." (".$States[$state]."), url=".$url.", updates=".($holiday?'Y':'N')."|".($vacation?'Y':'N')."|".($date?'Y':'N'), 0);
+    $holiday  = $this->ReadPropertyBoolean("UpdateHoliday");
+    $vacation = $this->ReadPropertyBoolean("UpdateVacation");
+    $date = $this->ReadPropertyBoolean("UpdateDate");
+    $this->SendDebug("ApplyChanges", "federal state=".$state." (".$this->$States[$state]."), url=".$url.", updates=".($holiday?'Y':'N')."|".($vacation?'Y':'N')."|".($date?'Y':'N'), 0);
 
     $association =  Array(
     	Array(0, "Nein", "Close", 0xFF0000),
@@ -371,4 +371,14 @@ class AlmanacControl extends IPSModule
     }
   }
 }
+
+class IPSVarType extends stdClass
+{
+    const vtNone    = -1;
+    const vtBoolean = 0;
+    const vtInteger = 1;
+    const vtFloat   = 2;
+    const vtString  = 3;
+}
+
 ?>
