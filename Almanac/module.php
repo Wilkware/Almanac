@@ -86,20 +86,20 @@ class AlmanacControl extends IPSModule
     */
     
     // Holiday
-    $this->RegisterVariable(IPSVarType::vtBoolean, "Ist Feiertag?", "IsHoliday",    "ALMANAC.Question", 1, !$holiday);
-    $this->RegisterVariable(IPSVarType::vtString, "Feiertag", "Holiday", "", 10, !$holiday);
+    $this->RegisterVariable(IPSVarType::vtBoolean, "Ist Feiertag?", "IsHoliday",    "ALMANAC.Question", 1, $holiday);
+    $this->RegisterVariable(IPSVarType::vtString, "Feiertag", "Holiday", "", 10, $holiday);
     // Urlaub
-    $this->RegisterVariable(IPSVarType::vtBoolean, "Ist Ferienzeit?", "IsVacation", "ALMANAC.Question", 2, !$vacation);
-    $this->RegisterVariable(IPSVarType::vtString, "Ferien", "Vacation", "", 20, !$vacation);
+    $this->RegisterVariable(IPSVarType::vtBoolean, "Ist Ferienzeit?", "IsVacation", "ALMANAC.Question", 2, $vacation);
+    $this->RegisterVariable(IPSVarType::vtString, "Ferien", "Vacation", "", 20, $vacation);
     // Date
-    $this->RegisterVariable(IPSVarType::vtBoolean, "Ist Sommerzeit?", "IsSummer",   "ALMANAC.Question", 3, !$date);
-    $this->RegisterVariable(IPSVarType::vtBoolean, "Ist Schaltjahr?", "IsLeapyear", "ALMANAC.Question", 4, !$date);
-    $this->RegisterVariable(IPSVarType::vtBoolean, "Ist Wochenende?", "IsWeekend",  "ALMANAC.Question", 5, !$date);
+    $this->RegisterVariable(IPSVarType::vtBoolean, "Ist Sommerzeit?", "IsSummer",   "ALMANAC.Question", 3, $date);
+    $this->RegisterVariable(IPSVarType::vtBoolean, "Ist Schaltjahr?", "IsLeapyear", "ALMANAC.Question", 4, $date);
+    $this->RegisterVariable(IPSVarType::vtBoolean, "Ist Wochenende?", "IsWeekend",  "ALMANAC.Question", 5, $date);
 
-    $this->RegisterVariable(IPSVarType::vtInteger, "Kalenderwoche", "WeekNumber",  "", 30, !$date);
-    $this->RegisterVariable(IPSVarType::vtInteger, "Arbeitstage", "WorkDays",  "", 31, !$date);
-    $this->RegisterVariable(IPSVarType::vtInteger, "Tage im Monat", "DaysInMonth",  "", 32, !$date);
-    $this->RegisterVariable(IPSVarType::vtInteger, "Tage im Jahr",  "DaysInYear",  "", 33, !$date);
+    $this->RegisterVariable(IPSVarType::vtInteger, "Kalenderwoche", "WeekNumber",  "", 30, $date);
+    $this->RegisterVariable(IPSVarType::vtInteger, "Arbeitstage", "WorkDays",  "", 31, $date);
+    $this->RegisterVariable(IPSVarType::vtInteger, "Tage im Monat", "DaysInMonth",  "", 32, $date);
+    $this->RegisterVariable(IPSVarType::vtInteger, "Tage im Jahr",  "DaysInYear",  "", 33, $date);
   }
 
   /**
@@ -207,9 +207,9 @@ class AlmanacControl extends IPSModule
   /**
    * Create or delete variable.
    */
-	protected function RegisterVariable($vartype, $name, $ident, $profile, $position, $delete)
+	protected function RegisterVariable($vartype, $name, $ident, $profile, $position, $register)
 	{
-		if($delete == true) {
+		if($register == true) {
 			switch ($vartype) {
 				case IPSVarType::vtBoolean:
 					$objId = $this->RegisterVariableBoolean($ident, $name, $profile, $position);
@@ -339,8 +339,8 @@ class AlmanacControl extends IPSModule
       }
     }
     
-    $this->SetValueString("Holiday", $holiday);
-    $this->SetValueBoolean("IsHoliday", ($holiday == "Keine Ferien")? false:true);
+    $this->SetValueString("Holiday", $vacation);
+    $this->SetValueBoolean("IsHoliday", ($vacation == "Keine Ferien")? false:true);
   }
 
   /**
