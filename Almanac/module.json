@@ -1,0 +1,14 @@
+{
+  "id": "{6DFFD7EB-733C-4EDB-B116-174A0DC30E49}",
+  "name": "Almanac Control",
+  "type": 0,
+  "vendor": "",
+  "aliases": 
+  [
+    "Kalendar", "Schulferien", "Feiertage"
+  ],
+  "parentRequirements": [],
+  "childRequirements": [],
+  "implemented": [],
+  "prefix": "ALMANAC"
+}

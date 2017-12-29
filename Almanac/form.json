@@ -1,0 +1,35 @@
+{
+  "elements":
+  [
+    {"type": "Label", "label": "Feiertage und Schulferien"},
+    {"type": "Select", "name": "State", "caption": "Bundesland:",
+      "options": [
+        {"label": "Baden-Württemberg", "value": "2"},
+        {"label": "Bayern", "value": "1"},
+        {"label": "Berlin", "value": "4"},
+        {"label": "Brandenburg","value": "5"},
+        {"label": "Bremen","value": "6"},
+        {"label": "Hamburg","value": "7"},
+        {"label": "Hessen","value": "8"},
+        {"label": "Mecklenburg-Vorpommern","value": "9"},
+        {"label": "Niedersachsen","value": "3"},
+        {"label": "Nordrhein-Westfalen","value": "10"},
+        {"label": "Rheinland-Pfalz","value": "11"},
+        {"label": "Saarland","value": "12"},
+        {"label": "Sachsen","value": "13"},
+        {"label": "Sachsen-Anhalt","value": "14"},
+        {"label": "Schleswig-Holstein","value": "15"},
+        {"label": "Thüringen","value": "16"}
+        ]
+    },
+    {"type": "ValidationTextBox", "name": "BaseURL", "caption": "Basis URL:"},
+    {"type": "Label", "label": "Erweiterte Einstellungen:"},
+		{"type": "CheckBox", "name": "UpdateHoliday", "caption": "Feiertag ermitteln!" },
+		{"type": "CheckBox", "name": "UpdateVacation", "caption": "Schulferien ermitteln!" },
+		{"type": "CheckBox", "name": "UpdateDate", "caption": "Informationen zum aktuellen Datum ermitteln!" }
+  ],
+  "actions":
+  [
+    {"type": "Button","label": "Update","onClick": "ALMANAC_Update($id);"}
+  ]
+}

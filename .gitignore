@@ -1,3 +1,6 @@
+#PSPad project file
+
+*.ppr
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
