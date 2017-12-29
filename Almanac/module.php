@@ -293,22 +293,51 @@ class AlmanacControl extends IPSModule
   
 
   /**
-   * Holt den aktuellen Feiertagskalender von http://www.schulferien.org und wertet diesen aus.
-   * Setzt den Namen des aktuellen Feiertag oder 'Kein Feiertag'.
+   * Gets the actual holiday calendar from  http://www.schulferien.org and extract the current values.
+   * Pass the name of the current holiday or 'Kein Feiertag'.
    *
    * @access private
-   * @throws Exception Wenn Kalender nicht geladen werden konnte.
+   * @throws Exception if calendar could not loaded.
    */
   private function SetHoliday($state, $url)
   {
+    $year = date("Y");
+    $link = $url . '?land=' . static::$States[$state] . '&type=1&year=' . $year;
+    $this->SendDebug('GET', $link, 0);
+    $message = @file($link);
+    
+    if ($message === false) {
+      throw new Exception("Cannot load iCal Data.", E_USER_NOTICE);
+    }
+    
+    $this->SendDebug('LINES', count($message), 0);
+    $holiday = "Kein Feiertag";
+    $count = (count($message) - 1);
+    
+    for ($line = 0; $line < $count; $line++) {
+      if (strstr($message[$line], "SUMMARY:")) {
+        $name   = trim(substr($message[$line], 8));
+        $start  = trim(substr($message[$line + 1], 19));
+        $end    = trim(substr($message[$line + 2], 17));
+        $this->SendDebug("MESSAGE", "SUMMARY: ".$name." ,START: ".$start." ,END: ".$end, 0);
+        $now = date("Ymd") . "\n";
+        if (($now >= $start) and ( $now <= $end)) {
+          $holiday = explode(' ', $name)[0];
+          $this->SendDebug('FOUND', $holiday, 0);
+        }
+      }
+    }
+    
+    $this->SetValueString("Holiday", $holiday);
+    $this->SetValueBoolean("IsHoliday", ($holiday == "Kein Feiertag")? false:true);
   }
 
   /**
-   * Holt den aktuellen Ferienkalender von http://www.schulferien.org und wertet diesen aus.
-   * Setzt den Namen der aktuellen Ferien oder 'Keine Ferien'.
+   * Gets the actual vacation calendar from  http://www.schulferien.org and extract the current values.
+   * Pass the name of the current vacation or 'Keine Ferien'.
    *
    * @access private
-   * @throws Exception Wenn Kalender nicht geladen werden konnte.
+   * @throws Exception if calendar could not loaded.
    */
   private function SetVacation($state, $url)
   {
@@ -339,19 +368,18 @@ class AlmanacControl extends IPSModule
       }
     }
     
-    $this->SetValueString("Holiday", $vacation);
-    $this->SetValueBoolean("IsHoliday", ($vacation == "Keine Ferien")? false:true);
+    $this->SetValueString("Vacation", $vacation);
+    $this->SetValueBoolean("IsVacation", ($vacation == "Keine Ferien")? false:true);
   }
 
   /**
-   * Nutzt die date-Funktion
+   * Use the PHP-date function to extract some useful informations
    *
    * @access private
    */
   private function SetDate()
   {
   }
-
 
   /**
   * This function will be available automatically after the module is imported with the module control.
@@ -392,6 +420,9 @@ class AlmanacControl extends IPSModule
   }
 }
 
+/**
+ * Helper class for IPS variable types.
+ */
 class IPSVarType extends stdClass
 {
     const vtNone    = -1;
@@ -400,5 +431,4 @@ class IPSVarType extends stdClass
     const vtFloat   = 2;
     const vtString  = 3;
 }
-
 ?>
