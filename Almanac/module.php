@@ -302,7 +302,7 @@ class AlmanacControl extends IPSModule
   private function SetHoliday($state, $url)
   {
     $year = date("Y");
-    $link = $url . '?land=' . static::$States[$state] . '&type=1&year=' . $year;
+    $link = $url . '?land=' . static::$States[$state] . '&type=0&year=' . $year;
     $this->SendDebug('GET', $link, 0);
     $message = @file($link);
     
