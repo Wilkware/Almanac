@@ -3,7 +3,7 @@
  * Almanac ist die Klasse für das IPS-Modul 'IPSymconAlmanac'.
  * Erweitert IPSModule 
  */
-class Almanac extends IPSModule
+class AlmanacControl extends IPSModule
 {
   /**
    * Bundeslaender IDs/Kuerzel - Array
