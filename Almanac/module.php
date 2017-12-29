@@ -142,7 +142,7 @@ class AlmanacControl extends IPSModule
 
 	protected function RegisterProfileBoolean($name, $icon, $prefix, $suffix, $asso)
 	{
-    RegisterProfileType($name, 0);
+    RegisterProfileType($name, IPSVarType::vtBoolean);
     
     IPS_SetVariableProfileIcon($name, $icon);
     IPS_SetVariableProfileText($name, $prefix, $suffix);
@@ -156,7 +156,7 @@ class AlmanacControl extends IPSModule
 
 	protected function RegisterProfileInteger($name, $icon, $prefix, $suffix, $minvalue, $maxvalue, $step, $digits, $asso)
 	{
-    RegisterProfileType($name, 1);
+    RegisterProfileType($name, IPSVarType::vtInteger);
     
     IPS_SetVariableProfileIcon($name, $icon);
     IPS_SetVariableProfileText($name, $prefix, $suffix);
@@ -177,7 +177,7 @@ class AlmanacControl extends IPSModule
 
 	protected function RegisterProfileFloat($name, $icon, $prefix, $suffix, $minvalue, $maxvalue, $step, $digits, $asso)
 	{
-    RegisterProfileType($name, 2);
+    RegisterProfileType($name, IPSVarType::vtFloat);
     
     IPS_SetVariableProfileIcon($name, $icon);
     IPS_SetVariableProfileText($name, $prefix, $suffix);
@@ -198,12 +198,11 @@ class AlmanacControl extends IPSModule
 
 	protected function RegisterProfileString($name, $icon, $prefix, $suffix)
 	{
-    RegisterProfileType($name, 3);
+    RegisterProfileType($name, IPSVarType::vtString);
 
     IPS_SetVariableProfileText($name, $prefix, $suffix);
 		IPS_SetVariableProfileIcon($name, $icon);
   }
-
 
   /**
    * Create or delete variable.
@@ -344,9 +343,9 @@ class AlmanacControl extends IPSModule
   {
     $state = $this->ReadPropertyString("State");
     $url  = $this->ReadPropertyString("BaseURL");
-    $holiday  = $this->ReadPropertyString("UpdateHoliday");
-    $vacation = $this->ReadPropertyString("UpdateVacation");
-    $date = $this->ReadPropertyString("UpdateDate");
+    $holiday  = $this->ReadPropertyBoolean("UpdateHoliday");
+    $vacation = $this->ReadPropertyBoolean("UpdateVacation");
+    $date = $this->ReadPropertyBoolean("UpdateDate");
 
     if($holiday == true) {
         try {
