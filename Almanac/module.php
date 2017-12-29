@@ -300,7 +300,7 @@ class Almanac extends IPSModule
    * @access private
    * @throws Exception Wenn Kalender nicht geladen werden konnte.
    */
-  private function SetVacation($state, $url);
+  private function SetVacation($state, $url)
   {
     $year = date("Y");
     $link = $url . '?land=' . $state . '&type=1&year=' . $year;
