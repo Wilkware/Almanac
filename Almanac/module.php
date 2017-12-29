@@ -40,7 +40,7 @@ class AlmanacControl extends IPSModule
     //Never delete this line!
     parent::Create();
 
-    $this->RegisterPropertyString("State", "2");
+    $this->RegisterPropertyString("State", "1");
     $this->RegisterPropertyString("BaseURL", "https://www.schulferien.eu/downloads/ical4.php");
 		$this->RegisterPropertyBoolean("UpdateHoliday", true);
 		$this->RegisterPropertyBoolean("UpdateVacation", true);
@@ -293,6 +293,17 @@ class AlmanacControl extends IPSModule
   
 
   /**
+   * Holt den aktuellen Feiertagskalender von http://www.schulferien.org und wertet diesen aus.
+   * Setzt den Namen des aktuellen Feiertag oder 'Kein Feiertag'.
+   *
+   * @access private
+   * @throws Exception Wenn Kalender nicht geladen werden konnte.
+   */
+  private function SetHoliday($state, $url)
+  {
+  }
+
+  /**
    * Holt den aktuellen Ferienkalender von http://www.schulferien.org und wertet diesen aus.
    * Setzt den Namen der aktuellen Ferien oder 'Keine Ferien'.
    *
@@ -333,6 +344,16 @@ class AlmanacControl extends IPSModule
   }
 
   /**
+   * Nutzt die date-Funktion
+   *
+   * @access private
+   */
+  private function SetDate()
+  {
+  }
+
+
+  /**
   * This function will be available automatically after the module is imported with the module control.
   * Using the custom prefix this function will be callable from PHP and JSON-RPC through:
   *
@@ -366,7 +387,7 @@ class AlmanacControl extends IPSModule
         }
     }
     if($date == true) {
-      $this->SetDate($state, $url);
+      $this->SetDate();
     }
   }
 }
