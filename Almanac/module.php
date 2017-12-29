@@ -142,7 +142,7 @@ class AlmanacControl extends IPSModule
 
 	protected function RegisterProfileBoolean($name, $icon, $prefix, $suffix, $asso)
 	{
-    RegisterProfileType($name, IPSVarType::vtBoolean);
+    $this->RegisterProfileType($name, IPSVarType::vtBoolean);
     
     IPS_SetVariableProfileIcon($name, $icon);
     IPS_SetVariableProfileText($name, $prefix, $suffix);
@@ -156,7 +156,7 @@ class AlmanacControl extends IPSModule
 
 	protected function RegisterProfileInteger($name, $icon, $prefix, $suffix, $minvalue, $maxvalue, $step, $digits, $asso)
 	{
-    RegisterProfileType($name, IPSVarType::vtInteger);
+    $this->RegisterProfileType($name, IPSVarType::vtInteger);
     
     IPS_SetVariableProfileIcon($name, $icon);
     IPS_SetVariableProfileText($name, $prefix, $suffix);
@@ -177,7 +177,7 @@ class AlmanacControl extends IPSModule
 
 	protected function RegisterProfileFloat($name, $icon, $prefix, $suffix, $minvalue, $maxvalue, $step, $digits, $asso)
 	{
-    RegisterProfileType($name, IPSVarType::vtFloat);
+    $this->RegisterProfileType($name, IPSVarType::vtFloat);
     
     IPS_SetVariableProfileIcon($name, $icon);
     IPS_SetVariableProfileText($name, $prefix, $suffix);
@@ -198,7 +198,7 @@ class AlmanacControl extends IPSModule
 
 	protected function RegisterProfileString($name, $icon, $prefix, $suffix)
 	{
-    RegisterProfileType($name, IPSVarType::vtString);
+    $this->RegisterProfileType($name, IPSVarType::vtString);
 
     IPS_SetVariableProfileText($name, $prefix, $suffix);
 		IPS_SetVariableProfileIcon($name, $icon);
