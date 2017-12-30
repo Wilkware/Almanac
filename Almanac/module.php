@@ -289,6 +289,17 @@ class AlmanacModul extends IPSModule
     SetValueString($id, $value);
   }
   
+  /**
+   * Update a integer value
+   * 
+   * @param string $Ident Ident of the boolean variable
+   * @param integer $value Value of the string variable
+   */
+  private function SetValueInteger(string $ident, integer $value)
+  {
+    $id = $this->GetIDForIdent($ident);
+    SetValueInteger($id, $value);
+  }
 
   /**
    * Gets the actual holiday calendar from  http://www.schulferien.org and extract the current values.
