@@ -1,11 +1,11 @@
 {
   "id": "{6DFFD7EB-733C-4EDB-B116-174A0DC30E49}",
-  "name": "Almanac Control",
+  "name": "Almanac Modul",
   "type": 3,
   "vendor": "",
   "aliases": 
   [
-    "Kalendar", "Schulferien", "Feiertage"
+    "Jahreskalender", "Schulferien", "Feiertage"
   ],
   "parentRequirements": [],
   "childRequirements": [],

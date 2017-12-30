@@ -30,7 +30,7 @@ Folgende Informationen werden ermittelt:
 
 * Sind Ferien und welche
 * Feiertag oder nicht und wie heißt er 
-* Anzahl Tage im Jahr
+* Der Tag des Jahres
 * Anzahl Tage im Monat
 * Arbeitstage im Monat
 * Schaltjahr oder nicht
@@ -73,13 +73,12 @@ Feiertag             | String    | Name des Feriertages oder 'kein Feiertag'
 Ist Feiertag         | Boolean   | Ist aktueller Tag ein Feiertag?
 Ferien               | String    | Name der Schulferien oder 'keine Ferien'
 Ist Ferienzeit       | Boolean   | Fällt aktueller Tag in die Ferien?
-Tage im Jahr         | Integer   | Wieviel Tage hat das aktuelle Jahr?
-Tage im Monat        | Integer   | Wieviel Tage hat der aktuelle Monat?
-Arbeitstage          | Integer   | Wieviel Arbeitstage hat der aktuelle Monat?
-Kalenderwoche        | Integer   | Nummer der aktuelle Kalenderwoche
 Ist Schaltjahr       | Boolean   | Ist aktueller Jahr ein Schaltjahr?
 Ist Sommerzeit       | Boolean   | Ist aktuell Sommerzeit aktiv?
 Ist Wochenende       | Boolean   | Ist gerade Wochenende?
+Kalenderwoche        | Integer   | Nummer der aktuelle Kalenderwoche
+Tag  im Jahr         | Integer   | Welcher Tag des Jahres?
+Tage im Monat        | Integer   | Wieviel Tage hat der aktuelle Monat?
 
 Folgende Profile werden angelegt:
 

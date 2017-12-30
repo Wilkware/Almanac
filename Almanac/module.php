@@ -3,7 +3,7 @@
  * Almanac ist die Klasse für das IPS-Modul 'IPSymconAlmanac'.
  * Erweitert IPSModule 
  */
-class AlmanacControl extends IPSModule
+class AlmanacModul extends IPSModule
 {
   /**
    * Bundeslaender IDs/Kuerzel - Array
@@ -95,11 +95,9 @@ class AlmanacControl extends IPSModule
     $this->RegisterVariable(IPSVarType::vtBoolean, "Ist Sommerzeit?", "IsSummer",   "ALMANAC.Question", 3, $date);
     $this->RegisterVariable(IPSVarType::vtBoolean, "Ist Schaltjahr?", "IsLeapyear", "ALMANAC.Question", 4, $date);
     $this->RegisterVariable(IPSVarType::vtBoolean, "Ist Wochenende?", "IsWeekend",  "ALMANAC.Question", 5, $date);
-
     $this->RegisterVariable(IPSVarType::vtInteger, "Kalenderwoche", "WeekNumber",  "", 30, $date);
-    $this->RegisterVariable(IPSVarType::vtInteger, "Arbeitstage", "WorkDays",  "", 31, $date);
     $this->RegisterVariable(IPSVarType::vtInteger, "Tage im Monat", "DaysInMonth",  "", 32, $date);
-    $this->RegisterVariable(IPSVarType::vtInteger, "Tage im Jahr",  "DaysInYear",  "", 33, $date);
+    $this->RegisterVariable(IPSVarType::vtInteger, "Tag im Jahr",  "DayOfYear",  "", 33, $date);
   }
 
   /**
@@ -379,6 +377,13 @@ class AlmanacControl extends IPSModule
    */
   private function SetDate()
   {
+    $this->SetValueBoolean("IsSummer", date("I"));
+    $this->SetValueBoolean("IsLeapyear", date("L"));
+    $this->SetValueBoolean("IsWeekend",  date("N") > 5);
+
+    $this->SetValueInteger("WeekNumber",  date("W"));
+    $this->SetValueInteger("DaysInMonth",  date("t"));
+    $this->SetValueInteger("DayOfYear",  date("z") + 1 );   
   }
 
   /**
