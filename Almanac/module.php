@@ -359,7 +359,7 @@ class AlmanacModul extends IPSModule
       if ($message0 === false) {
         throw new Exception("Cannot load iCal Data.", E_USER_NOTICE);
       }
-      $this->SendDebug('LINES', count($meldung0), 0);
+      $this->SendDebug('LINES', count($message0), 0);
     } 
     else {
       $message0 = array();
@@ -375,7 +375,7 @@ class AlmanacModul extends IPSModule
     }
     $this->SendDebug('LINES', count($message1), 0);
 
-    $message = array_merge($meldung0, $meldung1);
+    $message = array_merge($message0, $message1);
 
     $vacation = "Keine Ferien";
     $count = (count($message) - 1);
