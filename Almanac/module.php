@@ -46,7 +46,7 @@ class AlmanacModul extends IPSModule
 		$this->RegisterPropertyBoolean("UpdateVacation", true);
 		$this->RegisterPropertyBoolean("UpdateDate", true);
     // Update daily timer
-    $this->RegisterCyclicTimer("UpdateTimer", 0, 0, 1, 'ALMANAC_Update('.$this->InstanceID.');');
+    $this->RegisterCyclicTimer("UpdateTimer", 0, 0, 1, 'ALMANAC_Update('.$this->InstanceID.');', true);
   }
 
   /**
@@ -240,7 +240,7 @@ class AlmanacModul extends IPSModule
    * @param  string $ident Name and Ident of the Timer.
    * @param  string $cId Client ID .
    */
-  protected function RegisterCyclicTimer($ident, $hour, $minute, $second, $script)
+  protected function RegisterCyclicTimer($ident, $hour, $minute, $second, $script, $active)
 	{
 		$id = @$this->GetIDForIdent($ident);
 		$name = $ident;
@@ -262,7 +262,7 @@ class AlmanacModul extends IPSModule
 		if (!IPS_EventExists($id)) throw new Exception("Ident with name $ident is used for wrong object type");
 		//IPS_SetEventCyclic($id, 0, 0, 0, 0, 0, 0);
 		IPS_SetEventCyclicTimeFrom($id, $hour, $minute, $second);
-		IPS_SetEventActive($id, false);
+		IPS_SetEventActive($id, $active);
 	}
   
   /**
@@ -350,16 +350,33 @@ class AlmanacModul extends IPSModule
    */
   private function SetVacation($state, $url)
   {
+    if ((int)date("md") < 110)
+    {
+      $year = date("Y") - 1;
+      $link = $url . '?land=' . $state . '&type=1&year=' . $year;
+      $this->SendDebug('GET', $link, 0);
+      $message0 = @file($link);
+      if ($message0 === false) {
+        throw new Exception("Cannot load iCal Data.", E_USER_NOTICE);
+      }
+      $this->SendDebug('LINES', count($meldung0), 0);
+    } 
+    else {
+      $message0 = array();
+    }
+    
     $year = date("Y");
     $link = $url . '?land=' . $state . '&type=1&year=' . $year;
     $this->SendDebug('GET', $link, 0);
-    $message = @file($link);
+    $message1 = @file($link);
     
-    if ($message === false) {
+    if ($message1 === false) {
       throw new Exception("Cannot load iCal Data.", E_USER_NOTICE);
     }
-    
-    $this->SendDebug('LINES', count($message), 0);
+    $this->SendDebug('LINES', count($message1), 0);
+
+    $message = array_merge($meldung0, $meldung1);
+
     $vacation = "Keine Ferien";
     $count = (count($message) - 1);
     
