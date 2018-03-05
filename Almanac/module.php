@@ -409,9 +409,9 @@ class AlmanacModul extends IPSModule
     $this->SetValueBoolean("IsLeapyear", date("L"));
     $this->SetValueBoolean("IsWeekend",  date("N") > 5);
 
-    $this->SetValueInteger("WeekNumber",  date("W"));
-    $this->SetValueInteger("DaysInMonth",  date("t"));
-    $this->SetValueInteger("DayOfYear",  date("z") + 1 );   
+    $this->SetValueInteger("WeekNumber",  idate("W"));
+    $this->SetValueInteger("DaysInMonth",  idate("t"));
+    $this->SetValueInteger("DayOfYear",  idate("z") + 1 );   
   }
 
   /**
