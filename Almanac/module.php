@@ -293,9 +293,9 @@ class AlmanacModul extends IPSModule
    * Update a integer value
    * 
    * @param string $Ident Ident of the boolean variable
-   * @param integer $value Value of the string variable
+   * @param int $value Value of the string variable
    */
-  private function SetValueInteger(string $ident, integer $value)
+  private function SetValueInteger(string $ident, int $value)
   {
     $id = $this->GetIDForIdent($ident);
     SetValueInteger($id, $value);
