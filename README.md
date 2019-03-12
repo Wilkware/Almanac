@@ -1,13 +1,11 @@
+[![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
+[![Product](https://img.shields.io/badge/Symcon%20Version-5.0%20%3E-blue.svg)](https://www.symcon.de/produkt/)
+[![Version](https://img.shields.io/badge/Modul%20Version-1.1.20190312-orange.svg)](https://github.com/Wilkware/IPSymconAlmanac)
+[![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+[![StyleCI](https://github.styleci.io/repos/115756492/shield?style=flat)](https://github.styleci.io/repos/115756492)
+
 # Almanac
-
 Dieses Modul bietet Kalenderinformationen für Arbeitstage, Feiertage, Schulferien und andere Kalenderdaten.
-
-### Danksagung 
-
-Dieses Modul basiert auf den Ideen und Modulen von ...
-* _Nall-chan_ : Modul _Schulferien_ (https://github.com/Nall-chan/IPSSchoolHolidays) 
-
-Vielen Dank für die hervorragende und tolle Arbeit! 
 
 ### Inhaltverzeichnis
 
@@ -18,17 +16,17 @@ Vielen Dank für die hervorragende und tolle Arbeit!
 5. [Statusvariablen und Profile](#5-statusvariablen-und-profile)
 6. [WebFront](#6-webfront)
 7. [PHP-Befehlsreferenz](#7-php-befehlsreferenz)
-8. [Lizenz](#8-lizenz)
+8. [Versionshistorie](#8-versionshistorie)
 
 ### 1. Funktionsumfang
 
 Das Modul nutzt die von schulferien.eu (www.schulferien.eu) bereitgestellten Daten zur Anzeige der Feiertage und Schulferien
 für das gewählte Bundesland.  
-Darüber hinaus werden mittels der PHP Funktion "date" verschiedene Informationen für das aktuelle Datum ermittelt
+Darüber hinaus werden mittels der PHP Funktion "date" verschiedene Informationen für das aktuelle Datum ermittelt.
 
 Folgende Informationen werden ermittelt:
 
-* Sind Ferien und welche
+* Sind Ferien und Welche
 * Feiertag oder nicht und wie heißt er 
 * Der Tag des Jahres
 * Anzahl Tage im Monat
@@ -40,7 +38,7 @@ Folgende Informationen werden ermittelt:
 
 ### 2. Voraussetzungen
 
-- IP-Symcon ab Version 4.x (getestet mit Version 4.4 auf RP3)
+- IP-Symcon ab Version 5.x
 
 ### 3. Software-Installation
 
@@ -53,7 +51,6 @@ Folgende Informationen werden ermittelt:
 
 __Konfigurationsseite__:
 
-
 Name               | Beschreibung
 ------------------ | ---------------------------------
 Bundesland         | Auswahl des Bundesland für welchen man die Feiertage und Schulferien ermittelt haben möchte.
@@ -61,7 +58,6 @@ Basis URL          | Url zum Dienstanbieter für Feiertage und Schulferien, derz
 Feiertage          | Status, ob Ermittlung der Feiertage erwünscht ist.
 Schulferien        | Status, ob Ermittlung der Schulferien erwünscht ist.
 Datumsfunktion     | Status, ob Informationen zum aktuellen Datum erwünscht sind.
-
 
 ### 5. Statusvariablen und Profile
 
@@ -86,11 +82,9 @@ Name                 | Typ       | Beschreibung
 -------------------- | --------- | ----------------
 ALMANAC.Question     | Boolean   | FALSE = Nein / TRUE = Ja
 
-
 ### 6. WebFront
 
-Man kann die Statusvariaben(Strings) direkt im WF verlinken.
-
+Man kann die Statusvariablen direkt im WF verlinken.
 
 ### 7. PHP-Befehlsreferenz
 
@@ -101,6 +95,31 @@ Die Funktion liefert keinerlei Rückgabewert.
 Beispiel:
 `ALMANAC_Update(12345);`
 
-### 8. Lizenz
+### 8. Versionshistorie
 
-  [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)  
+v1.1.20190312
+* _NEU_: Vereinheitlichungen, StyleCI uvm.
+
+v1.0.20180505
+* _FIX_: BugFix IPS 5.0
+
+v1.0.20171230
+* _NEU_: Initialversion
+
+### Danksagung 
+
+Dieses Modul basiert auf den Ideen und Modulen von ...
+* _Nall-chan_ : Modul _Schulferien_ (https://github.com/Nall-chan/IPSSchoolHolidays) 
+
+Vielen Dank für die hervorragende und tolle Arbeit! 
+
+### Entwickler
+* Heiko Wilknitz ([@wilkware](https://github.com/wilkware))
+
+### Spenden
+Die Software ist für die nicht kommzerielle Nutzung kostenlos, Schenkungen als Unterstützung für den Entwickler bitte hier:<br />
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8816166" target="_blank"><img src="https://www.paypalobjects.com/de_DE/DE/i/btn/btn_donate_LG.gif" border="0" /></a>
+
+### Lizenz
+[![Licence](https://licensebuttons.net/i/l/by-nc-sa/transparent/00/00/00/88x31-e.png)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+  

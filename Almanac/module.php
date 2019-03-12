@@ -11,23 +11,23 @@ class AlmanacModul extends IPSModule
      * @var array Key ist die id, Value ist der Kuerzel
      */
     public static $States = [
-    '1'   => 'BY',  // Bayern
-    '2'   => 'BW',  // Baden-Württemberg
-    '3'   => 'NI',  // Niedersachsen
-    '4'   => 'BE',  // Berlin
-    '5'   => 'BB',  // Brandenburg
-    '6'   => 'HB',  // Bremen
-    '7'   => 'HH',  // Hamburg
-    '8'   => 'HE',  // Hessen
-    '9'   => 'MV',  // Mecklenburg-Vorpommern
-    '10'  => 'NW',  // Nordrhein-Westfalen
-    '11'  => 'RP',  // Rheinland-Pfalz
-    '12'  => 'SL',  // Saarland
-    '13'  => 'SN',  // Sachsen
-    '14'  => 'ST',  // Sachsen-Anhalt
-    '15'  => 'SH',  // Schleswig-Holstein
-    '16'  => 'TH',   // Thüringen
-  ];
+        '1'   => 'BY',  // Bayern
+        '2'   => 'BW',  // Baden-Württemberg
+        '3'   => 'NI',  // Niedersachsen
+        '4'   => 'BE',  // Berlin
+        '5'   => 'BB',  // Brandenburg
+        '6'   => 'HB',  // Bremen
+        '7'   => 'HH',  // Hamburg
+        '8'   => 'HE',  // Hessen
+        '9'   => 'MV',  // Mecklenburg-Vorpommern
+        '10'  => 'NW',  // Nordrhein-Westfalen
+        '11'  => 'RP',  // Rheinland-Pfalz
+        '12'  => 'SL',  // Saarland
+        '13'  => 'SN',  // Sachsen
+        '14'  => 'ST',  // Sachsen-Anhalt
+        '15'  => 'SH',  // Schleswig-Holstein
+        '16'  => 'TH',   // Thüringen
+    ];
 
     /**
      * Create.
@@ -62,28 +62,28 @@ class AlmanacModul extends IPSModule
         $this->SendDebug('ApplyChanges', 'federal state='.$state.' ('.static::$States[$state].'), url='.$url.', updates='.($holiday ? 'Y' : 'N').'|'.($vacation ? 'Y' : 'N').'|'.($date ? 'Y' : 'N'), 0);
 
         $association = [
-        [0, 'Nein', 'Close', 0xFF0000],
-        [1, 'Ja',   'Ok', 0x00FF00],
-    ];
+            [0, 'Nein', 'Close', 0xFF0000],
+            [1, 'Ja',   'Ok', 0x00FF00],
+        ];
         $this->RegisterProfile(IPSVarType::vtBoolean, 'ALMANAC.Question', 'Bulb', '', '', 0, 0, 0, 0, $association);
 
         /*
-        $association =  Array(
-        	Array(1, "Montag", "", 0x0000FF),
-        	Array(2, "Dienstag", "", 0x0000FF1),
-        	Array(3, "Mittwoch", "", 0x0000FF),
-        	Array(4, "Donnerstag", "", 0x0000FF),
-        	Array(5, "Freitag", "", 0x0000FF),
-        	Array(6, "Samstag", "", 0x0000FF),
-        	Array(7, "Sonntag", "", 0x0000FF),
-        );
-        $this->RegisterProfile(IPSVarType::vtBoolean, "ALMANAC.Weekday", "Calendar", "", "", 0, 0, 0, 0, $associations);
+        $association = [
+            [1, "Montag", "", 0x0000FF],
+            [2, "Dienstag", "", 0x0000FF],
+            [3, "Mittwoch", "", 0x0000FF],
+            [4, "Donnerstag", "", 0x0000FF],
+            [5, "Freitag", "", 0x0000FF],
+            [6, "Samstag", "", 0x0000FF],
+            [7, "Sonntag", "", 0x0000FF],
+        ];
+        $this->RegisterProfile(IPSVarType::vtBoolean, 'ALMANAC.Weekday', 'Calendar', '', '', 0, 0, 0, 0, $associations);
         */
 
-        // Holiday
+        // Holiday(Ferien)
         $this->RegisterVariable(IPSVarType::vtBoolean, 'Ist Feiertag?', 'IsHoliday', 'ALMANAC.Question', 1, $holiday);
         $this->RegisterVariable(IPSVarType::vtString, 'Feiertag', 'Holiday', '', 10, $holiday);
-        // Urlaub
+        // Vacation(Urlaub)
         $this->RegisterVariable(IPSVarType::vtBoolean, 'Ist Ferienzeit?', 'IsVacation', 'ALMANAC.Question', 2, $vacation);
         $this->RegisterVariable(IPSVarType::vtString, 'Ferien', 'Vacation', '', 20, $vacation);
         // Date
@@ -246,7 +246,7 @@ class AlmanacModul extends IPSModule
             IPS_SetIdent($id, $ident);
         }
         IPS_SetName($id, $name);
-        // IPS_SetInfo($id, "Update AstroTimer");
+        // IPS_SetInfo($id, "Update Timer");
         // IPS_SetHidden($id, true);
         IPS_SetEventScript($id, $script);
         if (!IPS_EventExists($id)) {
@@ -294,7 +294,7 @@ class AlmanacModul extends IPSModule
     }
 
     /**
-     * Gets the actual holiday calendar from  http://www.schulferien.org and extract the current values.
+     * Gets the actual holiday calendar from  http://www.schulferien.eu and extract the current values.
      * Pass the name of the current holiday or 'Kein Feiertag'.
      *
      * @throws Exception if calendar could not loaded.
@@ -333,7 +333,7 @@ class AlmanacModul extends IPSModule
     }
 
     /**
-     * Gets the actual vacation calendar from  http://www.schulferien.org and extract the current values.
+     * Gets the actual vacation calendar from  http://www.schulferien.eu and extract the current values.
      * Pass the name of the current vacation or 'Keine Ferien'.
      *
      * @throws Exception if calendar could not loaded.

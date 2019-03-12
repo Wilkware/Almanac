@@ -1,9 +1,9 @@
 {
   "id": "{5C868298-0E0E-460C-B2EE-171513972D42}",
-  "author": "Wilkware",
+  "author": "Wilkware (@Pitti)",
   "name": "Almanac",
-  "url": "https://github.com/Wilkware/IPSymconAlmanac",
-  "version": "1.0",
-  "build": 0,
-  "date": 0
+  "url": "https://github.com/Wilkware/",
+  "version": "1.1",
+  "build": 20190312,
+  "date": 1552348800
 }
