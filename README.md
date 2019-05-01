@@ -1,6 +1,6 @@
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 [![Product](https://img.shields.io/badge/Symcon%20Version-5.0%20%3E-blue.svg)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-1.1.20190312-orange.svg)](https://github.com/Wilkware/IPSymconAlmanac)
+[![Version](https://img.shields.io/badge/Modul%20Version-1.1.20190501-orange.svg)](https://github.com/Wilkware/IPSymconAlmanac)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![StyleCI](https://github.styleci.io/repos/115756492/shield?style=flat)](https://github.styleci.io/repos/115756492)
 
@@ -96,6 +96,9 @@ Beispiel:
 `ALMANAC_Update(12345);`
 
 ### 8. Versionshistorie
+
+v1.1.20190501
+* _FIX_: Name des Feiertages nicht korrekt gespeichert
 
 v1.1.20190312
 * _NEU_: Vereinheitlichungen, StyleCI uvm.

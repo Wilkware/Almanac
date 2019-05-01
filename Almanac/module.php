@@ -322,7 +322,12 @@ class AlmanacModul extends IPSModule
                 $this->SendDebug('MESSAGE', 'SUMMARY: '.$name.' ,START: '.$start.' ,END: '.$end, 0);
                 $now = date('Ymd')."\n";
                 if (($now >= $start) and ($now <= $end)) {
-                    $holiday = explode(' ', $name)[0];
+                    $pos = strpos($name, '(Bankfeiertag)');
+                    if ($pos > 0) {
+                        $holiday = substr($name, 0, $pos-1);
+                    } else {
+                        $holiday = $name;
+                    }
                     $this->SendDebug('FOUND', $holiday, 0);
                 }
             }
