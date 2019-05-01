@@ -324,7 +324,7 @@ class AlmanacModul extends IPSModule
                 if (($now >= $start) and ($now <= $end)) {
                     $pos = strpos($name, '(Bankfeiertag)');
                     if ($pos > 0) {
-                        $holiday = substr($name, 0, $pos-1);
+                        $holiday = substr($name, 0, $pos - 1);
                     } else {
                         $holiday = $name;
                     }
