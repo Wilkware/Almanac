@@ -43,7 +43,7 @@ class AlmanacModul extends IPSModule
         $this->RegisterPropertyBoolean('UpdateVacation', true);
         $this->RegisterPropertyBoolean('UpdateDate', true);
         // Register daily update timer
-        $this->RegisterTimer('UpdateTimer', 0, 'ALMANAC_Update('.$this->InstanceID.');');   
+        $this->RegisterTimer('UpdateTimer', 0, 'ALMANAC_Update('.$this->InstanceID.');');
     }
 
     /**
@@ -81,18 +81,18 @@ class AlmanacModul extends IPSModule
         */
 
         // Holiday(Ferien)
-        $this->MaintainVariable('IsHoliday', 'Ist Feiertag?',vtBoolean, 'ALMANAC.Question', 1, $holiday);
-        $this->MaintainVariable('Holiday', 'Feiertag',vtString, '', 10, $holiday);
+        $this->MaintainVariable('IsHoliday', 'Ist Feiertag?', vtBoolean, 'ALMANAC.Question', 1, $holiday);
+        $this->MaintainVariable('Holiday', 'Feiertag', vtString, '', 10, $holiday);
         // Vacation(Urlaub)
-        $this->MaintainVariable('IsVacation', 'Ist Ferienzeit?',vtBoolean, 'ALMANAC.Question', 2, $vacation);
-        $this->MaintainVariable('Vacation', 'Ferien',vtString, '', 20, $vacation);
+        $this->MaintainVariable('IsVacation', 'Ist Ferienzeit?', vtBoolean, 'ALMANAC.Question', 2, $vacation);
+        $this->MaintainVariable('Vacation', 'Ferien', vtString, '', 20, $vacation);
         // Date
-        $this->MaintainVariable('IsSummer', 'Ist Sommerzeit?',vtBoolean, 'ALMANAC.Question', 3, $date);
-        $this->MaintainVariable('IsLeapyear', 'Ist Schaltjahr?',vtBoolean, 'ALMANAC.Question', 4, $date);
-        $this->MaintainVariable('IsWeekend', 'Ist Wochenende?',vtBoolean, 'ALMANAC.Question', 5, $date);
-        $this->MaintainVariable('WeekNumber', 'Kalenderwoche',vtInteger, '', 30, $date);
-        $this->MaintainVariable('DaysInMonth', 'Tage im Monat',vtInteger, '', 32, $date);
-        $this->MaintainVariable('DayOfYear', 'Tag im Jahr',vtInteger, '', 33, $date);
+        $this->MaintainVariable('IsSummer', 'Ist Sommerzeit?', vtBoolean, 'ALMANAC.Question', 3, $date);
+        $this->MaintainVariable('IsLeapyear', 'Ist Schaltjahr?', vtBoolean, 'ALMANAC.Question', 4, $date);
+        $this->MaintainVariable('IsWeekend', 'Ist Wochenende?', vtBoolean, 'ALMANAC.Question', 5, $date);
+        $this->MaintainVariable('WeekNumber', 'Kalenderwoche', vtInteger, '', 30, $date);
+        $this->MaintainVariable('DaysInMonth', 'Tage im Monat', vtInteger, '', 32, $date);
+        $this->MaintainVariable('DayOfYear', 'Tag im Jahr', vtInteger, '', 33, $date);
         // Calculate next update interval
         $this->UpdateTimerInterval('UpdateTimer', 0, 0, 1);
     }
