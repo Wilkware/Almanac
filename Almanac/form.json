@@ -1,8 +1,8 @@
 {
   "elements":
   [
-    {"type": "Label", "label": "Feiertage und Schulferien"},
-    {"type": "Select", "name": "State", "caption": "Bundesland:",
+    {"type": "Label", "label": "Public holidays and school holidays"},
+    {"type": "Select", "name": "State", "caption": "State:",
       "options": [
         {"label": "Baden-Württemberg", "value": "2"},
         {"label": "Bayern", "value": "1"},
@@ -22,11 +22,11 @@
         {"label": "Thüringen","value": "16"}
         ]
     },
-    {"type": "ValidationTextBox", "name": "BaseURL", "caption": "Basis URL:"},
-    {"type": "Label", "label": "Erweiterte Einstellungen:"},
-		{"type": "CheckBox", "name": "UpdateHoliday", "caption": "Feiertag ermitteln!" },
-		{"type": "CheckBox", "name": "UpdateVacation", "caption": "Schulferien ermitteln!" },
-		{"type": "CheckBox", "name": "UpdateDate", "caption": "Informationen zum aktuellen Datum ermitteln!" }
+    {"type": "ValidationTextBox", "name": "BaseURL", "caption": "Base URL:"},
+    {"type": "Label", "label": "Advanced settings:"},
+		{"type": "CheckBox", "name": "UpdateHoliday", "caption": "Determine holiday!" },
+		{"type": "CheckBox", "name": "UpdateVacation", "caption": "Determine school vacations!" },
+		{"type": "CheckBox", "name": "UpdateDate", "caption": "Get information about the current date!" }
   ],
   "actions":
   [

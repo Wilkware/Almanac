@@ -1,6 +1,13 @@
 {
   "translations": {
     "de": {
+      "Public holidays and school holidays": "Feiertage und Schulferien",
+      "State:": "Bundesland:",
+      "Base URL:": "Basis URL:",
+      "Advanced settings:": "Erweiterte Einstellungen:",
+      "Determine holiday!": "Feiertag ermitteln!",
+      "Determine school vacations!": "Schulferien ermitteln!",
+      "Get information about the current date!": "Informationen zum aktuellen Datum ermitteln!",
       "Update": "Aktualisieren"
     }
   }

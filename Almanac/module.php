@@ -1,10 +1,10 @@
 <?php
-/**
- * Almanac ist die Klasse für das IPS-Modul 'IPSymconAlmanac'.
- * Erweitert IPSModule.
- */
+
+require_once __DIR__.'/../libs/traits.php';  // Allgemeine Funktionen
+
 class AlmanacModul extends IPSModule
 {
+    use TimerHelper, DebugHelper;
     /**
      * Bundeslaender IDs/Kuerzel - Array.
      *
@@ -42,8 +42,8 @@ class AlmanacModul extends IPSModule
         $this->RegisterPropertyBoolean('UpdateHoliday', true);
         $this->RegisterPropertyBoolean('UpdateVacation', true);
         $this->RegisterPropertyBoolean('UpdateDate', true);
-        // Update daily timer
-        $this->RegisterCyclicTimer('UpdateTimer', 0, 0, 1, 'ALMANAC_Update('.$this->InstanceID.');', true);
+        // Register daily update timer
+        $this->RegisterTimer('UpdateTimer', 0, 'ALMANAC_Update('.$this->InstanceID.');');   
     }
 
     /**
@@ -65,7 +65,7 @@ class AlmanacModul extends IPSModule
             [0, 'Nein', 'Close', 0xFF0000],
             [1, 'Ja',   'Ok', 0x00FF00],
         ];
-        $this->RegisterProfile(IPSVarType::vtBoolean, 'ALMANAC.Question', 'Bulb', '', '', 0, 0, 0, 0, $association);
+        $this->RegisterProfile(vtBoolean, 'ALMANAC.Question', 'Bulb', '', '', 0, 0, 0, 0, $association);
 
         /*
         $association = [
@@ -81,180 +81,20 @@ class AlmanacModul extends IPSModule
         */
 
         // Holiday(Ferien)
-        $this->RegisterVariable(IPSVarType::vtBoolean, 'Ist Feiertag?', 'IsHoliday', 'ALMANAC.Question', 1, $holiday);
-        $this->RegisterVariable(IPSVarType::vtString, 'Feiertag', 'Holiday', '', 10, $holiday);
+        $this->MaintainVariable('IsHoliday', 'Ist Feiertag?',vtBoolean, 'ALMANAC.Question', 1, $holiday);
+        $this->MaintainVariable('Holiday', 'Feiertag',vtString, '', 10, $holiday);
         // Vacation(Urlaub)
-        $this->RegisterVariable(IPSVarType::vtBoolean, 'Ist Ferienzeit?', 'IsVacation', 'ALMANAC.Question', 2, $vacation);
-        $this->RegisterVariable(IPSVarType::vtString, 'Ferien', 'Vacation', '', 20, $vacation);
+        $this->MaintainVariable('IsVacation', 'Ist Ferienzeit?',vtBoolean, 'ALMANAC.Question', 2, $vacation);
+        $this->MaintainVariable('Vacation', 'Ferien',vtString, '', 20, $vacation);
         // Date
-        $this->RegisterVariable(IPSVarType::vtBoolean, 'Ist Sommerzeit?', 'IsSummer', 'ALMANAC.Question', 3, $date);
-        $this->RegisterVariable(IPSVarType::vtBoolean, 'Ist Schaltjahr?', 'IsLeapyear', 'ALMANAC.Question', 4, $date);
-        $this->RegisterVariable(IPSVarType::vtBoolean, 'Ist Wochenende?', 'IsWeekend', 'ALMANAC.Question', 5, $date);
-        $this->RegisterVariable(IPSVarType::vtInteger, 'Kalenderwoche', 'WeekNumber', '', 30, $date);
-        $this->RegisterVariable(IPSVarType::vtInteger, 'Tage im Monat', 'DaysInMonth', '', 32, $date);
-        $this->RegisterVariable(IPSVarType::vtInteger, 'Tag im Jahr', 'DayOfYear', '', 33, $date);
-    }
-
-    /**
-     * Create the profile for the given associations.
-     */
-    protected function RegisterProfile($vartype, $name, $icon, $prefix = '', $suffix = '', $minvalue = 0, $maxvalue = 0, $stepsize = 0, $digits = 0, $associations = null)
-    {
-        if (!IPS_VariableProfileExists($name)) {
-            switch ($vartype) {
-                case IPSVarType::vtBoolean:
-                    $this->RegisterProfileBoolean($name, $icon, $prefix, $suffix, $associations);
-                    break;
-                case IPSVarType::vtInteger:
-                    $this->RegisterProfileInteger($name, $icon, $prefix, $suffix, $minvalue, $maxvalue, $stepsize, $digits, $associations);
-                    break;
-                case IPSVarType::vtFloat:
-                    $this->RegisterProfileFloat($name, $icon, $prefix, $suffix, $minvalue, $maxvalue, $stepsize, $digits, $associations);
-                    break;
-                case IPSVarType::vtString:
-                    $this->RegisterProfileString($name, $icon);
-                    break;
-            }
-        }
-
-        return $name;
-    }
-
-    protected function RegisterProfileType($name, $type)
-    {
-        if (!IPS_VariableProfileExists($name)) {
-            IPS_CreateVariableProfile($name, $type);
-        } else {
-            $profile = IPS_GetVariableProfile($name);
-            if ($profile['ProfileType'] != $type) {
-                throw new Exception('Variable profile type does not match for profile '.$name);
-            }
-        }
-    }
-
-    protected function RegisterProfileBoolean($name, $icon, $prefix, $suffix, $asso)
-    {
-        $this->RegisterProfileType($name, IPSVarType::vtBoolean);
-
-        IPS_SetVariableProfileIcon($name, $icon);
-        IPS_SetVariableProfileText($name, $prefix, $suffix);
-
-        if (count($asso) !== 0) {
-            foreach ($asso as $ass) {
-                IPS_SetVariableProfileAssociation($name, $ass[0], $ass[1], $ass[2], $ass[3]);
-            }
-        }
-    }
-
-    protected function RegisterProfileInteger($name, $icon, $prefix, $suffix, $minvalue, $maxvalue, $step, $digits, $asso)
-    {
-        $this->RegisterProfileType($name, IPSVarType::vtInteger);
-
-        IPS_SetVariableProfileIcon($name, $icon);
-        IPS_SetVariableProfileText($name, $prefix, $suffix);
-        IPS_SetVariableProfileDigits($name, $digits);
-
-        if (count($asso) === 0) {
-            $minvalue = 0;
-            $maxvalue = 0;
-        }
-        IPS_SetVariableProfileValues($name, $minvalue, $maxvalue, $step);
-
-        if (count($asso) !== 0) {
-            foreach ($asso as $ass) {
-                IPS_SetVariableProfileAssociation($name, $ass[0], $ass[1], $ass[2], $ass[3]);
-            }
-        }
-    }
-
-    protected function RegisterProfileFloat($name, $icon, $prefix, $suffix, $minvalue, $maxvalue, $step, $digits, $asso)
-    {
-        $this->RegisterProfileType($name, IPSVarType::vtFloat);
-
-        IPS_SetVariableProfileIcon($name, $icon);
-        IPS_SetVariableProfileText($name, $prefix, $suffix);
-        IPS_SetVariableProfileDigits($name, $digits);
-
-        if (count($asso) === 0) {
-            $minvalue = 0;
-            $maxvalue = 0;
-        }
-        IPS_SetVariableProfileValues($name, $minvalue, $maxvalue, $step);
-
-        if (count($asso) !== 0) {
-            foreach ($asso as $ass) {
-                IPS_SetVariableProfileAssociation($name, $ass[0], $ass[1], $ass[2], $ass[3]);
-            }
-        }
-    }
-
-    protected function RegisterProfileString($name, $icon, $prefix, $suffix)
-    {
-        $this->RegisterProfileType($name, IPSVarType::vtString);
-
-        IPS_SetVariableProfileText($name, $prefix, $suffix);
-        IPS_SetVariableProfileIcon($name, $icon);
-    }
-
-    /**
-     * Create or delete variable.
-     */
-    protected function RegisterVariable($vartype, $name, $ident, $profile, $position, $register)
-    {
-        if ($register == true) {
-            switch ($vartype) {
-                case IPSVarType::vtBoolean:
-                    $objId = $this->RegisterVariableBoolean($ident, $name, $profile, $position);
-                    break;
-                case IPSVarType::vtInteger:
-                    $objId = $this->RegisterVariableInteger($ident, $name, $profile, $position);
-                    break;
-                case IPSVarType::vtFloat:
-                    $objId = $this->RegisterVariableFloat($ident, $name, $profile, $position);
-                    break;
-                case IPSVarType::vtString:
-                    $objId = $this->RegisterVariableString($ident, $name, $profile, $position);
-                    break;
-            }
-        } else {
-            $objId = @$this->GetIDForIdent($ident);
-            if ($objId > 0) {
-                $this->UnregisterVariable($ident);
-            }
-        }
-
-        return $objId;
-    }
-
-    /**
-     * Create the cyclic Update Timer.
-     *
-     * @param string $ident Name and Ident of the Timer.
-     * @param string $cId   Client ID .
-     */
-    protected function RegisterCyclicTimer($ident, $hour, $minute, $second, $script, $active)
-    {
-        $id = @$this->GetIDForIdent($ident);
-        $name = $ident;
-        if ($id && IPS_GetEvent($id)['EventType'] != 1) {
-            IPS_DeleteEvent($id);
-            $id = 0;
-        }
-        if (!$id) {
-            $id = IPS_CreateEvent(1);
-            IPS_SetParent($id, $this->InstanceID);
-            IPS_SetIdent($id, $ident);
-        }
-        IPS_SetName($id, $name);
-        // IPS_SetInfo($id, "Update Timer");
-        // IPS_SetHidden($id, true);
-        IPS_SetEventScript($id, $script);
-        if (!IPS_EventExists($id)) {
-            throw new Exception("Ident with name $ident is used for wrong object type");
-        }
-        //IPS_SetEventCyclic($id, 0, 0, 0, 0, 0, 0);
-        IPS_SetEventCyclicTimeFrom($id, $hour, $minute, $second);
-        IPS_SetEventActive($id, $active);
+        $this->MaintainVariable('IsSummer', 'Ist Sommerzeit?',vtBoolean, 'ALMANAC.Question', 3, $date);
+        $this->MaintainVariable('IsLeapyear', 'Ist Schaltjahr?',vtBoolean, 'ALMANAC.Question', 4, $date);
+        $this->MaintainVariable('IsWeekend', 'Ist Wochenende?',vtBoolean, 'ALMANAC.Question', 5, $date);
+        $this->MaintainVariable('WeekNumber', 'Kalenderwoche',vtInteger, '', 30, $date);
+        $this->MaintainVariable('DaysInMonth', 'Tage im Monat',vtInteger, '', 32, $date);
+        $this->MaintainVariable('DayOfYear', 'Tag im Jahr',vtInteger, '', 33, $date);
+        // Calculate next update interval
+        $this->UpdateTimerInterval('UpdateTimer', 0, 0, 1);
     }
 
     /**
@@ -438,17 +278,8 @@ class AlmanacModul extends IPSModule
         if ($date == true) {
             $this->SetDate();
         }
-    }
-}
 
-/**
- * Helper class for IPS variable types.
- */
-class IPSVarType extends stdClass
-{
-    const vtNone = -1;
-    const vtBoolean = 0;
-    const vtInteger = 1;
-    const vtFloat = 2;
-    const vtString = 3;
+        // calculate next update interval
+        $this->UpdateTimerInterval('UpdateTimer', 0, 10, 0);
+    }
 }
