@@ -280,6 +280,6 @@ class AlmanacModul extends IPSModule
         }
 
         // calculate next update interval
-        $this->UpdateTimerInterval('UpdateTimer', 0, 10, 0);
+        $this->UpdateTimerInterval('UpdateTimer', 0, 0, 1);
     }
 }
