@@ -2,7 +2,7 @@
 
 require_once __DIR__.'/../libs/traits.php';  // Allgemeine Funktionen
 
-class AlmanacModul extends IPSModule
+class AlmanacModule extends IPSModule
 {
     use ProfileHelper, TimerHelper, DebugHelper;
     /**
