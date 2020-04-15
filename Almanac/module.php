@@ -4,7 +4,9 @@ require_once __DIR__.'/../libs/traits.php';  // Allgemeine Funktionen
 
 class AlmanacModule extends IPSModule
 {
-    use ProfileHelper, TimerHelper, DebugHelper;
+    use ProfileHelper;
+    use TimerHelper;
+    use DebugHelper;
     /**
      * Bundeslaender IDs/Kuerzel - Array.
      *
