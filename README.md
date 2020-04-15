@@ -41,9 +41,9 @@ Folgende Informationen werden ermittelt:
 
 * IP-Symcon ab Version 5.0
 
-### 3. Software-Installation
+### 3. Installation
 
-* Über den Modul Store das Modul Awido installieren.
+* Über den Modul Store das Modul Almanac installieren.
 * Alternativ Über das Modul-Control folgende URL hinzufügen.  
 `https://github.com/Wilkware/IPSymconAlmanac` oder `git://github.com/Wilkware/IPSymconAlmanac.git`
 
