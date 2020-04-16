@@ -56,6 +56,8 @@ IsHoliday             | bool    | TRUE, wenn Feiertag ist
 SchoolHolidays        | string  | Name der Schulferien, oder "Keine Ferien"
 IsSchoolHolidays      | bool    | TRUE, wenn Schulferienzeit ist
 
+__HINWEIS:__ Das Datum sollte nur maximal +/- 1 Jahr vom aktuellen Tag entfernt liegen.
+
 ### 2. Voraussetzungen
 
 * IP-Symcon ab Version 5.0

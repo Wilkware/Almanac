@@ -180,7 +180,7 @@ class AlmanacModule extends IPSModule
         $nwd = 0;
         for ($day = $fdm; $day <= $ldm; $day++) {
             // Minus Weekends
-            if (date('N', strtotime($day)) > 5) {
+            if (date('N', strtotime(strval($day))) > 5) {
                 $nwd++;
             }
             // Minus Holidays
@@ -224,7 +224,7 @@ class AlmanacModule extends IPSModule
         foreach ($data as $entry) {
             if (($now >= $entry['start']) && ($now <= $entry['end'])) {
                 $vacation = explode(' ', $entry['name'])[0];
-                //$this->SendDebug('FOUND', $vacation, 0);
+                $this->SendDebug('FOUND', $vacation, 0);
                 break;
             }
         }
