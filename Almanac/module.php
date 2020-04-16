@@ -103,7 +103,7 @@ class AlmanacModule extends IPSModule
         $date = $this->ReadPropertyBoolean('UpdateDate');
 
         if ($holiday || $vacation || $date) {
-            $data = $this->ExtractDates(time());
+            $data = $this->GetDateInfo(time());
         }
 
         if ($holiday == true) {
@@ -126,13 +126,13 @@ class AlmanacModule extends IPSModule
         }
         if ($date == true) {
             try {
-                $this->SetValueBoolean('IsSummer', $date['IsSummer']);
-                $this->SetValueBoolean('IsLeapyear', $date['IsLeapYear']);
-                $this->SetValueBoolean('IsWeekend', $date['IsWeekend']);
-                $this->SetValueInteger('WeekNumber', $date['WeekNumber']);
-                $this->SetValueInteger('DaysInMonth', $date['DaysInMonth']);
-                $this->SetValueInteger('DayOfYear', $date['DayOfYear']);
-                $this->SetValueInteger('WorkingDays', $date['WorkingDays']);
+                $this->SetValueBoolean('IsSummer', $data['IsSummer']);
+                $this->SetValueBoolean('IsLeapyear', $data['IsLeapYear']);
+                $this->SetValueBoolean('IsWeekend', $data['IsWeekend']);
+                $this->SetValueInteger('WeekNumber', $data['WeekNumber']);
+                $this->SetValueInteger('DaysInMonth', $data['DaysInMonth']);
+                $this->SetValueInteger('DayOfYear', $data['DayOfYear']);
+                $this->SetValueInteger('WorkingDays', $data['WorkingDays']);
             } catch (Exception $exc) {
                 trigger_error($exc->getMessage(), $exc->getCode());
                 $this->SendDebug('ERROR DATE', $exc->getMessage(), 0);
@@ -172,7 +172,7 @@ class AlmanacModule extends IPSModule
         // get holiday data
         $year = date('Y', $ts);
         $link = $url . '?land=' . $state . '&type=0&year=' . $year;
-        $data = ExtractDates($link);
+        $data = $this->ExtractDates($link);
 
         // working days
         $fdm = date('Ym01', $ts);
@@ -212,13 +212,13 @@ class AlmanacModule extends IPSModule
         if ((int) date('md', $ts) < 110) {
             $year = date('Y', $ts) - 1;
             $link = $url . '?land=' . $state . '&type=1&year=' . $year;
-            $data0 = ExtractDates($link);
+            $data0 = $this->ExtractDates($link);
         } else {
             $data0 = [];
         }
         $year = date('Y', $ts);
         $link = $url . '?land=' . $state . '&type=1&year=' . $year;
-        $data1 = ExtractDates($link);
+        $data1 = $this->ExtractDates($link);
         $data = array_merge($data0, $data1);
         $vacation = 'Keine Ferien';
         foreach ($data as $entry) {
