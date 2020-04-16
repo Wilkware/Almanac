@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../libs/traits.php';  // Allgemeine Funktionen
+require_once __DIR__.'/../libs/traits.php';  // Allgemeine Funktionen
 
 class AlmanacModule extends IPSModule
 {
@@ -47,7 +47,7 @@ class AlmanacModule extends IPSModule
         $this->RegisterPropertyBoolean('UpdateVacation', true);
         $this->RegisterPropertyBoolean('UpdateDate', true);
         // Register daily update timer
-        $this->RegisterTimer('UpdateTimer', 0, 'ALMANAC_Update(' . $this->InstanceID . ');');
+        $this->RegisterTimer('UpdateTimer', 0, 'ALMANAC_Update('.$this->InstanceID.');');
     }
 
     /**
@@ -63,7 +63,7 @@ class AlmanacModule extends IPSModule
         $holiday = $this->ReadPropertyBoolean('UpdateHoliday');
         $vacation = $this->ReadPropertyBoolean('UpdateVacation');
         $date = $this->ReadPropertyBoolean('UpdateDate');
-        $this->SendDebug('ApplyChanges', 'federal state=' . $state . ' (' . static::$States[$state] . '), url=' . $url . ', updates=' . ($holiday ? 'Y' : 'N') . '|' . ($vacation ? 'Y' : 'N') . '|' . ($date ? 'Y' : 'N'), 0);
+        $this->SendDebug('ApplyChanges', 'federal state='.$state.' ('.static::$States[$state].'), url='.$url.', updates='.($holiday ? 'Y' : 'N').'|'.($vacation ? 'Y' : 'N').'|'.($date ? 'Y' : 'N'), 0);
 
         $association = [
             [0, 'Nein', 'Close', 0xFF0000],
@@ -149,7 +149,8 @@ class AlmanacModule extends IPSModule
      *
      * ALMANAC_GetDateInfo($id, $ts);
      *
-     * @param int    $ts Timestamp of the actuale date
+     * @param int $ts Timestamp of the actuale date
+     *
      * @return array all extracted infomation about the passed date
      */
     public function GetDateInfo(int $ts): array
@@ -170,7 +171,7 @@ class AlmanacModule extends IPSModule
 
         // get holiday data
         $year = date('Y', $ts);
-        $link = $url . '?land=' . $state . '&type=0&year=' . $year;
+        $link = $url.'?land='.$state.'&type=0&year='.$year;
         $data = ExtractDates($link);
 
         // working days
@@ -196,7 +197,7 @@ class AlmanacModule extends IPSModule
 
         // check holiday
         $holiday = 'Kein Feiertag';
-        $now = date('Ymd', $ts) . "\n";
+        $now = date('Ymd', $ts)."\n";
         foreach ($data as $entry) {
             if (($now >= $entry['start']) && ($now <= $entry['end'])) {
                 $holiday = $entry['name'];
@@ -210,13 +211,13 @@ class AlmanacModule extends IPSModule
         // check school holidays
         if ((int) date('md', $ts) < 110) {
             $year = date('Y', $ts) - 1;
-            $link = $url . '?land=' . $state . '&type=1&year=' . $year;
+            $link = $url.'?land='.$state.'&type=1&year='.$year;
             $data0 = ExtractDates($link);
         } else {
             $data0 = [];
         }
         $year = date('Y', $ts);
-        $link = $url . '?land=' . $state . '&type=1&year=' . $year;
+        $link = $url.'?land='.$state.'&type=1&year='.$year;
         $data1 = ExtractDates($link);
         $data = array_merge($data0, $data1);
         $vacation = 'Keine Ferien';
@@ -239,8 +240,10 @@ class AlmanacModule extends IPSModule
      *
      * @param string $Ident Ident of the boolean variable
      * @param bool   $value Value of the boolean variable
-     * @return array two-dimensional array, each date in one array
+     *
      * @throws Exception if calendar could not loaded.
+     *
+     * @return array two-dimensional array, each date in one array
      */
     private function ExtractDates(string $url): array
     {
@@ -268,6 +271,7 @@ class AlmanacModule extends IPSModule
                 $data[] = ['name' => $name, 'start' => $start, 'end' => $end];
             }
         }
+
         return $data;
     }
 
