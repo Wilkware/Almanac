@@ -40,6 +40,22 @@ Folgende Informationen werden ermittelt:
 
 All diese Information können auch über die Methode [ALMANAC_GetDateInfo](#7-php-befehlsreferenz) als Array abgeholt werden.
 
+Folgende Informationen stehen als key => value Paare zur Verfügung:
+
+Index                 | Typ     | Beschreibung
+--------------------- | ------- | ----------------
+IsSummer              | bool    | TRUE, wenn Sommerzeit ist
+IsLeapYear            | bool    | TRUE, wenn Schaltjahr ist
+IsWeekend             | bool    | TRUE, wenn Wochenende ist (SA, SO)
+WeekNumber            | int     | Kalenderwochennummer
+DaysInMonth           | int     | Anzahl Tage im Monat
+DayOfYear             | int     | Tag im Jahr (1-365)
+WorkingDays           | int     | Arbeitstage im Monat
+Holiday               | string  | Name des Feiertags, oder "Kein Feiertag"
+IsHoliday             | bool    | TRUE, wenn Feiertag ist
+SchoolHolidays        | string  | Name der Schulferien, oder "Keine Ferien"
+IsSchoolHolidays      | bool    | TRUE, wenn Schulferienzeit ist
+
 ### 2. Voraussetzungen
 
 * IP-Symcon ab Version 5.0
@@ -80,7 +96,7 @@ Ist Wochenende       | Boolean   | Ist gerade Wochenende?
 Kalenderwoche        | Integer   | Nummer der aktuelle Kalenderwoche
 Tag  im Jahr         | Integer   | Welcher Tag des Jahres?
 Tage im Monat        | Integer   | Wieviel Tage hat der aktuelle Monat?
-Arbeitstage im Monat | Integer   | Wieviel Arbeitstage hat derMonat des gewählten Bundeslandes?
+Arbeitstage im Monat | Integer   | Wieviel Arbeitstage hat der Monat des gewählten Bundeslandes?
 
 Folgende Profile werden angelegt:
 
