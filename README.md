@@ -1,10 +1,10 @@
+# Almanac (Jahreskalender)
+
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 [![Product](https://img.shields.io/badge/Symcon%20Version-5.0%20%3E-blue.svg)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-1.1.20190813-orange.svg)](https://github.com/Wilkware/IPSymconAlmanac)
+[![Version](https://img.shields.io/badge/Modul%20Version-2.0.20200416-orange.svg)](https://github.com/Wilkware/IPSymconAlmanac)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
-[![StyleCI](https://github.styleci.io/repos/115756492/shield?style=flat)](https://github.styleci.io/repos/115756492)
-
-# Almanac
+[![Actions](https://github.com/Wilkware/IPSymconAlmanac/workflows/Check%20Style/badge.svg)](https://github.com/Wilkware/IPSymconAlmanac/actions)
 
 Dieses Modul bietet Kalenderinformationen für Feiertage, Schulferien und andere Kalenderdaten.
 
@@ -24,10 +24,11 @@ Dieses Modul bietet Kalenderinformationen für Feiertage, Schulferien und andere
 Das Modul nutzt die von schulferien.eu (www.schulferien.eu) bereitgestellten Daten zur Anzeige der Feiertage und Schulferien
 für das gewählte Bundesland.  
 Darüber hinaus werden mittels der PHP Funktion "date" verschiedene Informationen für das aktuelle Datum ermittelt.
+In Kombination mit den ermittelten Feiertagen werden auch die Arbeitstage im aktuellen Monat bereitgestellt.
 
 Folgende Informationen werden ermittelt:
 
-* Sind Ferien und Welche
+* Sind Ferien und welche
 * Feiertag oder nicht und wie heißt er
 * Der Tag des Jahres
 * Anzahl Tage im Monat
@@ -36,6 +37,8 @@ Folgende Informationen werden ermittelt:
 * Sommerzeit oder nicht
 * Wochenende oder nicht
 * Nummer der Kalenderwoche
+
+All diese Information können auch über die Methode [ALMANAC_GetDateInfo](#7-php-befehlsreferenz) als Array abgeholt werden.
 
 ### 2. Voraussetzungen
 
@@ -77,6 +80,7 @@ Ist Wochenende       | Boolean   | Ist gerade Wochenende?
 Kalenderwoche        | Integer   | Nummer der aktuelle Kalenderwoche
 Tag  im Jahr         | Integer   | Welcher Tag des Jahres?
 Tage im Monat        | Integer   | Wieviel Tage hat der aktuelle Monat?
+Arbeitstage im Monat | Integer   | Wieviel Arbeitstage hat derMonat des gewählten Bundeslandes?
 
 Folgende Profile werden angelegt:
 
@@ -90,14 +94,41 @@ Man kann die Statusvariablen direkt im WF verlinken.
 
 ### 7. PHP-Befehlsreferenz
 
-`void ALMANAC_Update(int $InstanzID);`
-Holt entsprechend der Konfiguration die gewählten Daten.
+`ALMANAC_Update(int $InstanzID): void`  
+Holt entsprechend der Konfiguration die gewählten Daten.  
 Die Funktion liefert keinerlei Rückgabewert.
 
 Beispiel:
 `ALMANAC_Update(12345);`
 
+`ALMANAC_GetDateInfo(int $InstanzID, int $Timestamp): array`  
+Gibt für das übergebene Datum (Unix Timestamp) alle Informationen als assoziatives Array zurück.
+
+Beispiel:
+`ALMANAC_GetDateInfo(12345, strtotime('tomorrow'));`  
+/* liefert z.B.  
+array(11) {  
+  ["IsSummer"]=>  bool(true)  
+  ["IsLeapYear"]=>  bool(true)  
+  ["IsWeekend"]=>  bool(false)  
+  ["WeekNumber"]=>  int(16)  
+  ["DaysInMonth"]=>  int(30)  
+  ["DayOfYear"]=>  int(108)  
+  ["WorkingDays"]=>  int(20)  
+  ["Holiday"]=>  string(13) "Kein Feiertag"  
+  ["IsHoliday"]=>  bool(false)  
+  ["SchoolHolidays"]=>  string(11) "Osterferien"  
+  ["IsSchoolHolidays"]=>  bool(true)  
+}  
+*/  
+
 ### 8. Versionshistorie
+
+v2.0.20200416
+
+* _NEU_: Ermittlung der Arbeitstage im Monat
+* _NEU_: Funktion GetDateInfo für manuelles Ermitteln der Daten für ein bestimmtes Datum
+* _NEU_: Umstellung der Entwicklung auf Symcon StylePHP & Workflow actions
 
 v1.2.20190813
 
@@ -135,8 +166,9 @@ Vielen Dank für die hervorragende und tolle Arbeit!
 
 ## Spenden
 
-Die Software ist für die nicht kommzerielle Nutzung kostenlos, Schenkungen als Unterstützung für den Entwickler bitte hier:  
-<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8816166" target="_blank"><img src="https://www.paypalobjects.com/de_DE/DE/i/btn/btn_donate_LG.gif" border="0" /></a>
+Die Software ist für die nicht kommzerielle Nutzung kostenlos, Schenkungen als Unterstützung für den Entwickler bitte hier:
+
+[![License](https://img.shields.io/badge/Einfach%20spenden%20mit-PayPal-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8816166)
 
 ### Lizenz
 

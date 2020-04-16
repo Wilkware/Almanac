@@ -1,6 +1,8 @@
 <?php
 
-require_once __DIR__.'/../libs/traits.php';  // Allgemeine Funktionen
+declare(strict_types=1);
+
+require_once __DIR__ . '/../libs/traits.php';  // Allgemeine Funktionen
 
 class AlmanacModule extends IPSModule
 {
@@ -45,7 +47,7 @@ class AlmanacModule extends IPSModule
         $this->RegisterPropertyBoolean('UpdateVacation', true);
         $this->RegisterPropertyBoolean('UpdateDate', true);
         // Register daily update timer
-        $this->RegisterTimer('UpdateTimer', 0, 'ALMANAC_Update('.$this->InstanceID.');');
+        $this->RegisterTimer('UpdateTimer', 0, 'ALMANAC_Update(' . $this->InstanceID . ');');
     }
 
     /**
@@ -61,7 +63,7 @@ class AlmanacModule extends IPSModule
         $holiday = $this->ReadPropertyBoolean('UpdateHoliday');
         $vacation = $this->ReadPropertyBoolean('UpdateVacation');
         $date = $this->ReadPropertyBoolean('UpdateDate');
-        $this->SendDebug('ApplyChanges', 'federal state='.$state.' ('.static::$States[$state].'), url='.$url.', updates='.($holiday ? 'Y' : 'N').'|'.($vacation ? 'Y' : 'N').'|'.($date ? 'Y' : 'N'), 0);
+        $this->SendDebug('ApplyChanges', 'federal state=' . $state . ' (' . static::$States[$state] . '), url=' . $url . ', updates=' . ($holiday ? 'Y' : 'N') . '|' . ($vacation ? 'Y' : 'N') . '|' . ($date ? 'Y' : 'N'), 0);
 
         $association = [
             [0, 'Nein', 'Close', 0xFF0000],
@@ -69,23 +71,10 @@ class AlmanacModule extends IPSModule
         ];
         $this->RegisterProfile(vtBoolean, 'ALMANAC.Question', 'Bulb', '', '', 0, 0, 0, 0, $association);
 
-        /*
-        $association = [
-            [1, "Montag", "", 0x0000FF],
-            [2, "Dienstag", "", 0x0000FF],
-            [3, "Mittwoch", "", 0x0000FF],
-            [4, "Donnerstag", "", 0x0000FF],
-            [5, "Freitag", "", 0x0000FF],
-            [6, "Samstag", "", 0x0000FF],
-            [7, "Sonntag", "", 0x0000FF],
-        ];
-        $this->RegisterProfile(IPSVarType::vtBoolean, 'ALMANAC.Weekday', 'Calendar', '', '', 0, 0, 0, 0, $associations);
-        */
-
-        // Holiday(Ferien)
+        // Holiday (Feiertage)
         $this->MaintainVariable('IsHoliday', 'Ist Feiertag?', vtBoolean, 'ALMANAC.Question', 1, $holiday);
         $this->MaintainVariable('Holiday', 'Feiertag', vtString, '', 10, $holiday);
-        // Vacation(Urlaub)
+        // Vacation (Schulferien)
         $this->MaintainVariable('IsVacation', 'Ist Ferienzeit?', vtBoolean, 'ALMANAC.Question', 2, $vacation);
         $this->MaintainVariable('Vacation', 'Ferien', vtString, '', 20, $vacation);
         // Date
@@ -95,14 +84,197 @@ class AlmanacModule extends IPSModule
         $this->MaintainVariable('WeekNumber', 'Kalenderwoche', vtInteger, '', 30, $date);
         $this->MaintainVariable('DaysInMonth', 'Tage im Monat', vtInteger, '', 32, $date);
         $this->MaintainVariable('DayOfYear', 'Tag im Jahr', vtInteger, '', 33, $date);
+        // Working Days (Arbeitstage im Monat)
+        $this->MaintainVariable('WorkingDays', 'Arbeitstage im Monat', vtInteger, '', 40, $date);
         // Calculate next update interval
         $this->UpdateTimerInterval('UpdateTimer', 0, 0, 1);
     }
 
     /**
-     * Update a boolean value.
+     * This function will be available automatically after the module is imported with the module control.
+     * Using the custom prefix this function will be callable from PHP and JSON-RPC through:.
+     *
+     * ALMANAC_Update($id);
+     */
+    public function Update()
+    {
+        $holiday = $this->ReadPropertyBoolean('UpdateHoliday');
+        $vacation = $this->ReadPropertyBoolean('UpdateVacation');
+        $date = $this->ReadPropertyBoolean('UpdateDate');
+
+        if ($holiday || $vacation || $date) {
+            $data = $this->ExtractDates(time());
+        }
+
+        if ($holiday == true) {
+            try {
+                $this->SetValueString('Holiday', $data['Holiday']);
+                $this->SetValueBoolean('IsHoliday', $data['IsHoliday']);
+            } catch (Exception $exc) {
+                trigger_error($exc->getMessage(), $exc->getCode());
+                $this->SendDebug('ERROR HOLIDAY', $exc->getMessage(), 0);
+            }
+        }
+        if ($vacation == true) {
+            try {
+                $this->SetValueString('Vacation', $data['SchoolHolidays']);
+                $this->SetValueBoolean('IsVacation', $data['IsSchoolHolidays']);
+            } catch (Exception $exc) {
+                trigger_error($exc->getMessage(), $exc->getCode());
+                $this->SendDebug('ERROR VACATION', $exc->getMessage(), 0);
+            }
+        }
+        if ($date == true) {
+            try {
+                $this->SetValueBoolean('IsSummer', $date['IsSummer']);
+                $this->SetValueBoolean('IsLeapyear', $date['IsLeapYear']);
+                $this->SetValueBoolean('IsWeekend', $date['IsWeekend']);
+                $this->SetValueInteger('WeekNumber', $date['WeekNumber']);
+                $this->SetValueInteger('DaysInMonth', $date['DaysInMonth']);
+                $this->SetValueInteger('DayOfYear', $date['DayOfYear']);
+                $this->SetValueInteger('WorkingDays', $date['WorkingDays']);
+            } catch (Exception $exc) {
+                trigger_error($exc->getMessage(), $exc->getCode());
+                $this->SendDebug('ERROR DATE', $exc->getMessage(), 0);
+            }
+        }
+
+        // calculate next update interval
+        $this->UpdateTimerInterval('UpdateTimer', 0, 0, 1);
+    }
+
+    /**
+     * This function will be available automatically after the module is imported with the module control.
+     * Using the custom prefix this function will be callable from PHP and JSON-RPC through:.
+     *
+     * ALMANAC_GetDateInfo($id, $ts);
+     *
+     * @param int    $ts Timestamp of the actuale date
+     * @return array all extracted infomation about the passed date
+     */
+    public function GetDateInfo(int $ts): array
+    {
+        // Properties
+        $state = $this->ReadPropertyString('State');
+        $url = $this->ReadPropertyString('BaseURL');
+        // Output array
+        $date = [];
+
+        // simple date infos
+        $date['IsSummer'] = boolval(date('I', $ts));
+        $date['IsLeapYear'] = boolval(date('L', $ts));
+        $date['IsWeekend'] = boolval(date('N', $ts) > 5);
+        $date['WeekNumber'] = idate('W', $ts);
+        $date['DaysInMonth'] = idate('t', $ts);
+        $date['DayOfYear'] = idate('z', $ts) + 1;
+
+        // get holiday data
+        $year = date('Y', $ts);
+        $link = $url . '?land=' . $state . '&type=0&year=' . $year;
+        $data = ExtractDates($link);
+
+        // working days
+        $fdm = date('Ym01', $ts);
+        $ldm = date('Ymt', $ts);
+        $nwd = 0;
+        for ($day = $fdm; $day <= $ldm; $day++) {
+            // Minus Weekends
+            if (date('N', strtotime($day)) > 5) {
+                $nwd++;
+            }
+            // Minus Holidays
+            else {
+                foreach ($data as $entry) {
+                    if ($entry['start'] == $day) {
+                        $nwd++;
+                        break;
+                    }
+                }
+            }
+        }
+        $date['WorkingDays'] = $date['DaysInMonth'] - $nwd;
+
+        // check holiday
+        $holiday = 'Kein Feiertag';
+        $now = date('Ymd', $ts) . "\n";
+        foreach ($data as $entry) {
+            if (($now >= $entry['start']) && ($now <= $entry['end'])) {
+                $holiday = $entry['name'];
+                $this->SendDebug('FOUND', $holiday, 0);
+                break;
+            }
+        }
+        $date['Holiday'] = $holiday;
+        $date['IsHoliday'] = ($holiday == 'Kein Feiertag') ? false : true;
+
+        // check school holidays
+        if ((int) date('md', $ts) < 110) {
+            $year = date('Y', $ts) - 1;
+            $link = $url . '?land=' . $state . '&type=1&year=' . $year;
+            $data0 = ExtractDates($link);
+        } else {
+            $data0 = [];
+        }
+        $year = date('Y', $ts);
+        $link = $url . '?land=' . $state . '&type=1&year=' . $year;
+        $data1 = ExtractDates($link);
+        $data = array_merge($data0, $data1);
+        $vacation = 'Keine Ferien';
+        foreach ($data as $entry) {
+            if (($now >= $entry['start']) && ($now <= $entry['end'])) {
+                $vacation = explode(' ', $entry['name'])[0];
+                //$this->SendDebug('FOUND', $vacation, 0);
+                break;
+            }
+        }
+        $date['SchoolHolidays'] = $vacation;
+        $date['IsSchoolHolidays'] = ($vacation == 'Keine Ferien') ? false : true;
+
+        // return date info array
+        return $date;
+    }
+
+    /**
+     * Get and extract dates from iCal format.
      *
      * @param string $Ident Ident of the boolean variable
+     * @param bool   $value Value of the boolean variable
+     * @return array two-dimensional array, each date in one array
+     * @throws Exception if calendar could not loaded.
+     */
+    private function ExtractDates(string $url): array
+    {
+        // $this->SendDebug('GET', $link, 0);
+        // iCal URL als Array einlesen
+        $ics = @file($url);
+        // Fehlerbehandlung
+        if ($ics === false) {
+            throw new Exception('Cannot load iCal Data.', E_USER_NOTICE);
+        }
+        // Anzahl Zeilen
+        $count = (count($ics) - 1);
+        // daten
+        $data = [];
+        // loop through lines
+        for ($line = 0; $line < $count; $line++) {
+            if (strstr($ics[$line], 'SUMMARY:')) {
+                $name = trim(substr($ics[$line], 8));
+                $pos = strpos($name, '(Bankfeiertag)');
+                if ($pos > 0) {
+                    $name = substr($name, 0, $pos - 1);
+                }
+                $start = trim(substr($ics[$line + 1], 19));
+                $end = trim(substr($ics[$line + 2], 17));
+                $data[] = ['name' => $name, 'start' => $start, 'end' => $end];
+            }
+        }
+        return $data;
+    }
+
+    /**
+     * Update a boolean value.
+     *
+     * @param string $ident Ident of the boolean variable
      * @param bool   $value Value of the boolean variable
      */
     private function SetValueBoolean(string $ident, bool $value)
@@ -114,7 +286,7 @@ class AlmanacModule extends IPSModule
     /**
      * Update a string value.
      *
-     * @param string $Ident Ident of the boolean variable
+     * @param string $ident Ident of the boolean variable
      * @param string $value Value of the string variable
      */
     private function SetValueString(string $ident, string $value)
@@ -126,162 +298,12 @@ class AlmanacModule extends IPSModule
     /**
      * Update a integer value.
      *
-     * @param string $Ident Ident of the boolean variable
+     * @param string $ident Ident of the boolean variable
      * @param int    $value Value of the string variable
      */
     private function SetValueInteger(string $ident, int $value)
     {
         $id = $this->GetIDForIdent($ident);
         SetValueInteger($id, $value);
-    }
-
-    /**
-     * Gets the actual holiday calendar from  http://www.schulferien.eu and extract the current values.
-     * Pass the name of the current holiday or 'Kein Feiertag'.
-     *
-     * @throws Exception if calendar could not loaded.
-     */
-    private function SetHoliday($state, $url)
-    {
-        $year = date('Y');
-        $link = $url.'?land='.static::$States[$state].'&type=0&year='.$year;
-        $this->SendDebug('GET', $link, 0);
-        $message = @file($link);
-
-        if ($message === false) {
-            throw new Exception('Cannot load iCal Data.', E_USER_NOTICE);
-        }
-
-        $this->SendDebug('LINES', count($message), 0);
-        $holiday = 'Kein Feiertag';
-        $count = (count($message) - 1);
-
-        for ($line = 0; $line < $count; $line++) {
-            if (strstr($message[$line], 'SUMMARY:')) {
-                $name = trim(substr($message[$line], 8));
-                $start = trim(substr($message[$line + 1], 19));
-                $end = trim(substr($message[$line + 2], 17));
-                $this->SendDebug('MESSAGE', 'SUMMARY: '.$name.' ,START: '.$start.' ,END: '.$end, 0);
-                $now = date('Ymd')."\n";
-                if (($now >= $start) and ($now <= $end)) {
-                    $pos = strpos($name, '(Bankfeiertag)');
-                    if ($pos > 0) {
-                        $holiday = substr($name, 0, $pos - 1);
-                    } else {
-                        $holiday = $name;
-                    }
-                    $this->SendDebug('FOUND', $holiday, 0);
-                }
-            }
-        }
-
-        $this->SetValueString('Holiday', $holiday);
-        $this->SetValueBoolean('IsHoliday', ($holiday == 'Kein Feiertag') ? false : true);
-    }
-
-    /**
-     * Gets the actual vacation calendar from  http://www.schulferien.eu and extract the current values.
-     * Pass the name of the current vacation or 'Keine Ferien'.
-     *
-     * @throws Exception if calendar could not loaded.
-     */
-    private function SetVacation($state, $url)
-    {
-        if ((int) date('md') < 110) {
-            $year = date('Y') - 1;
-            $link = $url.'?land='.$state.'&type=1&year='.$year;
-            $this->SendDebug('GET', $link, 0);
-            $message0 = @file($link);
-            if ($message0 === false) {
-                throw new Exception('Cannot load iCal Data.', E_USER_NOTICE);
-            }
-            $this->SendDebug('LINES', count($message0), 0);
-        } else {
-            $message0 = [];
-        }
-
-        $year = date('Y');
-        $link = $url.'?land='.$state.'&type=1&year='.$year;
-        $this->SendDebug('GET', $link, 0);
-        $message1 = @file($link);
-
-        if ($message1 === false) {
-            throw new Exception('Cannot load iCal Data.', E_USER_NOTICE);
-        }
-        $this->SendDebug('LINES', count($message1), 0);
-
-        $message = array_merge($message0, $message1);
-
-        $vacation = 'Keine Ferien';
-        $count = (count($message) - 1);
-
-        for ($line = 0; $line < $count; $line++) {
-            if (strstr($message[$line], 'SUMMARY:')) {
-                $name = trim(substr($message[$line], 8));
-                $start = trim(substr($message[$line + 1], 19));
-                $end = trim(substr($message[$line + 2], 17));
-                $this->SendDebug('MESSAGE', 'SUMMARY: '.$name.' ,START: '.$start.' ,END: '.$end, 0);
-                $now = date('Ymd')."\n";
-                if (($now >= $start) and ($now <= $end)) {
-                    $vacation = explode(' ', $name)[0];
-                    $this->SendDebug('FOUND', $vacation, 0);
-                }
-            }
-        }
-
-        $this->SetValueString('Vacation', $vacation);
-        $this->SetValueBoolean('IsVacation', ($vacation == 'Keine Ferien') ? false : true);
-    }
-
-    /**
-     * Use the PHP-date function to extract some useful informations.
-     */
-    private function SetDate()
-    {
-        $this->SetValueBoolean('IsSummer', date('I'));
-        $this->SetValueBoolean('IsLeapyear', date('L'));
-        $this->SetValueBoolean('IsWeekend', date('N') > 5);
-
-        $this->SetValueInteger('WeekNumber', idate('W'));
-        $this->SetValueInteger('DaysInMonth', idate('t'));
-        $this->SetValueInteger('DayOfYear', idate('z') + 1);
-    }
-
-    /**
-     * This function will be available automatically after the module is imported with the module control.
-     * Using the custom prefix this function will be callable from PHP and JSON-RPC through:.
-     *
-     * ALMANAC_Update($id);
-     */
-    public function Update()
-    {
-        $state = $this->ReadPropertyString('State');
-        $url = $this->ReadPropertyString('BaseURL');
-        $holiday = $this->ReadPropertyBoolean('UpdateHoliday');
-        $vacation = $this->ReadPropertyBoolean('UpdateVacation');
-        $date = $this->ReadPropertyBoolean('UpdateDate');
-
-        if ($holiday == true) {
-            try {
-                $this->SetHoliday($state, $url);
-            } catch (Exception $exc) {
-                trigger_error($exc->getMessage(), $exc->getCode());
-                $this->SendDebug('ERROR HOLIDAY', $exc->getMessage(), 0);
-            }
-        }
-        if ($vacation == true) {
-            try {
-                $this->SetVacation($state, $url);
-            } catch (Exception $exc) {
-                trigger_error($exc->getMessage(), $exc->getCode());
-                $this->SendDebug('ERROR VACATION', $exc->getMessage(), 0);
-            }
-        }
-        if ($date == true) {
-            $this->SetDate();
-        }
-
-        // calculate next update interval
-        $this->UpdateTimerInterval('UpdateTimer', 0, 0, 1);
     }
 }
