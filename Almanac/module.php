@@ -250,7 +250,7 @@ class AlmanacModule extends IPSModule
      */
     private function ExtractDates(string $url): array
     {
-        $this->SendDebug('LINK: ', $link, 0);
+        $this->SendDebug('LINK: ', $url, 0);
         // read iCal URL as array
         $ics = @file($url);
         // error handling
