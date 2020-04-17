@@ -372,7 +372,7 @@ trait DebugHelper
      *
      * @param string $msg    Title of the debug message.
      * @param mixed  $data   Data output.
-     * @param int    $format Output format.
+     * @param int    $format Output format (0 = Text, 1 = Hex).
      */
     protected function SendDebug($msg, $data, $format = 0)
     {

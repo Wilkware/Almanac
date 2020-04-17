@@ -155,6 +155,7 @@ class AlmanacModule extends IPSModule
      */
     public function GetDateInfo(int $ts): array
     {
+        $this->SendDebug('DATE: ', date('d.m.Y', $ts));
         // Properties
         $state = $this->ReadPropertyString('State');
         $url = $this->ReadPropertyString('BaseURL');
@@ -167,7 +168,7 @@ class AlmanacModule extends IPSModule
         $date['IsWeekend'] = boolval(date('N', $ts) > 5);
         $date['WeekNumber'] = idate('W', $ts);
         $date['DaysInMonth'] = idate('t', $ts);
-        $date['DayOfYear'] = idate('z', $ts) + 1;
+        $date['DayOfYear'] = idate('z', $ts) + 1; // idate('z') is zero based
 
         // get holiday data
         $year = date('Y', $ts);
@@ -201,7 +202,7 @@ class AlmanacModule extends IPSModule
         foreach ($data as $entry) {
             if (($now >= $entry['start']) && ($now <= $entry['end'])) {
                 $holiday = $entry['name'];
-                $this->SendDebug('FOUND', $holiday, 0);
+                $this->SendDebug('HOLIDAY: ', $holiday, 0);
                 break;
             }
         }
@@ -224,13 +225,15 @@ class AlmanacModule extends IPSModule
         foreach ($data as $entry) {
             if (($now >= $entry['start']) && ($now <= $entry['end'])) {
                 $vacation = explode(' ', $entry['name'])[0];
-                $this->SendDebug('FOUND', $vacation, 0);
+                $this->SendDebug('VACATION: ', $vacation, 0);
                 break;
             }
         }
         $date['SchoolHolidays'] = $vacation;
         $date['IsSchoolHolidays'] = ($vacation == 'Keine Ferien') ? false : true;
 
+        // dump result
+        $this->SendDebug('DATA: ', $date, 0);
         // return date info array
         return $date;
     }
@@ -247,14 +250,14 @@ class AlmanacModule extends IPSModule
      */
     private function ExtractDates(string $url): array
     {
-        // $this->SendDebug('GET', $link, 0);
-        // iCal URL als Array einlesen
+        $this->SendDebug('LINK: ', $link, 0);
+        // read iCal URL as array
         $ics = @file($url);
-        // Fehlerbehandlung
+        // error handling
         if ($ics === false) {
             throw new Exception('Cannot load iCal Data.', E_USER_NOTICE);
         }
-        // Anzahl Zeilen
+        // number of lines
         $count = (count($ics) - 1);
         // daten
         $data = [];

@@ -46,10 +46,10 @@ Index                 | Typ     | Beschreibung
 --------------------- | ------- | ----------------
 IsSummer              | bool    | TRUE, wenn Sommerzeit ist
 IsLeapYear            | bool    | TRUE, wenn Schaltjahr ist
-IsWeekend             | bool    | TRUE, wenn Wochenende ist (SA, SO)
+IsWeekend             | bool    | TRUE, wenn Wochenende ist (SA-SO)
 WeekNumber            | int     | Kalenderwochennummer
 DaysInMonth           | int     | Anzahl Tage im Monat
-DayOfYear             | int     | Tag im Jahr (1-365)
+DayOfYear             | int     | Tag im Jahr (1-366)
 WorkingDays           | int     | Arbeitstage im Monat
 Holiday               | string  | Name des Feiertags, oder "Kein Feiertag"
 IsHoliday             | bool    | TRUE, wenn Feiertag ist
