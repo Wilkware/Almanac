@@ -1,10 +1,15 @@
 {
   "translations": {
     "de": {
-      "Public holidays and school holidays": "Feiertage und Schulferien",
+      "\nALMANAC (annual calendar)\n ": "\nALMANAC (Jahreskalender)\n ",
+      "This module provides calendar information for holidays, school vacations and other calendar dates.": "Dieses Modul bietet Kalenderinformationen für Feiertage, Schulferien und andere Kalenderdaten.",
+      "Country:": "Land:",
+      "Public holidays ...": "Feiertage ...",
       "State:": "Bundesland:",
-      "Base URL:": "Basis URL:",
-      "Advanced settings:": "Erweiterte Einstellungen:",
+      "Canton": "Kanton",
+      "School vacations ...": "Schulferien ...",
+      "Schools:": "Schulen:",
+      "Advanced settings ...": "Erweiterte Einstellungen ...",
       "Determine holiday!": "Feiertag ermitteln!",
       "Determine school vacations!": "Schulferien ermitteln!",
       "Get information about the current date!": "Informationen zum aktuellen Datum ermitteln!",

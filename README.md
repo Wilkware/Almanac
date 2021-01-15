@@ -1,8 +1,8 @@
 # Almanac (Jahreskalender)
 
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
-[![Product](https://img.shields.io/badge/Symcon%20Version-5.0%20%3E-blue.svg)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-2.0.20200416-orange.svg)](https://github.com/Wilkware/IPSymconAlmanac)
+[![Product](https://img.shields.io/badge/Symcon%20Version-5.2-blue.svg)](https://www.symcon.de/produkt/)
+[![Version](https://img.shields.io/badge/Modul%20Version-3.0.20210103-orange.svg)](https://github.com/Wilkware/IPSymconAlmanac)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Actions](https://github.com/Wilkware/IPSymconAlmanac/workflows/Check%20Style/badge.svg)](https://github.com/Wilkware/IPSymconAlmanac/actions)
 
@@ -21,8 +21,8 @@ Dieses Modul bietet Kalenderinformationen für Feiertage, Schulferien und andere
 
 ### 1. Funktionsumfang
 
-Das Modul nutzt die von schulferien.eu (www.schulferien.eu) bereitgestellten Daten zur Anzeige der Feiertage und Schulferien
-für das gewählte Bundesland.  
+Das Modul nutzt die von schulferien.org (www.schulferien.org) bereitgestellten ICS-Daten zur Anzeige der Feiertage und Schulferien
+für Deutschland, Österreich und die Schweiz.  
 Darüber hinaus werden mittels der PHP Funktion "date" verschiedene Informationen für das aktuelle Datum ermittelt.
 In Kombination mit den ermittelten Feiertagen werden auch die Arbeitstage im aktuellen Monat bereitgestellt.
 
@@ -38,7 +38,7 @@ Folgende Informationen werden ermittelt:
 * Wochenende oder nicht
 * Nummer der Kalenderwoche
 
-All diese Information können auch über die Methode [ALMANAC_GetDateInfo](#7-php-befehlsreferenz) als Array abgeholt werden.
+All diese Information können auch über die Methode [ALMANAC_DateInfo](#7-php-befehlsreferenz) als Array abgeholt werden.
 
 Folgende Informationen stehen als key => value Paare zur Verfügung:
 
@@ -56,11 +56,9 @@ IsHoliday             | bool    | TRUE, wenn Feiertag ist
 SchoolHolidays        | string  | Name der Schulferien, oder "Keine Ferien"
 IsSchoolHolidays      | bool    | TRUE, wenn Schulferienzeit ist
 
-__HINWEIS:__ Das Datum sollte nur maximal +/- 1 Jahr vom aktuellen Tag entfernt liegen.
-
 ### 2. Voraussetzungen
 
-* IP-Symcon ab Version 5.0
+* IP-Symcon ab Version 5.2
 
 ### 3. Installation
 
@@ -112,40 +110,51 @@ Man kann die Statusvariablen direkt im WF verlinken.
 
 ### 7. PHP-Befehlsreferenz
 
-`ALMANAC_Update(int $InstanzID): void`  
+```php
+void ALMANAC_Update(int $InstanzID):
+```
+
 Holt entsprechend der Konfiguration die gewählten Daten.  
 Die Funktion liefert keinerlei Rückgabewert.
 
-Beispiel:
-`ALMANAC_Update(12345);`
+__Beispiel__: `ALMANAC_Update(12345);`
 
-`ALMANAC_GetDateInfo(int $InstanzID, int $Timestamp): array`  
+```php
+array ALMANAC_DateInfo(int $InstanzID, int $Timestamp);
+```
+
 Gibt für das übergebene Datum (Unix Timestamp) alle Informationen als assoziatives Array zurück.
+__HINWEIS:__ Das Datum sollte nur maximal +/- 1 Jahr vom aktuellen Tag entfernt liegen.
 
-Beispiel:
-`ALMANAC_GetDateInfo(12345, strtotime('tomorrow'));`  
-/* liefert z.B.  
-array(11) {  
-  ["IsSummer"]=>  bool(true)  
-  ["IsLeapYear"]=>  bool(true)  
-  ["IsWeekend"]=>  bool(false)  
-  ["WeekNumber"]=>  int(16)  
-  ["DaysInMonth"]=>  int(30)  
-  ["DayOfYear"]=>  int(108)  
-  ["WorkingDays"]=>  int(20)  
-  ["Holiday"]=>  string(13) "Kein Feiertag"  
-  ["IsHoliday"]=>  bool(false)  
-  ["SchoolHolidays"]=>  string(11) "Osterferien"  
-  ["IsSchoolHolidays"]=>  bool(true)  
-}  
-*/  
+__Beispiel__: `ALMANAC_DateInfo(12345, strtotime('tomorrow'));`
+
+> array(11) {  
+> ["IsSummer"]=>  bool(true)  
+> ["IsLeapYear"]=>  bool(true)  
+> ["IsWeekend"]=>  bool(false)  
+> ["WeekNumber"]=>  int(16)  
+> ["DaysInMonth"]=>  int(30)  
+> ["DayOfYear"]=>  int(108)  
+> ["WorkingDays"]=>  int(20)  
+> ["Holiday"]=>  string(13) "Kein Feiertag"  
+> ["IsHoliday"]=>  bool(false)  
+> ["SchoolHolidays"]=>  string(11) "Osterferien"  
+> ["IsSchoolHolidays"]=>  bool(true)  
+> }
 
 ### 8. Versionshistorie
+
+v3.0.20210103
+
+* _NEU_: Ermittlung der Ferien und Feiertage für DE, AT und CH
+* _NEU_: Umstellung der Datenlieferung auf schulferien.org
+* _FIX_: Name des Feiertages nicht korrekt gespeichert
+* _FIX_: Vereinheitlichungen der Libs
 
 v2.0.20200416
 
 * _NEU_: Ermittlung der Arbeitstage im Monat
-* _NEU_: Funktion GetDateInfo für manuelles Ermitteln der Daten für ein bestimmtes Datum
+* _NEU_: Funktion DateInfo für manuelles Ermitteln der Daten für ein bestimmtes Datum
 * _NEU_: Umstellung der Entwicklung auf Symcon StylePHP & Workflow actions
 
 v1.2.20190813

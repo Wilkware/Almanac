@@ -2,36 +2,14 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../libs/traits.php';  // Allgemeine Funktionen
+require_once __DIR__ . '/../libs/traits.php';  // Generell funktions
 
+// CLASS AlmanacModule
 class AlmanacModule extends IPSModule
 {
     use ProfileHelper;
-    use TimerHelper;
+    use EventHelper;
     use DebugHelper;
-    /**
-     * Bundeslaender IDs/Kuerzel - Array.
-     *
-     * @var array Key ist die id, Value ist der Kuerzel
-     */
-    public static $States = [
-        '1'   => 'BY',  // Bayern
-        '2'   => 'BW',  // Baden-Württemberg
-        '3'   => 'NI',  // Niedersachsen
-        '4'   => 'BE',  // Berlin
-        '5'   => 'BB',  // Brandenburg
-        '6'   => 'HB',  // Bremen
-        '7'   => 'HH',  // Hamburg
-        '8'   => 'HE',  // Hessen
-        '9'   => 'MV',  // Mecklenburg-Vorpommern
-        '10'  => 'NW',  // Nordrhein-Westfalen
-        '11'  => 'RP',  // Rheinland-Pfalz
-        '12'  => 'SL',  // Saarland
-        '13'  => 'SN',  // Sachsen
-        '14'  => 'ST',  // Sachsen-Anhalt
-        '15'  => 'SH',  // Schleswig-Holstein
-        '16'  => 'TH',   // Thüringen
-    ];
 
     /**
      * Create.
@@ -40,14 +18,53 @@ class AlmanacModule extends IPSModule
     {
         //Never delete this line!
         parent::Create();
-
-        $this->RegisterPropertyString('State', '1');
-        $this->RegisterPropertyString('BaseURL', 'https://www.schulferien.eu/downloads/ical4.php');
+        // Public Holidays
+        $this->RegisterPropertyString('PublicCountry', 'de');
+        $this->RegisterPropertyString('PublicRegion', 'baden-wuerttemberg');
+        $this->RegisterAttributeString('PublicURL', 'https://www.schulferien.org/media/ical/deutschland/feiertage_REGION_YEAR.ics');
+        // School Vacation
+        $this->RegisterPropertyString('SchoolCountry', 'de');
+        $this->RegisterPropertyString('SchoolRegion', 'baden-wuerttemberg');
+        $this->RegisterPropertyString('SchoolName', 'alle-schulen');
+        $this->RegisterAttributeString('SchoolURL', 'https://www.schulferien.org/media/ical/deutschland/ferien_REGION_YEAR.ics');
+        // Advanced Settings
         $this->RegisterPropertyBoolean('UpdateHoliday', true);
         $this->RegisterPropertyBoolean('UpdateVacation', true);
         $this->RegisterPropertyBoolean('UpdateDate', true);
         // Register daily update timer
         $this->RegisterTimer('UpdateTimer', 0, 'ALMANAC_Update(' . $this->InstanceID . ');');
+    }
+
+    /**
+     * Configuration Form.
+     *
+     * @return JSON configuration string.
+     */
+    public function GetConfigurationForm()
+    {
+        // read setup
+        $publicCountry = $this->ReadPropertyString('PublicCountry');
+        $publicHoliday = $this->ReadPropertyString('PublicRegion');
+        // School Vacation
+        $schoolCountry = $this->ReadPropertyString('SchoolCountry');
+        $schoolRegion = $this->ReadPropertyString('SchoolRegion');
+        $schoolName = $this->ReadPropertyString('SchoolName');
+        // Debug output
+        $this->SendDebug('GetConfigurationForm', 'public country=' . $publicCountry . ', public holiday=' . $publicHoliday .
+                        ', school country=' . $schoolCountry . ', school vacation=' . $schoolRegion . ', school name=' . $schoolName, 0);
+        // Get Data
+        $data = json_decode(file_get_contents(__DIR__ . '/data.json'), true);
+        // Get Form
+        $form = json_decode(file_get_contents(__DIR__ . '/form.json'), true);
+        // Holiday Regions
+        $form['elements'][2]['items'][1]['options'] = $this->GetRegions($data[$publicCountry]);
+        // Vacation Regions
+        $form['elements'][3]['items'][1]['items'][0]['options'] = $this->GetRegions($data[$schoolCountry]);
+        // Schools
+        $form['elements'][3]['items'][1]['items'][1]['options'] = $this->GetSchool($data[$schoolCountry], $schoolRegion);
+        // Debug output
+        //$this->SendDebug('GetConfigurationForm', $form);
+        return json_encode($form);
     }
 
     /**
@@ -57,14 +74,21 @@ class AlmanacModule extends IPSModule
     {
         //Never delete this line!
         parent::ApplyChanges();
-
-        $state = $this->ReadPropertyString('State');
-        $url = $this->ReadPropertyString('BaseURL');
-        $holiday = $this->ReadPropertyBoolean('UpdateHoliday');
-        $vacation = $this->ReadPropertyBoolean('UpdateVacation');
-        $date = $this->ReadPropertyBoolean('UpdateDate');
-        $this->SendDebug('ApplyChanges', 'federal state=' . $state . ' (' . static::$States[$state] . '), url=' . $url . ', updates=' . ($holiday ? 'Y' : 'N') . '|' . ($vacation ? 'Y' : 'N') . '|' . ($date ? 'Y' : 'N'), 0);
-
+        // Public Holidays
+        $publicCountry = $this->ReadPropertyString('PublicCountry');
+        $publicRegion = $this->ReadPropertyString('PublicRegion');
+        // School Vacation
+        $schoolCountry = $this->ReadPropertyString('SchoolCountry');
+        $schoolRegion = $this->ReadPropertyString('SchoolRegion');
+        $schoolName = $this->ReadPropertyString('SchoolName');
+        // Settings
+        $isHoliday = $this->ReadPropertyBoolean('UpdateHoliday');
+        $isVacation = $this->ReadPropertyBoolean('UpdateVacation');
+        $isDate = $this->ReadPropertyBoolean('UpdateDate');
+        $this->SendDebug('ApplyChanges', 'public country=' . $publicCountry . ', public holiday=' . $publicRegion .
+                        ', school country=' . $schoolCountry . ', school vacation=' . $schoolRegion . ', school name=' . $schoolName .
+                        ', updates=' . ($isHoliday ? 'Y' : 'N') . '|' . ($isVacation ? 'Y' : 'N') . '|' . ($isDate ? 'Y' : 'N'), 0);
+        // Profile
         $association = [
             [0, 'Nein', 'Close', 0xFF0000],
             [1, 'Ja',   'Ok', 0x00FF00],
@@ -72,22 +96,41 @@ class AlmanacModule extends IPSModule
         $this->RegisterProfile(vtBoolean, 'ALMANAC.Question', 'Bulb', '', '', 0, 0, 0, 0, $association);
 
         // Holiday (Feiertage)
-        $this->MaintainVariable('IsHoliday', 'Ist Feiertag?', vtBoolean, 'ALMANAC.Question', 1, $holiday);
-        $this->MaintainVariable('Holiday', 'Feiertag', vtString, '', 10, $holiday);
+        $this->MaintainVariable('IsHoliday', 'Ist Feiertag?', vtBoolean, 'ALMANAC.Question', 1, $isHoliday);
+        $this->MaintainVariable('Holiday', 'Feiertag', vtString, '', 10, $isHoliday);
         // Vacation (Schulferien)
-        $this->MaintainVariable('IsVacation', 'Ist Ferienzeit?', vtBoolean, 'ALMANAC.Question', 2, $vacation);
-        $this->MaintainVariable('Vacation', 'Ferien', vtString, '', 20, $vacation);
+        $this->MaintainVariable('IsVacation', 'Ist Ferienzeit?', vtBoolean, 'ALMANAC.Question', 2, $isVacation);
+        $this->MaintainVariable('Vacation', 'Ferien', vtString, '', 20, $isVacation);
         // Date
-        $this->MaintainVariable('IsSummer', 'Ist Sommerzeit?', vtBoolean, 'ALMANAC.Question', 3, $date);
-        $this->MaintainVariable('IsLeapyear', 'Ist Schaltjahr?', vtBoolean, 'ALMANAC.Question', 4, $date);
-        $this->MaintainVariable('IsWeekend', 'Ist Wochenende?', vtBoolean, 'ALMANAC.Question', 5, $date);
-        $this->MaintainVariable('WeekNumber', 'Kalenderwoche', vtInteger, '', 30, $date);
-        $this->MaintainVariable('DaysInMonth', 'Tage im Monat', vtInteger, '', 32, $date);
-        $this->MaintainVariable('DayOfYear', 'Tag im Jahr', vtInteger, '', 33, $date);
+        $this->MaintainVariable('IsSummer', 'Ist Sommerzeit?', vtBoolean, 'ALMANAC.Question', 3, $isDate);
+        $this->MaintainVariable('IsLeapyear', 'Ist Schaltjahr?', vtBoolean, 'ALMANAC.Question', 4, $isDate);
+        $this->MaintainVariable('IsWeekend', 'Ist Wochenende?', vtBoolean, 'ALMANAC.Question', 5, $isDate);
+        $this->MaintainVariable('WeekNumber', 'Kalenderwoche', vtInteger, '', 30, $isDate);
+        $this->MaintainVariable('DaysInMonth', 'Tage im Monat', vtInteger, '', 32, $isDate);
+        $this->MaintainVariable('DayOfYear', 'Tag im Jahr', vtInteger, '', 33, $isDate);
         // Working Days (Arbeitstage im Monat)
-        $this->MaintainVariable('WorkingDays', 'Arbeitstage im Monat', vtInteger, '', 40, $date);
+        $this->MaintainVariable('WorkingDays', 'Arbeitstage im Monat', vtInteger, '', 40, $isDate);
         // Calculate next update interval
         $this->UpdateTimerInterval('UpdateTimer', 0, 0, 1);
+    }
+
+    public function RequestAction($ident, $value)
+    {
+        // Debug output
+        $this->SendDebug('RequestAction', $ident . ' => ' . $value);
+        // Ident == OnXxxxxYyyyy
+        switch ($ident) {
+            case 'OnPublicCountry':
+                $this->OnPublicCountry($value);
+            break;
+            case 'OnSchoolCountry':
+                $this->OnSchoolCountry($value);
+            break;
+            case 'OnSchoolRegion':
+                $this->OnSchoolRegion($value);
+            break;
+        }
+        return true;
     }
 
     /**
@@ -98,44 +141,44 @@ class AlmanacModule extends IPSModule
      */
     public function Update()
     {
-        $holiday = $this->ReadPropertyBoolean('UpdateHoliday');
-        $vacation = $this->ReadPropertyBoolean('UpdateVacation');
-        $date = $this->ReadPropertyBoolean('UpdateDate');
+        $isHoliday = $this->ReadPropertyBoolean('UpdateHoliday');
+        $isVacation = $this->ReadPropertyBoolean('UpdateVacation');
+        $isDate = $this->ReadPropertyBoolean('UpdateDate');
 
-        if ($holiday || $vacation || $date) {
-            $data = $this->GetDateInfo(time());
+        if ($isHoliday || $isVacation || $isDate) {
+            $date = $this->DateInfo(time());
         }
 
-        if ($holiday == true) {
+        if ($isHoliday == true) {
             try {
-                $this->SetValueString('Holiday', $data['Holiday']);
-                $this->SetValueBoolean('IsHoliday', $data['IsHoliday']);
-            } catch (Exception $exc) {
-                trigger_error($exc->getMessage(), $exc->getCode());
-                $this->SendDebug('ERROR HOLIDAY', $exc->getMessage(), 0);
+                $this->SetValueString('Holiday', $date['Holiday']);
+                $this->SetValueBoolean('IsHoliday', $date['IsHoliday']);
+            } catch (Exception $ex) {
+                trigger_error($ex->getMessage(), $ex->getCode());
+                $this->SendDebug('ERROR HOLIDAY', $ex->getMessage(), 0);
             }
         }
-        if ($vacation == true) {
+        if ($isVacation == true) {
             try {
-                $this->SetValueString('Vacation', $data['SchoolHolidays']);
-                $this->SetValueBoolean('IsVacation', $data['IsSchoolHolidays']);
+                $this->SetValueString('Vacation', $date['SchoolHolidays']);
+                $this->SetValueBoolean('IsVacation', $date['IsSchoolHolidays']);
             } catch (Exception $exc) {
-                trigger_error($exc->getMessage(), $exc->getCode());
-                $this->SendDebug('ERROR VACATION', $exc->getMessage(), 0);
+                trigger_error($exc->getMessage(), $ex->getCode());
+                $this->SendDebug('ERROR VACATION', $ex->getMessage(), 0);
             }
         }
-        if ($date == true) {
+        if ($isDate == true) {
             try {
-                $this->SetValueBoolean('IsSummer', $data['IsSummer']);
-                $this->SetValueBoolean('IsLeapyear', $data['IsLeapYear']);
-                $this->SetValueBoolean('IsWeekend', $data['IsWeekend']);
-                $this->SetValueInteger('WeekNumber', $data['WeekNumber']);
-                $this->SetValueInteger('DaysInMonth', $data['DaysInMonth']);
-                $this->SetValueInteger('DayOfYear', $data['DayOfYear']);
-                $this->SetValueInteger('WorkingDays', $data['WorkingDays']);
-            } catch (Exception $exc) {
-                trigger_error($exc->getMessage(), $exc->getCode());
-                $this->SendDebug('ERROR DATE', $exc->getMessage(), 0);
+                $this->SetValueBoolean('IsSummer', $date['IsSummer']);
+                $this->SetValueBoolean('IsLeapyear', $date['IsLeapYear']);
+                $this->SetValueBoolean('IsWeekend', $date['IsWeekend']);
+                $this->SetValueInteger('WeekNumber', $date['WeekNumber']);
+                $this->SetValueInteger('DaysInMonth', $date['DaysInMonth']);
+                $this->SetValueInteger('DayOfYear', $date['DayOfYear']);
+                $this->SetValueInteger('WorkingDays', $date['WorkingDays']);
+            } catch (Exception $ex) {
+                trigger_error($ex->getMessage(), $ex->getCode());
+                $this->SendDebug('ERROR DATE', $ex->getMessage(), 0);
             }
         }
 
@@ -147,18 +190,15 @@ class AlmanacModule extends IPSModule
      * This function will be available automatically after the module is imported with the module control.
      * Using the custom prefix this function will be callable from PHP and JSON-RPC through:.
      *
-     * ALMANAC_GetDateInfo($id, $ts);
+     * ALMANAC_DateInfo($id, $ts);
      *
      * @param int $ts Timestamp of the actuale date
      *
      * @return array all extracted infomation about the passed date
      */
-    public function GetDateInfo(int $ts): array
+    public function DateInfo(int $ts): array
     {
         $this->SendDebug('DATE: ', date('d.m.Y', $ts));
-        // Properties
-        $state = $this->ReadPropertyString('State');
-        $url = $this->ReadPropertyString('BaseURL');
         // Output array
         $date = [];
 
@@ -171,8 +211,12 @@ class AlmanacModule extends IPSModule
         $date['DayOfYear'] = idate('z', $ts) + 1; // idate('z') is zero based
 
         // get holiday data
+        $region = $this->ReadPropertyString('PublicRegion');
+        $url = $this->ReadAttributeString('PublicURL');
         $year = date('Y', $ts);
-        $link = $url . '?land=' . $state . '&type=0&year=' . $year;
+        // prepeare iCal-URL
+        $link = str_replace('REGION', $region, $url);
+        $link = str_replace('YEAR', $year, $link);
         $data = $this->ExtractDates($link);
 
         // working days
@@ -197,45 +241,114 @@ class AlmanacModule extends IPSModule
         $date['WorkingDays'] = $date['DaysInMonth'] - $nwd;
 
         // check holiday
-        $holiday = 'Kein Feiertag';
+        $isHoliday = 'Kein Feiertag';
         $now = date('Ymd', $ts) . "\n";
         foreach ($data as $entry) {
             if (($now >= $entry['start']) && ($now <= $entry['end'])) {
-                $holiday = $entry['name'];
-                $this->SendDebug('HOLIDAY: ', $holiday, 0);
+                $isHoliday = $entry['name'];
+                $this->SendDebug('HOLIDAY: ', $isHoliday, 0);
                 break;
             }
         }
-        $date['Holiday'] = $holiday;
-        $date['IsHoliday'] = ($holiday == 'Kein Feiertag') ? false : true;
+        $date['Holiday'] = $isHoliday;
+        $date['IsHoliday'] = ($isHoliday == 'Kein Feiertag') ? false : true;
 
-        // check school holidays
+        // get vication data
+        $region = $this->ReadPropertyString('SchoolRegion');
+        $school = $this->ReadPropertyString('SchoolName');
+        $url = $this->ReadAttributeString('SchoolURL');
+        // check vication
         if ((int) date('md', $ts) < 110) {
             $year = date('Y', $ts) - 1;
-            $link = $url . '?land=' . $state . '&type=1&year=' . $year;
+            $link = str_replace('REGION', $region, $url);
+            $link = str_replace('SCHOOL', $school, $link);
+            $link = str_replace('YEAR', $year, $link);
             $data0 = $this->ExtractDates($link);
         } else {
             $data0 = [];
         }
         $year = date('Y', $ts);
-        $link = $url . '?land=' . $state . '&type=1&year=' . $year;
+        $link = str_replace('REGION', $region, $url);
+        $link = str_replace('SCHOOL', $school, $link);
+        $link = str_replace('YEAR', $year, $link);
         $data1 = $this->ExtractDates($link);
         $data = array_merge($data0, $data1);
-        $vacation = 'Keine Ferien';
+        $isVacation = 'Keine Ferien';
         foreach ($data as $entry) {
             if (($now >= $entry['start']) && ($now <= $entry['end'])) {
-                $vacation = explode(' ', $entry['name'])[0];
-                $this->SendDebug('VACATION: ', $vacation, 0);
+                $isVacation = explode(' ', $entry['name'])[0];
+                $this->SendDebug('VACATION: ', $isVacation, 0);
                 break;
             }
         }
-        $date['SchoolHolidays'] = $vacation;
-        $date['IsSchoolHolidays'] = ($vacation == 'Keine Ferien') ? false : true;
+        $date['SchoolHolidays'] = $isVacation;
+        $date['IsSchoolHolidays'] = ($isVacation == 'Keine Ferien') ? false : true;
 
         // dump result
         $this->SendDebug('DATA: ', $date, 0);
         // return date info array
         return $date;
+    }
+
+    /**
+     * User has selected a new country.
+     *
+     * @param string $cid Country ID.
+     */
+    protected function OnPublicCountry($cid)
+    {
+        // Get Data
+        $data = json_decode(file_get_contents(__DIR__ . '/data.json'), true);
+
+        // URL
+        $this->WriteAttributeString('PublicURL', $data[$cid][0]['holiday']);
+        // Region Options
+        $this->UpdateFormField('PublicRegion', 'value', $data[$cid][0]['regions'][0]['ident']);
+        $this->UpdateFormField('PublicRegion', 'options', json_encode($this->GetRegions($data[$cid])));
+    }
+
+    /**
+     * User has selected a new country.
+     *
+     * @param string $cid Country ID.
+     */
+    protected function OnSchoolCountry($cid)
+    {
+        // Get Data
+        $data = json_decode(file_get_contents(__DIR__ . '/data.json'), true);
+
+        // URL
+        $this->WriteAttributeString('SchoolURL', $data[$cid][0]['vacation']);
+        // Region Options
+        $region = $data[$cid][0]['regions'][0]['ident'];
+        $this->SendDebug('DATA: ', $region, 0);
+        $this->UpdateFormField('SchoolRegion', 'value', $region);
+        $this->UpdateFormField('SchoolRegion', 'options', json_encode($this->GetRegions($data[$cid])));
+        // School Options
+        $this->UpdateFormField('SchoolName', 'value', $data[$cid][0]['regions'][0]['schools'][0]['ident']);
+        $this->UpdateFormField('SchoolName', 'options', json_encode($this->GetSchool($data[$cid], $region)));
+    }
+
+    /**
+     * User has selected a new school region.
+     *
+     * @param string $region region value.
+     */
+    protected function OnSchoolRegion($region)
+    {
+        // Get Data
+        $data = json_decode(file_get_contents(__DIR__ . '/data.json'), true);
+
+        // Sorry, find the country for the given region
+        foreach ($data as $cid => $countries) {
+            foreach ($countries[0]['regions'] as $rid => $regions) {
+                if ($regions['ident'] == $region) {
+                    // School Options
+                    $this->UpdateFormField('SchoolName', 'value', $data[$cid][0]['regions'][$rid]['schools'][0]['ident']);
+                    $this->UpdateFormField('SchoolName', 'options', json_encode($this->GetSchool($data[$cid], $region)));
+                }
+            }
+        }
     }
 
     /**
@@ -250,6 +363,7 @@ class AlmanacModule extends IPSModule
      */
     private function ExtractDates(string $url): array
     {
+        // Debug output
         $this->SendDebug('LINK: ', $url, 0);
         // read iCal URL as array
         $ics = @file($url);
@@ -279,6 +393,44 @@ class AlmanacModule extends IPSModule
     }
 
     /**
+     * Reads the public regions for a given country.
+     *
+     * @param string $country country data array.
+     * @return array Region options array.
+     */
+    private function GetRegions($country)
+    {
+        $options = [];
+        // Client List
+        foreach ($country[0]['regions'] as $rid => $regions) {
+            $options[] = ['caption' => $regions['name'], 'value'=> $regions['ident']];
+        }
+        return $options;
+    }
+
+    /**
+     * Reads the schools for a given region.
+     *
+     * @param string $country country data array.
+     * @param string $region region ident.
+     * @return array School options array.
+     */
+    private function GetSchool($country, $region)
+    {
+        $options = [];
+        // Client List
+        foreach ($country[0]['regions'] as $rid => $regions) {
+            if ($regions['ident'] == $region) {
+                foreach ($regions['schools'] as $sid => $schools) {
+                    $options[] = ['caption' => $schools['name'], 'value'=> $schools['ident']];
+                }
+                break;
+            }
+        }
+        return $options;
+    }
+
+    /**
      * Update a boolean value.
      *
      * @param string $ident Ident of the boolean variable
@@ -293,7 +445,7 @@ class AlmanacModule extends IPSModule
     /**
      * Update a string value.
      *
-     * @param string $ident Ident of the boolean variable
+     * @param string $ident Ident of the string variable
      * @param string $value Value of the string variable
      */
     private function SetValueString(string $ident, string $value)
@@ -305,8 +457,8 @@ class AlmanacModule extends IPSModule
     /**
      * Update a integer value.
      *
-     * @param string $ident Ident of the boolean variable
-     * @param int    $value Value of the string variable
+     * @param string $ident Ident of the integer variable
+     * @param int    $value Value of the integer variable
      */
     private function SetValueInteger(string $ident, int $value)
     {
