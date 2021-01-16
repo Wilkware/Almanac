@@ -2,7 +2,7 @@
 
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 [![Product](https://img.shields.io/badge/Symcon%20Version-5.2-blue.svg)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-3.0.20210103-orange.svg)](https://github.com/Wilkware/IPSymconAlmanac)
+[![Version](https://img.shields.io/badge/Modul%20Version-3.0.20210116-orange.svg)](https://github.com/Wilkware/IPSymconAlmanac)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Actions](https://github.com/Wilkware/IPSymconAlmanac/workflows/Check%20Style/badge.svg)](https://github.com/Wilkware/IPSymconAlmanac/actions)
 
@@ -120,7 +120,7 @@ Die Funktion liefert keinerlei Rückgabewert.
 __Beispiel__: `ALMANAC_Update(12345);`
 
 ```php
-array ALMANAC_DateInfo(int $InstanzID, int $Timestamp);
+string ALMANAC_DateInfo(int $InstanzID, int $Timestamp);
 ```
 
 Gibt für das übergebene Datum (Unix Timestamp) alle Informationen als assoziatives Array zurück.
@@ -128,21 +128,26 @@ __HINWEIS:__ Das Datum sollte nur maximal +/- 1 Jahr vom aktuellen Tag entfernt 
 
 __Beispiel__: `ALMANAC_DateInfo(12345, strtotime('tomorrow'));`
 
-> array(11) {  
-> ["IsSummer"]=>  bool(true)  
-> ["IsLeapYear"]=>  bool(true)  
-> ["IsWeekend"]=>  bool(false)  
-> ["WeekNumber"]=>  int(16)  
-> ["DaysInMonth"]=>  int(30)  
-> ["DayOfYear"]=>  int(108)  
-> ["WorkingDays"]=>  int(20)  
-> ["Holiday"]=>  string(13) "Kein Feiertag"  
-> ["IsHoliday"]=>  bool(false)  
-> ["SchoolHolidays"]=>  string(11) "Osterferien"  
-> ["IsSchoolHolidays"]=>  bool(true)  
-> }
+> {  
+> "IsSummer": true,  
+> "IsLeapYear": true,  
+> "IsWeekend": false,  
+> "WeekNumber": 16,  
+> "DaysInMonth": 30,  
+> "DayOfYear": 108,  
+> "WorkingDays": 20,  
+> "Holiday": "Kein Feiertag",  
+> "IsHoliday": false,  
+> "SchoolHolidays": "Osterferien",  
+> "IsSchoolHolidays": true  
+}  
 
 ### 8. Versionshistorie
+
+v3.1.20210116
+
+* _NEU_: Funktion DateInfo liefert die Daten jetzt im JSON-Format
+* _FIX_: Fehlerbehandlung komplett neu umgesetzt
 
 v3.0.20210103
 
@@ -181,7 +186,7 @@ v1.0.20171230
 
 ## Danksagung
 
-Dieses Modul basiert auf den Ideen und Modulen von ...
+Dieses Modul basiert auf der Idee und dem Modul von ...
 
 * _Nall-chan_ : Modul _Schulferien_ <https://github.com/Nall-chan/IPSSchoolHolidays>
 

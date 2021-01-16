@@ -13,7 +13,8 @@
       "Determine holiday!": "Feiertag ermitteln!",
       "Determine school vacations!": "Schulferien ermitteln!",
       "Get information about the current date!": "Informationen zum aktuellen Datum ermitteln!",
-      "Update": "Aktualisieren"
+      "Update": "Aktualisieren",
+      "Could not load iCal data!": "Konnte iCal Daten nicht laden!"
     }
   }
 }

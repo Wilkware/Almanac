@@ -146,7 +146,7 @@ class AlmanacModule extends IPSModule
         $isDate = $this->ReadPropertyBoolean('UpdateDate');
 
         if ($isHoliday || $isVacation || $isDate) {
-            $date = $this->DateInfo(time());
+            $date = json_decode($this->DateInfo(time()), true);
         }
 
         if ($isHoliday == true) {
@@ -154,7 +154,7 @@ class AlmanacModule extends IPSModule
                 $this->SetValueString('Holiday', $date['Holiday']);
                 $this->SetValueBoolean('IsHoliday', $date['IsHoliday']);
             } catch (Exception $ex) {
-                trigger_error($ex->getMessage(), $ex->getCode());
+                $this->LogMessage($ex->getMessage(), KL_ERROR);
                 $this->SendDebug('ERROR HOLIDAY', $ex->getMessage(), 0);
             }
         }
@@ -162,8 +162,8 @@ class AlmanacModule extends IPSModule
             try {
                 $this->SetValueString('Vacation', $date['SchoolHolidays']);
                 $this->SetValueBoolean('IsVacation', $date['IsSchoolHolidays']);
-            } catch (Exception $exc) {
-                trigger_error($exc->getMessage(), $ex->getCode());
+            } catch (Exception $ex) {
+                $this->LogMessage($ex->getMessage(), KL_ERROR);
                 $this->SendDebug('ERROR VACATION', $ex->getMessage(), 0);
             }
         }
@@ -177,7 +177,7 @@ class AlmanacModule extends IPSModule
                 $this->SetValueInteger('DayOfYear', $date['DayOfYear']);
                 $this->SetValueInteger('WorkingDays', $date['WorkingDays']);
             } catch (Exception $ex) {
-                trigger_error($ex->getMessage(), $ex->getCode());
+                $this->LogMessage($ex->getMessage(), KL_ERROR);
                 $this->SendDebug('ERROR DATE', $ex->getMessage(), 0);
             }
         }
@@ -194,9 +194,9 @@ class AlmanacModule extends IPSModule
      *
      * @param int $ts Timestamp of the actuale date
      *
-     * @return array all extracted infomation about the passed date
+     * @return string all extracted infomation about the passed date as json
      */
-    public function DateInfo(int $ts): array
+    public function DateInfo(int $ts): string
     {
         $this->SendDebug('DATE: ', date('d.m.Y', $ts));
         // Output array
@@ -252,7 +252,11 @@ class AlmanacModule extends IPSModule
         }
         $date['Holiday'] = $isHoliday;
         $date['IsHoliday'] = ($isHoliday == 'Kein Feiertag') ? false : true;
-
+        // no data, no info
+        if (empty($data)) {
+            $date['Holiday'] = 'Feiertag nicht ermittelbar';
+            $date['IsHoliday'] = false;
+        }
         // get vication data
         $region = $this->ReadPropertyString('SchoolRegion');
         $school = $this->ReadPropertyString('SchoolName');
@@ -283,11 +287,15 @@ class AlmanacModule extends IPSModule
         }
         $date['SchoolHolidays'] = $isVacation;
         $date['IsSchoolHolidays'] = ($isVacation == 'Keine Ferien') ? false : true;
-
+        // no data, no info
+        if (empty($data)) {
+            $date['SchoolHolidays'] = 'Ferien nicht ermittelbar';
+            $date['IsSchoolHolidays'] = false;
+        }
         // dump result
         $this->SendDebug('DATA: ', $date, 0);
-        // return date info array
-        return $date;
+        // return date info as json
+        return json_encode($date);
     }
 
     /**
@@ -357,8 +365,6 @@ class AlmanacModule extends IPSModule
      * @param string $Ident Ident of the boolean variable
      * @param bool   $value Value of the boolean variable
      *
-     * @throws Exception if calendar could not loaded.
-     *
      * @return array two-dimensional array, each date in one array
      */
     private function ExtractDates(string $url): array
@@ -369,7 +375,9 @@ class AlmanacModule extends IPSModule
         $ics = @file($url);
         // error handling
         if ($ics === false) {
-            throw new Exception('Cannot load iCal Data.', E_USER_NOTICE);
+            $this->LogMessage($this->Translate('Could not load iCal data!'), KL_ERROR);
+            $this->SendDebug('ExtractDates', 'ERROR LOAD  DATA', 0);
+            return [];
         }
         // number of lines
         $count = (count($ics) - 1);
