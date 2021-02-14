@@ -1,7 +1,6 @@
 {
   "de": [
-    { "holiday": "https://www.schulferien.org/media/ical/deutschland/feiertage_REGION_YEAR.ics", 
-      "vacation": "https://www.schulferien.org/media/ical/deutschland/ferien_REGION_YEAR.ics", 
+    { "country": "Germany",
       "part": "State",
       "regions" : [
         {"name": "Baden-Württemberg", "ident": "baden-wuerttemberg", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
@@ -24,8 +23,7 @@
     }
   ],
   "at": [
-    { "holiday": "https://www.schulferien.org/media/ical/oesterreich/feiertage_REGION_YEAR.ics", 
-      "vacation": "https://www.schulferien.org/media/ical/oesterreich/ferien_REGION_YEAR.ics", 
+    { "country": "Austria", 
       "part": "State",
       "regions" : [
         {"name": "Burgenland", "ident": "burgenland", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
@@ -41,8 +39,7 @@
     }
   ],
   "ch": [
-    { "holiday": "https://www.schulferien.org/media/ical/schweiz/feiertage_REGION_YEAR.ics", 
-      "vacation": "https://www.schulferien.org/media/ical/schweiz/ferien_REGION_SCHOOL_YEAR.ics", 
+    { "country": "Swizerland", 
       "part": "Canton",
       "regions" : [
         {"name": "Aargau", "ident" : "aargau", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
@@ -52,9 +49,9 @@
         {"name": "Basel-Stadt", "ident" : "basel-stadt", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
         {"name": "Bern", "ident" : "bern", "schools": [{"name": "kant. Ferienordnung BE-d", "ident": "kant-ferienordnung-be-d"}, {"name": "kant. Ferienordnung BE-f", "ident": "kant-ferienordnung-be-f"}, {"name": "Burgdorf alle Schulen", "ident": "burgdorf-alle-schulen"},{"name": "Stadt Bern Volksschule", "ident": "stadt-bern-volksschule"}, {"name": "Stadt Biel alle", "ident": "stadt-biel-alle"}, {"name": "Thun Volksschule", "ident": "thun-volksschule"}] },
         {"name": "Freiburg", "ident" : "freiburg", "schools": [{"name": "Ecoles primaires (ville)", "ident": "ecoles-primaires-ville"}, {"name": "Ecoles sec. II", "ident": "ecoles-sec-ii"}] },
-        {"name": "Genf", "ident" : "genf", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
+        {"name": "Genf", "ident" : "genf", "schools": [{"name": "Toutes les écoles", "ident": "toutes-les-coles"}] },
         {"name": "Glarus", "ident" : "glarus", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Graubünden", "ident" : "graubünden", "schools": [{"name": "Bündner Kantonsschule", "ident": "buendner-kantonsschule"}, {"name": "Davos SAM", "ident": "davos-sam"}, {"name": "Davos Volksschule", "ident": "davos-volksschule"},{"name": "Chur Volksschule", "ident": "chur-volksschule"}, {"name": "Chur Maturitätsschule", "ident": "chur-maturitaetsschule"}] },
+        {"name": "Graubünden", "ident" : "graubuenden", "schools": [{"name": "Bündner Kantonsschule", "ident": "buendner-kantonsschule"}, {"name": "Davos SAM", "ident": "davos-sam"}, {"name": "Davos Volksschule", "ident": "davos-volksschule"},{"name": "Chur Volksschule", "ident": "chur-volksschule"}, {"name": "Chur Maturitätsschule", "ident": "chur-maturitaetsschule"}] },
         {"name": "Jura", "ident" : "jura", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
         {"name": "Luzern", "ident" : "luzern", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
         {"name": "Neuenburg", "ident" : "neuenburg", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
@@ -70,7 +67,7 @@
         {"name": "Waadt", "ident" : "waadt", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
         {"name": "Wallis", "ident" : "wallis", "schools": [{"name": "Oberwallis", "ident": "oberwallis"}, {"name": "Romand", "ident": "romand"}] },
         {"name": "Zug", "ident" : "zug", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Zürich", "ident" : "zürich", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] }
+        {"name": "Zürich", "ident" : "zuerich", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] }
       ]
     }
   ]

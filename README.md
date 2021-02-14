@@ -2,11 +2,13 @@
 
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 [![Product](https://img.shields.io/badge/Symcon%20Version-5.2-blue.svg)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-3.1.20210116-orange.svg)](https://github.com/Wilkware/IPSymconAlmanac)
+[![Version](https://img.shields.io/badge/Modul%20Version-4.0.20210214-orange.svg)](https://github.com/Wilkware/IPSymconAlmanac)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Actions](https://github.com/Wilkware/IPSymconAlmanac/workflows/Check%20Style/badge.svg)](https://github.com/Wilkware/IPSymconAlmanac/actions)
 
-Dieses Modul bietet Kalenderinformationen für Feiertage, Schulferien und andere Kalenderdaten.
+Dieses Modul bietet jährliche Kalenderinformationen wie Feiertage, Schulferien und Festtage.  
+Außerdem werden Informationen wie Arbeitstage im Monat, Schaltjahr, Jahreszeit oder ob Wochenende aktuell gehalten.
+Darüber hinaus kann man Geburtstage, Hochzeitstage und Todestage verwalten und sich täglich informieren lassen.
 
 ## Inhaltverzeichnis
 
@@ -21,9 +23,12 @@ Dieses Modul bietet Kalenderinformationen für Feiertage, Schulferien und andere
 
 ### 1. Funktionsumfang
 
-Das Modul nutzt die von schulferien.org (www.schulferien.org) bereitgestellten ICS-Daten zur Anzeige der Feiertage und Schulferien
-für Deutschland, Österreich und die Schweiz.  
-Darüber hinaus werden mittels der PHP Funktion "date" verschiedene Informationen für das aktuelle Datum ermittelt.
+Das Modul nutzt eine eigens entwickelte JSON-API (CDN basierend) um die Daten für Feiertage und Schulferien
+in Deutschland, Österreich und der Schweiz bereitzustellen.  
+Derzeit unterstützt das Modul auch eine Vielzahl verschiedenster religöser und weltlicher Festtage (z.B. Valentinstag oder Kindertag).  
+Als Gedächtnisstütze können die jährlichen Geburtstage, Hochzeitstage aber auch Todestage verwaltet werden und man
+kann sich täglich informieren lassen ob ein Termin ansteht (Meldungsverwaltung oder via Webfront-Notification).  
+Darüber hinaus werden mittels der PHP Funktion "date" verschiedene Informationen für das aktuelle Datum ermittelt.  
 In Kombination mit den ermittelten Feiertagen werden auch die Arbeitstage im aktuellen Monat bereitgestellt.
 
 Folgende Informationen werden ermittelt:
@@ -37,6 +42,7 @@ Folgende Informationen werden ermittelt:
 * Sommerzeit oder nicht
 * Wochenende oder nicht
 * Nummer der Kalenderwoche
+* Jahreszeit (Frühling, Sommer, Herbst und Winter)
 
 All diese Information können auch über die Methode [ALMANAC_DateInfo](#7-php-befehlsreferenz) als Array abgeholt werden.
 
@@ -50,11 +56,14 @@ IsWeekend             | bool    | TRUE, wenn Wochenende ist (SA-SO)
 WeekNumber            | int     | Kalenderwochennummer
 DaysInMonth           | int     | Anzahl Tage im Monat
 DayOfYear             | int     | Tag im Jahr (1-366)
+Season                | string  | "Frühling", "Sommer", "Herbst" oder "Winter"
+Festive               | string  | Name des Festtags, oder "Kein Festtag"
+IsFestive             | bool    | TRUE, wenn Festtag ist
 WorkingDays           | int     | Arbeitstage im Monat
 Holiday               | string  | Name des Feiertags, oder "Kein Feiertag"
 IsHoliday             | bool    | TRUE, wenn Feiertag ist
-SchoolHolidays        | string  | Name der Schulferien, oder "Keine Ferien"
-IsSchoolHolidays      | bool    | TRUE, wenn Schulferienzeit ist
+Vacation              | string  | Name der Schulferien, oder "Keine Ferien"
+IsVacation            | bool    | TRUE, wenn Schulferienzeit ist
 
 ### 2. Voraussetzungen
 
@@ -68,17 +77,91 @@ IsSchoolHolidays      | bool    | TRUE, wenn Schulferienzeit ist
 
 ### 4. Einrichten der Instanzen in IP-Symcon
 
-* Unter "Instanz hinzufügen" ist das 'Almanac'-Modul (Alias: Kalender, Schulferien, Feiertage) unter dem Hersteller '(Sonstige)' aufgeführt.
+* Unter "Instanz hinzufügen" ist das 'Almanac'-Modul (Alias: Jahreskalender, Almanach) unter dem Hersteller '(Sonstige)' aufgeführt.
 
 __Konfigurationsseite__:
 
+Einstellungsbereich:
+
+> Feiertage ...
+
 Name               | Beschreibung
 ------------------ | ---------------------------------
-Bundesland         | Auswahl des Bundesland für welchen man die Feiertage und Schulferien ermittelt haben möchte.
-Basis URL          | Url zum Dienstanbieter für Feiertage und Schulferien, derzeit <https://www.schulferien.eu/downloads/ical4.php>
-Feiertage          | Status, ob Ermittlung der Feiertage erwünscht ist.
-Schulferien        | Status, ob Ermittlung der Schulferien erwünscht ist.
-Datumsfunktion     | Status, ob Informationen zum aktuellen Datum erwünscht sind.
+Land               | Auswahl des Landes (Deutschland, Österreich und Schweiz).
+Bundesland         | Auswahl des Bundeslandes/Karton für welchen man die Feiertage ermittelt haben möchte.
+
+> Schulferien ...
+
+Name               | Beschreibung
+------------------ | ---------------------------------
+Land               | Auswahl des Landes (Deutschland, Österreich und Schweiz).
+Bundesland         | Auswahl des Bundeslandes/Karton für welchen man die Schulferien ermittelt haben möchte.
+Schulen            | Derzeit nur für die Schweiz entscheidend, Auswahl der gewünschten Schule im Kanton.
+
+> Geburtstage ...
+
+Name                          | Beschreibung
+----------------------------- | ---------------------------------
+Termine                       | Eingabe des Geburtstermins (Tag.Monat.Jahr) und den dazugehörigen Namen
+Nachricht ans Webfront senden | Auswahl ob Push-Nachricht gesendet werden soll oder nicht (Ja/Nein)
+Nachricht Sendezeit           | Uhrzeit wann täglich die Nachricht gesendet weden soll
+Meldung an Anzeige senden     | Auswahl ob Eintrag in die Meldungsverwaltung erfolgen soll oder nicht (Ja/Nein)
+Lebensdauer der Nachricht     | Wie lange so die Meldung angezeigt werden?
+Format der Textmitteilung     | Frei wählbares Format der zu sendenden Nachricht/Meldung
+
+> Hochzeitstage ...
+
+Name                          | Beschreibung
+----------------------------- | ---------------------------------
+Termine                       | Eingabe Heiratstermins (Tag.Monat.Jahr) und den dazugehörigen Namen
+Nachricht ans Webfront senden | Auswahl ob Push-Nachricht gesendet werden soll oder nicht (Ja/Nein)
+Nachricht Sendezeit           | Uhrzeit wann täglich die Nachricht gesendet weden soll
+Meldung an Anzeige senden     | Auswahl ob Eintrag in die Meldungsverwaltung erfolgen soll oder nicht (Ja/Nein)
+Lebensdauer der Nachricht     | Wie lange so die Meldung angezeigt werden?
+Format der Textmitteilung     | Frei wählbares Format der zu sendenden Nachricht/Meldung
+
+> Todestage ...
+
+Name                          | Beschreibung
+----------------------------- | ---------------------------------
+Termine                       | Eingabe Sterbetag (Tag.Monat.Jahr) und den dazugehörigen Namen
+Nachricht ans Webfront senden | Auswahl ob Push-Nachricht gesendet werden soll oder nicht (Ja/Nein)
+Nachricht Sendezeit           | Uhrzeit wann täglich die Nachricht gesendet weden soll
+Meldung an Anzeige senden     | Auswahl ob Eintrag in die Meldungsverwaltung erfolgen soll oder nicht (Ja/Nein)
+Lebensdauer der Nachricht     | Wie lange so die Meldung angezeigt werden?
+Format der Textmitteilung     | Frei wählbares Format der zu sendenden Nachricht/Meldung
+
+> Erweiterte Einstellungen ...
+
+Name                                      | Beschreibung
+----------------------------------------- | ---------------------------------
+Feirtage ermitteln                        | Status, ob Ermittlung der Feiertage erwünscht ist
+Schulferien ermitteln                     | Status, ob Ermittlung der Schulferien erwünscht ist
+Festtage ermitteln                        | Status, ob Ermittlung der Festtage erwünscht ist
+Geburtstage ermitteln                     | Status, ob Geburtstage ausgewertet werden sollen
+Hochzeitstage ermitteln                   | Status, ob Hochzeitstage ausgewertet werden sollen
+Todestage ermitteln                       | Status, ob Todesstage ausgewertet werden sollen
+Information zum aktuellen Datum ermitteln | Status, ob Informationen zum aktuellen Datum erwünscht sind.
+Webfront Instanz                          | ID des Webfronts, an welches die Push-Nachrichten für Geburts-, Hochzeits- und Todestage gesendet werden soll
+Meldsungsscript                           | Skript ID des Meldungsverwaltungsscripts, weiterführende Infos im Forum: [Meldungsanzeige im Webfront](https://community.symcon.de/t/meldungsanzeige-im-webfront/23473)
+
+Aktionsbereich:
+
+> Import & Export von ...
+
+Aktion         | Beschreibung
+-------------- | ------------------------------------------------------------
+GEBURTSTAGE    | Öffnet Popup für die Möglichkeit zum Import/Export der Geburtstagsliste als CSV Datei (geburtstage.csv)
+HOCHZEITSTAGE  | Öffnet Popup für die Möglichkeit zum Import/Export der Hochzeitsliste als CSV Datei (hochzeitstage.csv)
+TODESTAGE      | Öffnet Popup für die Möglichkeit zum Import/Export der Sterbeliste als CSV Datei (todestage.csv)
+
+_Hinweis:_ CSV-Format ist Termin, Name => 1.1.1970,"Herr Max Mustermann"
+
+> Tagesdaten ...
+
+Aktion         | Beschreibung
+-------------- | ------------------------------------------------------------
+AKTUALISIEREN  | Ermittelt für das aktuelle Datum alle Informationen (Update)
 
 ### 5. Statusvariablen und Profile
 
@@ -86,17 +169,20 @@ Die Statusvariablen werden automatisch angelegt. Das Löschen einzelner kann zu 
 
 Name                 | Typ       | Beschreibung
 -------------------- | --------- | ----------------
-Feiertag             | String    | Name des Feriertages oder 'kein Feiertag'
-Ist Feiertag         | Boolean   | Ist aktueller Tag ein Feiertag?
-Ferien               | String    | Name der Schulferien oder 'keine Ferien'
-Ist Ferienzeit       | Boolean   | Fällt aktueller Tag in die Ferien?
-Ist Schaltjahr       | Boolean   | Ist aktueller Jahr ein Schaltjahr?
-Ist Sommerzeit       | Boolean   | Ist aktuell Sommerzeit aktiv?
-Ist Wochenende       | Boolean   | Ist gerade Wochenende?
+Ist Feiertag?        | Boolean   | Ist aktueller Tag ein Feiertag?
+Ist Ferienzeit?      | Boolean   | Fällt aktueller Tag in die Ferien?
+Ist Sommerzeit?      | Boolean   | Ist aktuell Sommerzeit aktiv?
+Ist Schaltjahr?      | Boolean   | Ist aktueller Jahr ein Schaltjahr?
+Ist Wochenende?      | Boolean   | Ist gerade Wochenende?
+Ist Festtag?         | Boolean   | Ist aktueller Tag ein Festtag?
+Feiertag             | String    | Name des Feriertages oder 'Kein Feiertag'
+Ferien               | String    | Name der Schulferien oder 'Keine Ferien'
+Festtag              | String    | Name des Festtages oder 'Kein Festtag'
 Kalenderwoche        | Integer   | Nummer der aktuelle Kalenderwoche
-Tag  im Jahr         | Integer   | Welcher Tag des Jahres?
 Tage im Monat        | Integer   | Wieviel Tage hat der aktuelle Monat?
+Tag im Jahr          | Integer   | Welcher Tag des Jahres?
 Arbeitstage im Monat | Integer   | Wieviel Arbeitstage hat der Monat des gewählten Bundeslandes?
+Jahreszeit           | String    | "Frühling", "Sommer", "Herbst" oder "Winter"
 
 Folgende Profile werden angelegt:
 
@@ -126,23 +212,42 @@ string ALMANAC_DateInfo(int $InstanzID, int $Timestamp);
 Gibt für das übergebene Datum (Unix Timestamp) alle Informationen als assoziatives Array zurück.
 __HINWEIS:__ Das Datum sollte nur maximal +/- 1 Jahr vom aktuellen Tag entfernt liegen.
 
-__Beispiel__: `ALMANAC_DateInfo(12345, strtotime('tomorrow'));`
+__Beispiel__: `ALMANAC_DateInfo(12345, time());`
 
 > {  
-> "IsSummer": true,  
-> "IsLeapYear": true,  
-> "IsWeekend": false,  
-> "WeekNumber": 16,  
-> "DaysInMonth": 30,  
-> "DayOfYear": 108,  
+> "IsSummer": false,  
+> "IsLeapYear": false,  
+> "IsWeekend": true,  
+> "WeekNumber": 6,  
+> "DaysInMonth": 28,  
+> "DayOfYear": 45,  
+> "Season": "Winter",  
+> "Festive": "Valentinstag",  
+> "IsFestive": true,  
 > "WorkingDays": 20,  
 > "Holiday": "Kein Feiertag",  
 > "IsHoliday": false,  
-> "SchoolHolidays": "Osterferien",  
-> "IsSchoolHolidays": true  
+> "Vacation": "Keine Ferien",  
+> "IsVacation": false  
 }  
 
 ### 8. Versionshistorie
+
+v4.0.20210214
+
+* _NEU_: Eigener Webservice (JSON-API) für Ferien und Feiertage in DE, AT und CH (aktuell 2015 - 2022)
+* _NEU_: Ermittung von verschiedensten religösen und weltlichen Festtagen
+* _NEU_: Ermittlung der aktuellen Jahreszeit ("Frühling", "Sommer", "Herbst" oder "Winter")
+* _NEU_: Verwaltung und Meldung von Geburtstagen (Liste)
+* _NEU_: Verwaltung und Meldung von Hochzeitstagen (Liste)
+* _NEU_: Verwaltung und Meldung von Todesstagen (Liste)
+* _NEU_: Import & Export Funktionalität für Geburts-, Hochzeits- und Todestage
+* _FIX_: Struktur DateInfo erweitert und Teile umbenannt
+* _FIX_: Modul Aliase auf Jahreskalender und Almanach geändert
+
+v3.2.20210126
+
+* _FIX_: Quickfix wegen Sicherheitscheck bei Datenabholung
 
 v3.1.20210116
 
@@ -186,9 +291,12 @@ v1.0.20171230
 
 ## Danksagung
 
-Dieses Modul basiert auf der Idee und dem Modul von ...
+Ich möchte mich für die Unterstützung bei der Entwicklung dieses Moduls bedanken bei  ...
 
-* _Nall-chan_ : Modul _Schulferien_ <https://github.com/Nall-chan/IPSSchoolHolidays>
+* _KaiS_ : für den regen Austausch bei der allgemeinen Modulentwicklung
+* _Nall-chan_ : für die initial Idee mit dem Modul _Schulferien_ <https://github.com/Nall-chan/IPSSchoolHolidays>
+* _Nairda_ : für das Testen der Daten in der Schweiz
+* _tomgr_ : für das Testen und Melden von Bugs
 
 Vielen Dank für die hervorragende und tolle Arbeit!
 
