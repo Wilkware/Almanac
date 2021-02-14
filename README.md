@@ -291,12 +291,12 @@ v1.0.20171230
 
 ## Danksagung
 
-Ich möchte mich für die Unterstützung bei der Entwicklung dieses Moduls bedanken bei  ...
+Ich möchte mich für die Unterstützung bei der Entwicklung dieses Moduls bedanken bei ...
 
 * _KaiS_ : für den regen Austausch bei der allgemeinen Modulentwicklung
-* _Nall-chan_ : für die initial Idee mit dem Modul _Schulferien_ <https://github.com/Nall-chan/IPSSchoolHolidays>
+* _Nall-chan_ : für die initial Idee mit dem Modul [_Schulferien_](https://github.com/Nall-chan/IPSSchoolHolidays)
 * _Nairda_ : für das Testen der Daten in der Schweiz
-* _tomgr_ : für das Testen und Melden von Bugs
+* _tomgr_ : für das generelle Testen und Melden von Bugs
 
 Vielen Dank für die hervorragende und tolle Arbeit!
 
@@ -306,7 +306,7 @@ Vielen Dank für die hervorragende und tolle Arbeit!
 
 ## Spenden
 
-Die Software ist für die nicht kommzerielle Nutzung kostenlos, Schenkungen als Unterstützung für den Entwickler bitte hier:
+Die Software ist für die nicht kommerzielle Nutzung kostenlos, Schenkungen als Unterstützung für den Entwickler bitte hier:
 
 [![License](https://img.shields.io/badge/Einfach%20spenden%20mit-PayPal-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8816166)
 
