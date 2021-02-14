@@ -25,7 +25,7 @@ Darüber hinaus kann man Geburtstage, Hochzeitstage und Todestage verwalten und 
 
 Das Modul nutzt eine eigens entwickelte JSON-API (CDN basierend) um die Daten für Feiertage und Schulferien
 in Deutschland, Österreich und der Schweiz bereitzustellen.  
-Derzeit unterstützt das Modul auch eine Vielzahl verschiedenster religöser und weltlicher Festtage (z.B. Valentinstag oder Kindertag).  
+Derzeit unterstützt das Modul auch eine Vielzahl verschiedenster religiöser und weltlicher Festtage (z.B. Valentinstag oder Kindertag).  
 Als Gedächtnisstütze können die jährlichen Geburtstage, Hochzeitstage aber auch Todestage verwaltet werden und man
 kann sich täglich informieren lassen ob ein Termin ansteht (Meldungsverwaltung oder via Webfront-Notification).  
 Darüber hinaus werden mittels der PHP Funktion "date" verschiedene Informationen für das aktuelle Datum ermittelt.  
@@ -236,7 +236,7 @@ __Beispiel__: `ALMANAC_DateInfo(12345, time());`
 v4.0.20210214
 
 * _NEU_: Eigener Webservice (JSON-API) für Ferien und Feiertage in DE, AT und CH (aktuell 2015 - 2022)
-* _NEU_: Ermittung von verschiedensten religösen und weltlichen Festtagen
+* _NEU_: Ermittlung von verschiedensten religiösen und weltlichen Festtagen
 * _NEU_: Ermittlung der aktuellen Jahreszeit ("Frühling", "Sommer", "Herbst" oder "Winter")
 * _NEU_: Verwaltung und Meldung von Geburtstagen (Liste)
 * _NEU_: Verwaltung und Meldung von Hochzeitstagen (Liste)
