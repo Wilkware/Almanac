@@ -228,7 +228,7 @@ class AlmanacModule extends IPSModule
      */
     public function Notify(string $days)
     {
-        $this->SendDebug('Notify' . $days);
+        $this->SendDebug('Notify', $days);
         // Notify enabled?
         $isDay = $this->ReadPropertyInteger(self::DP[$days][2]);
         // Webfront configured?
