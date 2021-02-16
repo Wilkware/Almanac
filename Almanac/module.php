@@ -459,8 +459,8 @@ class AlmanacModule extends IPSModule
                 $isVacation = explode(' ', $entry['event'])[0];
                 $this->SendDebug('VACATION: ', $isVacation, 0);
                 if ($period) {
-                    $sp = substr($entry['start'],6,2) . '.' . substr($entry['start'],4,2) . '.' . substr($entry['start'],0,4);
-                    $ep = substr($entry['end'],6,2) . '.' . substr($entry['end'],4,2) . '.' . substr($entry['end'],0,4);
+                    $sp = substr($entry['start'], 6, 2) . '.' . substr($entry['start'], 4, 2) . '.' . substr($entry['start'], 0, 4);
+                    $ep = substr($entry['end'], 6, 2) . '.' . substr($entry['end'], 4, 2) . '.' . substr($entry['end'], 0, 4);
                     $isVacation .= ' (' . $sp . '-' . $ep . ')';
                 }
                 break;
