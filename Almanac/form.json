@@ -199,30 +199,30 @@
                 {
                     "type": "RowLayout",
                     "items": [
-                    {"type": "Select", "name": "DeathdayMessage", "caption": "Send message to dashboard:",
-                        "options": [
-                        {"label": "No", "value": 0 },
-                        {"label": "Yes", "value": 1 }
-                        ]
-                    },
-                    {"type": "Select", "name": "DeathdayDuration", "caption": "Message life time:",
-                        "options": [
-                        {"label": "Always", "value": 0 },
-                        {"label": "5 min", "value": 5 },
-                        {"label": "15 min", "value": 15 },
-                        {"label": "30 min", "value": 30 },
-                        {"label": "45 min", "value": 45 },
-                        {"label": "60 min", "value": 60 },
-                        {"label": "2 h", "value": 120 }
-                        ]
-                    }
+                        {"type": "Select", "name": "DeathdayMessage", "caption": "Send message to dashboard:",
+                            "options": [
+                            {"label": "No", "value": 0 },
+                            {"label": "Yes", "value": 1 }
+                            ]
+                        },
+                        {"type": "Select", "name": "DeathdayDuration", "caption": "Message life time:",
+                            "options": [
+                            {"label": "Always", "value": 0 },
+                            {"label": "5 min", "value": 5 },
+                            {"label": "15 min", "value": 15 },
+                            {"label": "30 min", "value": 30 },
+                            {"label": "45 min", "value": 45 },
+                            {"label": "60 min", "value": 60 },
+                            {"label": "2 h", "value": 120 }
+                            ]
+                        }
                     ]
                 },
                 {
                     "type": "RowLayout",
                     "items": [
-                    {"type": "ValidationTextBox", "name": "DeathdayFormat", "caption": "Text message format:"},
-                    {"type": "Label", "caption": "(Specifier: %E = Entry date, %D = Current date, %N = Name, %Y = Year counter)"}
+                        {"type": "ValidationTextBox", "name": "DeathdayFormat", "caption": "Text message format:"},
+                        {"type": "Label", "caption": "(Specifier: %E = Entry date, %D = Current date, %N = Name, %Y = Year counter)"}
                     ]
                 }
             ]
@@ -231,16 +231,39 @@
             "type": "ExpansionPanel",
             "caption": "Advanced settings ...",
             "items": [
-                {"type": "CheckBox", "name": "UpdateHoliday", "caption": "Determine holidays!" },
-                {"type": "CheckBox", "name": "UpdateVacation", "caption": "Determine school vacation!" },
-                {"type": "CheckBox", "name": "UpdateFestive", "caption": "Determine festive days!" },
-                {"type": "CheckBox", "name": "UpdateBirthday", "caption": "Determine birthdays!" },
-                {"type": "CheckBox", "name": "UpdateWedding", "caption": "Determine wedding days!" },
-                {"type": "CheckBox", "name": "UpdateDeath", "caption": "Determine deathdays!" },
-                {"type": "CheckBox", "name": "UpdateDate", "caption": "Get information about the current date!" },
-                {"type": "Label", "caption": "... to send notification messages to a web front." },
+                {
+                    "type": "RowLayout",
+                    "items": [
+                        {"type": "CheckBox", "name": "UpdateHoliday", "caption": "Determine holidays!", "width": "275px" },
+                        {"type": "CheckBox", "name": "UpdateVacation", "caption": "Determine school vacation!", "width": "275px" },
+                        {"type": "CheckBox", "name": "UpdateFestive", "caption": "Determine festive days!", "width": "275px" }
+                    ]
+                },
+                {
+                    "type": "RowLayout",
+                    "items": [
+                        {"type": "CheckBox", "name": "UpdateBirthday", "caption": "Determine birthdays!", "width": "275px" },
+                        {"type": "CheckBox", "name": "UpdateWedding", "caption": "Determine wedding days!", "width": "275px" },
+                        {"type": "CheckBox", "name": "UpdateDeath", "caption": "Determine deathdays!", "width": "275px" }
+                    ]
+                },
+                {
+                    "type": "RowLayout",
+                    "items": [
+                        {"type": "CheckBox", "name": "UpdateDate", "caption": "Determine daily data!", "width": "275px" },
+                        {"type": "Label", "caption": "(Calculates all daily information)" }
+                    ]
+                },
+                {
+                    "type": "RowLayout",
+                    "items": [
+                        {"type": "CheckBox", "name": "SchoolPeriod", "caption": "Output vacation period!", "width": "275px" },
+                        {"type": "Label", "caption": "(Period of school vacations in parentheses behind it)" }
+                    ]
+                },
+                {"type": "Label", "caption": "... to send notification messages to a web front:" },
                 {"type": "SelectInstance", "name": "InstanceWebfront", "caption": "WebFront Instance:" },
-                {"type": "Label", "caption": "... to use the dashboard message script. More information you get in the forum to thema: Meldungsanzeige im WebFront." },
+                {"type": "Label", "caption": "... to use the dashboard message script. More information you get in the forum to thema: Meldungsanzeige im WebFront:" },
                 {"type": "SelectScript", "name": "ScriptMessage", "caption": "Message script:" }
             ]
         }
@@ -260,9 +283,9 @@
                                 "type": "RowLayout",
                                 "items": [
                                     {"type": "SelectFile", "name": "FileBirthday", "caption": "File:", "extensions": ".csv"},
-                                    { "type": "Button", "caption": "Import", "onClick": "IPS_RequestAction($id,'OnImportBirthdays',$FileBirthday);"},
-                                    { "type": "Button", "caption": "Export", "link": true, "onClick": "echo \"../hook/almanac$id?export=BD\";"},
-                                    { "type": "Button", "caption": "Clear", "onClick": "IPS_RequestAction($id,'OnDeleteDays','BD');"}
+                                    {"type": "Button", "caption": "Import", "onClick": "IPS_RequestAction($id,'OnImportBirthdays',$FileBirthday);"},
+                                    {"type": "Button", "caption": "Export", "link": true, "onClick": "echo \"../hook/almanac$id?export=BD\";"},
+                                    {"type": "Button", "caption": "Clear", "onClick": "IPS_RequestAction($id,'OnDeleteDays','BD');"}
                                 ]
                             },
                             {"type": "Label", "caption": "ATTENTION: Clearing the list deletes all entries without asking!"},
@@ -280,9 +303,9 @@
                                 "type": "RowLayout",
                                 "items": [
                                     {"type": "SelectFile", "name": "FileWeddingday", "caption": "File:", "extensions": ".csv"},
-                                    { "type": "Button", "caption": "Import", "onClick": "IPS_RequestAction($id,'OnImportWeddingdays',$FileWeddingday);"},
-                                    { "type": "Button", "caption": "Export", "link": true, "onClick": "echo \"../hook/almanac$id?export=WD\";"},
-                                    { "type": "Button", "caption": "Clear", "onClick": "IPS_RequestAction($id,'OnDeleteDays','WD');"}
+                                    {"type": "Button", "caption": "Import", "onClick": "IPS_RequestAction($id,'OnImportWeddingdays',$FileWeddingday);"},
+                                    {"type": "Button", "caption": "Export", "link": true, "onClick": "echo \"../hook/almanac$id?export=WD\";"},
+                                    {"type": "Button", "caption": "Clear", "onClick": "IPS_RequestAction($id,'OnDeleteDays','WD');"}
                                 ]
                             },
                             {"type": "Label", "caption": "ATTENTION: Clearing the list deletes all entries without asking!"},
@@ -300,9 +323,9 @@
                                 "type": "RowLayout",
                                 "items": [
                                     {"type": "SelectFile", "name": "FileDeathday", "caption": "File:", "extensions": ".csv"},
-                                    { "type": "Button", "caption": "Import", "onClick": "IPS_RequestAction($id,'OnImportDeathdays',$FileDeathday);"},
-                                    { "type": "Button", "caption": "Export", "link": true, "onClick": "echo \"../hook/almanac$id?export=DD\";"},
-                                    { "type": "Button", "caption": "Clear", "onClick": "IPS_RequestAction($id,'OnDeleteDays','DD');"}
+                                    {"type": "Button", "caption": "Import", "onClick": "IPS_RequestAction($id,'OnImportDeathdays',$FileDeathday);"},
+                                    {"type": "Button", "caption": "Export", "link": true, "onClick": "echo \"../hook/almanac$id?export=DD\";"},
+                                    {"type": "Button", "caption": "Clear", "onClick": "IPS_RequestAction($id,'OnDeleteDays','DD');"}
                                 ]
                             },
                             {"type": "Label", "caption": "ATTENTION: Clearing the list deletes all entries without asking!"},

@@ -74,6 +74,7 @@ class AlmanacModule extends IPSModule
         $this->RegisterPropertyBoolean('UpdateWedding', true);
         $this->RegisterPropertyBoolean('UpdateDeath', true);
         $this->RegisterPropertyBoolean('UpdateDate', true);
+        $this->RegisterPropertyBoolean('SchoolPeriod', false);
         $this->RegisterPropertyInteger('InstanceWebfront', 0);
         $this->RegisterPropertyInteger('ScriptMessage', 0);
         // Register daily update timer
@@ -429,6 +430,7 @@ class AlmanacModule extends IPSModule
             $date['IsHoliday'] = false;
         }
         // get vication data
+        $period = $this->ReadPropertyBoolean('SchoolPeriod');
         $country = $this->ReadPropertyString('SchoolCountry');
         $region = $this->ReadPropertyString('SchoolRegion');
         $school = $this->ReadPropertyString('SchoolName');
@@ -456,6 +458,11 @@ class AlmanacModule extends IPSModule
             if (($now >= $entry['start']) && ($now <= $entry['end'])) {
                 $isVacation = explode(' ', $entry['event'])[0];
                 $this->SendDebug('VACATION: ', $isVacation, 0);
+                if ($period) {
+                    $sp = substr($entry['start'],6,2) . '.' . substr($entry['start'],4,2) . '.' . substr($entry['start'],0,4);
+                    $ep = substr($entry['end'],6,2) . '.' . substr($entry['end'],4,2) . '.' . substr($entry['end'],0,4);
+                    $isVacation .= ' (' . $sp . '-' . $ep . ')';
+                }
                 break;
             }
         }
@@ -730,7 +737,7 @@ class AlmanacModule extends IPSModule
         }
         // check ... was comma
         $cols = max(array_map('count', $data));
-        if($cols != 2) {
+        if ($cols != 2) {
             unset($data);
             foreach ($lines as $row) {
                 $data[] = str_getcsv($row, ';');
@@ -738,7 +745,7 @@ class AlmanacModule extends IPSModule
         }
         // check ... was semicolon
         $cols = max(array_map('count', $data));
-        if($cols != 2) {
+        if ($cols != 2) {
             $this->SendDebug('ImportCSV', 'No CSV format found!');
             return;
         }
