@@ -46,6 +46,7 @@
       "Import & export of ...": "Import & Export von ...",
       "Import": "Import",
       "Export": "Export",
+      "Clear": "LEEREN",
       "Import & export birthdays ...": "Import & Export Geburtstage ...",
       "Import & export wedding days ...": "Import & Export Hochzeitstage ...",
       "Import & export death days ...": "Import & Export Todestage ...",
@@ -58,7 +59,8 @@
       "Death days": "Todestage",
       "Date info ...": "Tagesdaten ...",
       "Update": "Aktualisieren",
-      "NOTE: No file needs to be selected for export!": "HINWEIS: Für den Export muss keine Datei ausgewählt werden!"
+      "NOTE: No file needs to be selected for export!": "HINWEIS: Für den Export muss keine Datei ausgewählt werden!",
+      "ATTENTION: Clearing the list deletes all entries without asking!": "ACHTUNG: Das Leeren der Liste löscht alles Einträge ohne Nachfrage!"
     }
   }
 }

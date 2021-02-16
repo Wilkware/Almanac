@@ -216,6 +216,9 @@ class AlmanacModule extends IPSModule
             case 'OnImportDeathdays':
                 $this->OnImportDeathdays($value);
             break;
+            case 'OnDeleteDays':
+                $this->OnDeleteDays($value);
+            break;
         }
         // return true;
     }
@@ -555,6 +558,20 @@ class AlmanacModule extends IPSModule
     }
 
     /**
+     * Clear the selected days list.
+     *
+     * @param string $value property shor name.
+     */
+    protected function OnDeleteDays($value)
+    {
+        $this->SendDebug('OnDeleteDays', $value);
+        // with days
+        $property = self::DP[$value][1];
+        $data = [];
+        $this->UpdateFormField($property, 'values', json_encode($data));
+    }
+
+    /**
      * This function will be called by the hook control. Visibility should be protected!
      */
     protected function ProcessHookData()
@@ -684,7 +701,7 @@ class AlmanacModule extends IPSModule
             $output = str_replace('%Y', $item[2], $output);
             $output = str_replace('%N', $item[3], $output);
             if ($visu != 0) {
-                WFC_SendNotification($visu, 'ALMANAC', $output, 'Calendar', 0);
+                WFC_PushNotification($visu, 'ALMANAC', $output, 'Calendar', 0);
             }
             if ($script != 0) {
                 $time = $this->ReadPropertyInteger($property[5]);
@@ -710,6 +727,20 @@ class AlmanacModule extends IPSModule
         $data = [];
         foreach ($lines as $row) {
             $data[] = str_getcsv($row);
+        }
+        // check ... was comma
+        $cols = max(array_map('count', $data));
+        if($cols != 2) {
+            unset($data);
+            foreach ($lines as $row) {
+                $data[] = str_getcsv($row, ';');
+            }
+        }
+        // check ... was semicolon
+        $cols = max(array_map('count', $data));
+        if($cols != 2) {
+            $this->SendDebug('ImportCSV', 'No CSV format found!');
+            return;
         }
         // get the current entries
         //$this->SendDebug("I1", $this->ReadPropertyString('Birthdays'));

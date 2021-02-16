@@ -261,9 +261,11 @@
                                 "items": [
                                     {"type": "SelectFile", "name": "FileBirthday", "caption": "File:", "extensions": ".csv"},
                                     { "type": "Button", "caption": "Import", "onClick": "IPS_RequestAction($id,'OnImportBirthdays',$FileBirthday);"},
-                                    { "type": "Button", "caption": "Export", "link": true, "onClick": "echo \"../hook/almanac$id?export=BD\";"}
+                                    { "type": "Button", "caption": "Export", "link": true, "onClick": "echo \"../hook/almanac$id?export=BD\";"},
+                                    { "type": "Button", "caption": "Clear", "onClick": "IPS_RequestAction($id,'OnDeleteDays','BD');"}
                                 ]
                             },
+                            {"type": "Label", "caption": "ATTENTION: Clearing the list deletes all entries without asking!"},
                             {"type": "Label", "caption": "NOTE: No file needs to be selected for export!"}
                         ]
                     }
@@ -279,9 +281,11 @@
                                 "items": [
                                     {"type": "SelectFile", "name": "FileWeddingday", "caption": "File:", "extensions": ".csv"},
                                     { "type": "Button", "caption": "Import", "onClick": "IPS_RequestAction($id,'OnImportWeddingdays',$FileWeddingday);"},
-                                    { "type": "Button", "caption": "Export", "link": true, "onClick": "echo \"../hook/almanac$id?export=WD\";"}
+                                    { "type": "Button", "caption": "Export", "link": true, "onClick": "echo \"../hook/almanac$id?export=WD\";"},
+                                    { "type": "Button", "caption": "Clear", "onClick": "IPS_RequestAction($id,'OnDeleteDays','WD');"}
                                 ]
                             },
+                            {"type": "Label", "caption": "ATTENTION: Clearing the list deletes all entries without asking!"},
                             {"type": "Label", "caption": "NOTE: No file needs to be selected for export!"}
                         ]
                     }
@@ -297,9 +301,11 @@
                                 "items": [
                                     {"type": "SelectFile", "name": "FileDeathday", "caption": "File:", "extensions": ".csv"},
                                     { "type": "Button", "caption": "Import", "onClick": "IPS_RequestAction($id,'OnImportDeathdays',$FileDeathday);"},
-                                    { "type": "Button", "caption": "Export", "link": true, "onClick": "echo \"../hook/almanac$id?export=DD\";"}
+                                    { "type": "Button", "caption": "Export", "link": true, "onClick": "echo \"../hook/almanac$id?export=DD\";"},
+                                    { "type": "Button", "caption": "Clear", "onClick": "IPS_RequestAction($id,'OnDeleteDays','DD');"}
                                 ]
                             },
+                            {"type": "Label", "caption": "ATTENTION: Clearing the list deletes all entries without asking!"},
                             {"type": "Label", "caption": "NOTE: No file needs to be selected for export!"}
                         ]
                     }
