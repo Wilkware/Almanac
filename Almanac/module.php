@@ -267,7 +267,7 @@ class AlmanacModule extends IPSModule
                 $format = $this->ReadPropertyString(self::DP[$days][6]);
                 $data = $this->LookupDays(time(), self::DP[$days][1]);
                 foreach ($date as $item) {
-                    $output = FormatDay($item, $format);
+                    $output = $this->FormatDay($item, $format);
                     if ($visu != 0) {
                         WFC_PushNotification($visu, 'ALMANAC', $output, 'Calendar', 0);
                     }
@@ -789,7 +789,7 @@ class AlmanacModule extends IPSModule
         // iterate
         foreach ($items as $item) {
             // format date item
-            $output = FormatDate($item, $format);
+            $output = $this->FormatDay($item, $format);
             // send to dashboard
             if ($script != 0) {
                 if ($time > 0) {

@@ -7,7 +7,7 @@
 [![Actions](https://github.com/Wilkware/IPSymconAlmanac/workflows/Check%20Style/badge.svg)](https://github.com/Wilkware/IPSymconAlmanac/actions)
 
 Dieses Modul bietet jährliche Kalenderinformationen wie Feiertage, Schulferien und Festtage.  
-Außerdem werden Informationen wie Arbeitstage im Monat, Schaltjahr, Jahreszeit oder ob Wochenende aktuell gehalten.
+Außerdem werden Informationen wie Arbeitstage im Monat, Schaltjahr, Jahreszeit oder ob Wochenende ist aktuell gehalten.
 Darüber hinaus kann man Geburtstage, Hochzeitstage und Todestage verwalten und sich täglich informieren lassen.
 
 ## Inhaltverzeichnis
@@ -35,6 +35,8 @@ Folgende Informationen werden ermittelt:
 
 * Sind Ferien und welche
 * Feiertag oder nicht und wie heißt er
+* Festag oder nicht und wie heißt er
+* Hat jemand Geburtstag, Hochzeitstag oder Todestag
 * Der Tag des Jahres
 * Anzahl Tage im Monat
 * Arbeitstage im Monat
@@ -56,7 +58,7 @@ IsWeekend             | bool    | TRUE, wenn Wochenende ist (SA-SO)
 WeekNumber            | int     | Kalenderwochennummer
 DaysInMonth           | int     | Anzahl Tage im Monat
 DayOfYear             | int     | Tag im Jahr (1-366)
-Season                | string  | "Frühling", "Sommer", "Herbst" oder "Winter"
+Season                | string  | Name der Jahreszeit ("Frühling", "Sommer", "Herbst" oder "Winter")
 Festive               | string  | Name des Festtags, oder "Kein Festtag"
 IsFestive             | bool    | TRUE, wenn Festtag ist
 WorkingDays           | int     | Arbeitstage im Monat
@@ -64,6 +66,12 @@ Holiday               | string  | Name des Feiertags, oder "Kein Feiertag"
 IsHoliday             | bool    | TRUE, wenn Feiertag ist
 Vacation              | string  | Name der Schulferien, oder "Keine Ferien"
 IsVacation            | bool    | TRUE, wenn Schulferienzeit ist
+IsBirthday            | bool    | TRUE, wenn Geburtstag(e) ansteht
+Birthday              | array   | LEER, oder Feld mit Datum, Jahrestag und Name
+Isweddingday          | bool    | TRUE, wenn Hochzeitstag(e) ansteht
+Weddingday            | array   | LEER, oder Feld mit Datum, Jahrestag und Name
+IsDeathday            | bool    | TRUE, wenn Todestag(e) ansteht
+Deathday              | array   | LEER, oder Feld mit Datum, Jahrestag und Name
 
 ### 2. Voraussetzungen
 
@@ -108,6 +116,8 @@ Nachricht Sendezeit           | Uhrzeit wann täglich die Nachricht gesendet wed
 Meldung an Anzeige senden     | Auswahl ob Eintrag in die Meldungsverwaltung erfolgen soll oder nicht (Ja/Nein)
 Lebensdauer der Nachricht     | Wie lange so die Meldung angezeigt werden?
 Format der Textmitteilung     | Frei wählbares Format der zu sendenden Nachricht/Meldung
+Text in Variable schreiben    | Auswahl ob Nachricht in Variable geschrieben werden soll
+Texttrennzeichen/Zeilenumbruch| Trennzeichen bei mehreren Ereignissen
 
 > Hochzeitstage ...
 
@@ -119,6 +129,8 @@ Nachricht Sendezeit           | Uhrzeit wann täglich die Nachricht gesendet wed
 Meldung an Anzeige senden     | Auswahl ob Eintrag in die Meldungsverwaltung erfolgen soll oder nicht (Ja/Nein)
 Lebensdauer der Nachricht     | Wie lange so die Meldung angezeigt werden?
 Format der Textmitteilung     | Frei wählbares Format der zu sendenden Nachricht/Meldung
+Text in Variable schreiben    | Auswahl ob Nachricht in Variable geschrieben werden soll
+Texttrennzeichen/Zeilenumbruch| Trennzeichen bei mehreren Ereignissen
 
 > Todestage ...
 
@@ -130,6 +142,8 @@ Nachricht Sendezeit           | Uhrzeit wann täglich die Nachricht gesendet wed
 Meldung an Anzeige senden     | Auswahl ob Eintrag in die Meldungsverwaltung erfolgen soll oder nicht (Ja/Nein)
 Lebensdauer der Nachricht     | Wie lange so die Meldung angezeigt werden?
 Format der Textmitteilung     | Frei wählbares Format der zu sendenden Nachricht/Meldung
+Text in Variable schreiben    | Auswahl ob Nachricht in Variable geschrieben werden soll
+Texttrennzeichen/Zeilenumbruch| Trennzeichen bei mehreren Ereignissen
 
 > Erweiterte Einstellungen ...
 
@@ -151,9 +165,9 @@ Aktionsbereich:
 
 Aktion         | Beschreibung
 -------------- | ------------------------------------------------------------
-GEBURTSTAGE    | Öffnet Popup für die Möglichkeit zum Import/Export der Geburtstagsliste als CSV Datei (geburtstage.csv)
-HOCHZEITSTAGE  | Öffnet Popup für die Möglichkeit zum Import/Export der Hochzeitsliste als CSV Datei (hochzeitstage.csv)
-TODESTAGE      | Öffnet Popup für die Möglichkeit zum Import/Export der Sterbeliste als CSV Datei (todestage.csv)
+GEBURTSTAGE    | Öffnet Popup für die Möglichkeit zum Import/Export/Leeren der Geburtstagsliste als CSV Datei (geburtstage.csv)
+HOCHZEITSTAGE  | Öffnet Popup für die Möglichkeit zum Import/Export/Leeren der Hochzeitsliste als CSV Datei (hochzeitstage.csv)
+TODESTAGE      | Öffnet Popup für die Möglichkeit zum Import/Export/Leeren der Sterbeliste als CSV Datei (todestage.csv)
 
 _Hinweis:_ CSV-Format ist Termin, Name => 1.1.1970,"Herr Max Mustermann"
 
@@ -175,9 +189,15 @@ Ist Sommerzeit?      | Boolean   | Ist aktuell Sommerzeit aktiv?
 Ist Schaltjahr?      | Boolean   | Ist aktueller Jahr ein Schaltjahr?
 Ist Wochenende?      | Boolean   | Ist gerade Wochenende?
 Ist Festtag?         | Boolean   | Ist aktueller Tag ein Festtag?
+Ist Geburtstag?      | Boolean   | Ist am aktuellen Tag ein Geburtstag?
+Ist Hochzeitstag?    | Boolean   | Ist am aktuellen Tag ein Hochzeitstag?
+Ist Todestag?        | Boolean   | Ist am aktuellen Tag ein Todestag?
 Feiertag             | String    | Name des Feriertages oder 'Kein Feiertag'
 Ferien               | String    | Name der Schulferien oder 'Keine Ferien'
 Festtag              | String    | Name des Festtages oder 'Kein Festtag'
+Geburtstag           | String    | Formatierte Ausgabe des Geburtstages oder leer 
+Hochzeitstag         | String    | Formatierte Ausgabe des Hochzeitstages oder leer
+Todestag             | String    | Formatierte Ausgabe des Todestages oder leer
 Kalenderwoche        | Integer   | Nummer der aktuelle Kalenderwoche
 Tage im Monat        | Integer   | Wieviel Tage hat der aktuelle Monat?
 Tag im Jahr          | Integer   | Welcher Tag des Jahres?
@@ -228,7 +248,13 @@ __Beispiel__: `ALMANAC_DateInfo(12345, time());`
 > "Holiday": "Kein Feiertag",  
 > "IsHoliday": false,  
 > "Vacation": "Keine Ferien",  
-> "IsVacation": false  
+> "IsVacation": false,  
+> "IsBirthday": true,
+> "Birthday": [{"date": 14.2.1970, "years": 48, "name": "Valentin Tag"}],
+> "IsWeddingday": false,
+> "Weddingday": [],
+> "IsDeathday]: false,
+> "Deathday": []
 }  
 
 ### 8. Versionshistorie
