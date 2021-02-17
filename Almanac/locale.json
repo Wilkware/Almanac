@@ -34,6 +34,8 @@
       "%Y. birthday of %N (%E)": "%Y. Geburtstag von %N (%E)",
       "%Y. wedding anniversary of %N (%E)": "%Y. Hochzeitstag von %N (%E)",
       "%Y. anniversary of the death of %N (%E)": "%Y. Todestag von %N (%E)",
+      "Write text to variable:": "Text in Variable schreiben:",
+      "Text separator / line break:": "Texttrennzeichen / Zeilenumbruch:",
       "(Specifier: %E = Entry date, %D = Current date, %N = Name, %Y = Year counter)": "(Bezeichner: %E = Eintrittsdatum, %D = Aktuelles Datum, %N = Name, %Y = Jahreszähler)",
       "... to use the dashboard message script. More information you get in the forum to thema: Meldungsanzeige im WebFront:": "... zum Verwenden des Meldungsverwaltungsscripts. Genau Informationen findet man im Forum zum Thema: Meldungsanzeige im WebFront:",
       "Message script:": "Meldungsskript:",

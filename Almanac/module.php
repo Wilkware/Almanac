@@ -24,9 +24,9 @@ class AlmanacModule extends IPSModule
      * Date Properties (Form)
      */
     const DP = [
-        self::BD => ['UpdateBirth', 'Birthdays', 'BirthdayNotification', 'BirthdayTime', 'BirthdayMessage', 'BirthdayDuration', 'BirthdayFormat'],
-        self::WD => ['UpdateWedding', 'Weddingdays', 'WeddingdayNotification', 'WeddingdayTime', 'WeddingdayMessage', 'WeddingdayDuration', 'WeddingdayFormat'],
-        self::DD => ['UpdateDeath', 'Deathdays', 'DeathdayNotification', 'DeathdayTime', 'DeathdayMessage', 'DeathdayDuration', 'DeathdayFormat'],
+        self::BD => ['UpdateBirth', 'Birthdays', 'BirthdayNotification', 'BirthdayTime', 'BirthdayMessage', 'BirthdayDuration', 'BirthdayFormat', 'BirthdayVariable', 'BirthdaySeparator'],
+        self::WD => ['UpdateWedding', 'Weddingdays', 'WeddingdayNotification', 'WeddingdayTime', 'WeddingdayMessage', 'WeddingdayDuration', 'WeddingdayFormat', 'WeddingdayVariable', 'BirthdaySeparator'],
+        self::DD => ['UpdateDeath', 'Deathdays', 'DeathdayNotification', 'DeathdayTime', 'DeathdayMessage', 'DeathdayDuration', 'DeathdayFormat', 'DeathdayVariable', 'DeathdaySeparator'],
     ];
 
     /**
@@ -52,6 +52,8 @@ class AlmanacModule extends IPSModule
         $this->RegisterPropertyInteger('BirthdayMessage', 0);
         $this->RegisterPropertyInteger('BirthdayDuration', 0);
         $this->RegisterPropertyString('BirthdayFormat', $this->Translate('%Y. birthday of %N (%E)'));
+        $this->RegisterPropertyInteger('BirthdayVariable', 0);
+        $this->RegisterPropertyString('BirthdaySeparator', ', ');
         // Wedding days
         $this->RegisterPropertyString('Weddingdays', '');
         $this->RegisterPropertyInteger('WeddingdayNotification', 0);
@@ -59,6 +61,8 @@ class AlmanacModule extends IPSModule
         $this->RegisterPropertyInteger('WeddingdayMessage', 0);
         $this->RegisterPropertyInteger('WeddingdayDuration', 0);
         $this->RegisterPropertyString('WeddingdayFormat', $this->Translate('%Y. wedding anniversary of %N (%E)'));
+        $this->RegisterPropertyInteger('WeddingdayVariable', 0);
+        $this->RegisterPropertyString('WeddingdaySeparator', ', ');
         // Death days
         $this->RegisterPropertyString('Deathdays', '');
         $this->RegisterPropertyInteger('DeathdayNotification', 0);
@@ -66,6 +70,8 @@ class AlmanacModule extends IPSModule
         $this->RegisterPropertyInteger('DeathdayMessage', 0);
         $this->RegisterPropertyInteger('DeathdayDuration', 0);
         $this->RegisterPropertyString('DeathdayFormat', $this->Translate('%Y. anniversary of the death of %N (%E)'));
+        $this->RegisterPropertyInteger('DeathdayVariable', 0);
+        $this->RegisterPropertyString('DeathdaySeparator', ', ');
         // Advanced Settings
         $this->RegisterPropertyBoolean('UpdateHoliday', true);
         $this->RegisterPropertyBoolean('UpdateVacation', true);
@@ -146,7 +152,15 @@ class AlmanacModule extends IPSModule
         $isHoliday = $this->ReadPropertyBoolean('UpdateHoliday');
         $isVacation = $this->ReadPropertyBoolean('UpdateVacation');
         $isFestive = $this->ReadPropertyBoolean('UpdateFestive');
+        $isBirthday = $this->ReadPropertyBoolean('UpdateBirthday');
+        $isWeddingday = $this->ReadPropertyBoolean('UpdateWedding');
+        $isDeathday = $this->ReadPropertyBoolean('UpdateDeath');
         $isDate = $this->ReadPropertyBoolean('UpdateDate');
+        // Birthday, Weddingday, Deathday needs variable?
+        $isBirthday &= $this->ReadPropertyInteger('BirthdayVariable');
+        $isWeddingday &= $this->ReadPropertyInteger('WeddingdayVariable');
+        $isDeathday &= $this->ReadPropertyInteger('DeathdayVariable');
+        // Debug
         $this->SendDebug('ApplyChanges', 'public country=' . $publicCountry . ', public holiday=' . $publicRegion .
                         ', school country=' . $schoolCountry . ', school vacation=' . $schoolRegion . ', school name=' . $schoolName .
                         ', updates=' . ($isHoliday ? 'Y' : 'N') . '|' . ($isVacation ? 'Y' : 'N') . '|' . ($isFestive ? 'Y' : 'N') . '|' . ($isDate ? 'Y' : 'N'), 0);
@@ -167,7 +181,16 @@ class AlmanacModule extends IPSModule
         // Festive (Festtage)
         $this->MaintainVariable('IsFestive', 'Ist Festtag?', vtBoolean, 'ALMANAC.Question', 6, $isFestive);
         $this->MaintainVariable('Festive', 'Festtag', vtString, '', 25, $isFestive);
-        // Date
+        // Birthday (Geburtstage)
+        $this->MaintainVariable('IsBirthday', 'Ist Geburtstag?', vtBoolean, 'ALMANAC.Question', 7, $isBirthday);
+        $this->MaintainVariable('Birthday', 'Geburtstag', vtString, '', 27, $isBirthday);
+        // Weddingday (Hochzeitstage)
+        $this->MaintainVariable('IsWeddingday', 'Ist Hochzeitstag?', vtBoolean, 'ALMANAC.Question', 8, $isWeddingday);
+        $this->MaintainVariable('Weddingday', 'Hochzeitstag', vtString, '', 28, $isWeddingday);
+        // Deathday (Todestage)
+        $this->MaintainVariable('IsDeathday', 'Ist Todestag?', vtBoolean, 'ALMANAC.Question', 9, $isDeathday);
+        $this->MaintainVariable('Deathday', 'Todestag', vtString, '', 29, $isDeathday);
+        // Date (Tagesdaten)
         $this->MaintainVariable('IsSummer', 'Ist Sommerzeit?', vtBoolean, 'ALMANAC.Question', 3, $isDate);
         $this->MaintainVariable('IsLeapyear', 'Ist Schaltjahr?', vtBoolean, 'ALMANAC.Question', 4, $isDate);
         $this->MaintainVariable('IsWeekend', 'Ist Wochenende?', vtBoolean, 'ALMANAC.Question', 5, $isDate);
@@ -228,7 +251,7 @@ class AlmanacModule extends IPSModule
      * This function will be available automatically after the module is imported with the module control.
      * Using the custom prefix this function will be callable from PHP and JSON-RPC through:.
      *
-     * ALMANAC_Update($id);
+     * ALMANAC_Notify($id, $days);
      */
     public function Notify(string $days)
     {
@@ -240,7 +263,15 @@ class AlmanacModule extends IPSModule
         // Lookup
         if ($isDay && ($wfc != 0)) {
             try {
-                $this->LookupDays(self::DP[$days], $wfc, 0);
+                // get format
+                $format = $this->ReadPropertyString(self::DP[$days][6]);
+                $data = $this->LookupDays(time(), self::DP[$days][1]);
+                foreach ($date as $item) {
+                    $output = FormatDay($item, $format);
+                    if ($visu != 0) {
+                        WFC_PushNotification($visu, 'ALMANAC', $output, 'Calendar', 0);
+                    }
+                }
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);
                 $this->SendDebug('ERROR NOTIFY', $ex->getMessage(), 0);
@@ -271,7 +302,7 @@ class AlmanacModule extends IPSModule
         // MessageScript
         $script = $this->ReadPropertyInteger('ScriptMessage');
         // Everything to do?
-        if ($isHoliday || $isVacation || $isFestive || $isDate) {
+        if ($isHoliday || $isVacation || $isFestive || $isBirth || $isWedding || $isDeath || $isDate) {
             $date = json_decode($this->DateInfo(time()), true);
         }
         // Public Holidays
@@ -320,31 +351,31 @@ class AlmanacModule extends IPSModule
                 $this->SendDebug('ERROR DATE', $ex->getMessage(), 0);
             }
         }
-        // Day Infos to Dashboard?
-        if ($script != 0) {
-            if ($isBirth == true) {
-                try {
-                    $this->LookupDays(self::DP[self::BD], 0, $script);
-                } catch (Exception $ex) {
-                    $this->LogMessage($ex->getMessage(), KL_ERROR);
-                    $this->SendDebug('ERROR BIRTH', $ex->getMessage(), 0);
-                }
+        // Birthdays
+        if ($isBirth == true) {
+            try {
+                $this->UpdateDay(self::DP[self::BD], $date, $script);
+            } catch (Exception $ex) {
+                $this->LogMessage($ex->getMessage(), KL_ERROR);
+                $this->SendDebug('ERROR BIRTH', $ex->getMessage(), 0);
             }
-            if ($isWedding == true) {
-                try {
-                    $this->LookupDays(self::DP[self::WD], 0, $script);
-                } catch (Exception $ex) {
-                    $this->LogMessage($ex->getMessage(), KL_ERROR);
-                    $this->SendDebug('ERROR WEDDING', $ex->getMessage(), 0);
-                }
+        }
+        // Wedding days
+        if ($isWedding == true) {
+            try {
+                $this->UpdateDay(self::DP[self::WD], $date, $script);
+            } catch (Exception $ex) {
+                $this->LogMessage($ex->getMessage(), KL_ERROR);
+                $this->SendDebug('ERROR WEDDING', $ex->getMessage(), 0);
             }
-            if ($isDeath == true) {
-                try {
-                    $this->LookupDays(self::DP[self::DD], 0, $script);
-                } catch (Exception $ex) {
-                    $this->LogMessage($ex->getMessage(), KL_ERROR);
-                    $this->SendDebug('ERROR DEATH', $ex->getMessage(), 0);
-                }
+        }
+        // Death days
+        if ($isDeath == true) {
+            try {
+                $this->UpdateDay(self::DP[self::DD], $date, $script);
+            } catch (Exception $ex) {
+                $this->LogMessage($ex->getMessage(), KL_ERROR);
+                $this->SendDebug('ERROR DEATH', $ex->getMessage(), 0);
             }
         }
         // calculate next update interval
@@ -381,6 +412,21 @@ class AlmanacModule extends IPSModule
         $isFestive = $this->LookupCalendar($ts);
         $date['Festive'] = $isFestive;
         $date['IsFestive'] = ($isFestive == 'Kein Festtag') ? false : true;
+
+        // get birthdays
+        $isBirth = $this->LookupDays($ts, self::DP[self::BD][1]);
+        $date['Birthday'] = $isBirth;
+        $date['IsBirthday'] = (count($isBirth) == 0) ? false : true;
+
+        // get weddingdays
+        $isWedding = $this->LookupDays($ts, self::DP[self::WD][1]);
+        $date['Weddingday'] = $isWedding;
+        $date['IsWeddingday'] = (count($isWedding) == 0) ? false : true;
+
+        // get deathdays
+        $isDeath = $this->LookupDays($ts, self::DP[self::DD][1]);
+        $date['Deathday'] = $isDeath;
+        $date['IsDeathday'] = (count($isDeath) == 0) ? false : true;
 
         // get holiday data
         $country = $this->ReadPropertyString('PublicCountry');
@@ -675,17 +721,14 @@ class AlmanacModule extends IPSModule
     /**
      * Lookup for Birth-, Wedding, Death-Days
      */
-    private function LookupDays(array $property, int $visu = 0, int $script = 0)
+    private function LookupDays(int $ts, string $property)
     {
-        // Debug output
-        $this->SendDebug('LookupDays ', 'WFC: ' . $visu . ', MSG: ' . $script, 0);
         // 1 = 'Deathdays', 5 = 'DeathdayDuration', 6 = 'DeathdayFormat'
-        $ts = time();
         $year = date('Y', $ts);
         $day = date('j', $ts);
         $mon = date('n', $ts);
         // get the current entries
-        $list = json_decode($this->ReadPropertyString($property[1]), true);
+        $list = json_decode($this->ReadPropertyString($property), true);
         if (empty($list) || !is_array($list)) {
             $list = [];
         }
@@ -695,29 +738,79 @@ class AlmanacModule extends IPSModule
             if (is_array($item)) {
                 $dt = json_decode($item['Date'], true);
                 if ($day == $dt['day'] && $mon == $dt['month']) {
-                    $bd = $dt['day'] . '.' . $dt['month'] . '.';
-                    $entry[] = [$bd . $dt['year'], $bd . $year, $year - $dt['year'], $item['Name']];
+                    $date = $dt['day'] . '.' . $dt['month'] . '.' . $dt['year'];
+                    $years = $year - $dt['year'];
+                    $entry[] = ['date' => $date, 'years' => $years, 'name' => $item['Name']];
                 }
             }
         }
-        // get format
+        return $entry;
+    }
+
+    /**
+     * Format a given array to a string.
+     *
+     * @param array $item Date event item
+     * @param string $format Format string
+     */
+    private function FormatDay(array $item, $format)
+    {
+        $now = date('d.m.Y', time());
+        $output = str_replace('%E', $item['date'], $format);
+        $output = str_replace('%Y', $item['years'], $output);
+        $output = str_replace('%N', $item['name'], $output);
+        $output = str_replace('%D', $now, $output);
+        return $output;
+    }
+
+    /**
+     * Update specific days-variable / dashboard.
+     *
+     * @param array $property Day property idents.
+     * @param array $date Day items array.
+     * @param int $script Script ID
+     */
+    private function UpdateDay(array $property, array $date, int $script)
+    {
+        // time
+        $time = $this->ReadPropertyInteger($property[5]);
+        // format
         $format = $this->ReadPropertyString($property[6]);
-        foreach ($entry as $item) {
-            $output = str_replace('%E', $item[0], $format);
-            $output = str_replace('%D', $item[1], $output);
-            $output = str_replace('%Y', $item[2], $output);
-            $output = str_replace('%N', $item[3], $output);
-            if ($visu != 0) {
-                WFC_PushNotification($visu, 'ALMANAC', $output, 'Calendar', 0);
-            }
+        // variable
+        $variable = $this->ReadPropertyInteger($property[7]);
+        // seperator
+        $separator = $this->ReadPropertyString($property[8]);
+        // date array
+        $ident = substr($property[1], 0, -1);
+        $items = $date[$ident];
+        $length = count($items);
+        $lines = '';
+        $index = 1;
+        // iterate
+        foreach ($items as $item) {
+            // format date item
+            $output = FormatDate($item, $format);
+            // send to dashboard
             if ($script != 0) {
-                $time = $this->ReadPropertyInteger($property[5]);
                 if ($time > 0) {
                     $msg = IPS_RunScriptWaitEx($script, ['action' => 'add', 'text' => $output, 'expires' => time() + $time, 'removable' => true, 'type' => 4, 'image' => 'Calendar']);
                 } else {
                     $msg = IPS_RunScriptWaitEx($script, ['action' => 'add', 'text' => $output, 'removable' => true, 'type' => 4, 'image' => 'Calendar']);
                 }
             }
+            // collect for variable
+            if ($index < $length) {
+                $lines .= $output . $separator;
+            } else {
+                $lines .= $output;
+            }
+            $index++;
+        }
+        // write to variable
+        if ($variable) {
+            $this->SetValueString($ident, $lines);
+            $ident = 'Is' . $ident;
+            $this->SetValueBoolean($ident, $date[$ident]);
         }
     }
 

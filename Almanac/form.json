@@ -104,6 +104,18 @@
                         {"type": "ValidationTextBox", "name": "BirthdayFormat", "caption": "Text message format:"},
                         {"type": "Label", "caption": "(Specifier: %E = Entry date, %D = Current date, %N = Name, %Y = Year counter)"}
                     ]
+                },
+                {
+                    "type": "RowLayout",
+                    "items": [
+                        {"type": "Select", "name": "BirthdayVariable", "caption": "Write text to variable:",
+                            "options": [
+                                {"label": "No", "value": 0 },
+                                {"label": "Yes", "value": 1 }
+                            ]
+                        },
+                        {"type": "ValidationTextBox", "name": "BirthdaySeparator", "caption": "Text separator / line break:"}
+                    ]
                 }
             ]
         },
@@ -141,8 +153,8 @@
                     "items": [
                     {"type": "Select", "name": "WeddingdayMessage", "caption": "Send message to dashboard:",
                         "options": [
-                        {"label": "No", "value": 0 },
-                        {"label": "Yes", "value": 1 }
+                            {"label": "No", "value": 0 },
+                            {"label": "Yes", "value": 1 }
                         ]
                     },
                     {"type": "Select", "name": "WeddingdayDuration", "caption": "Message life time:",
@@ -161,8 +173,20 @@
                 {
                     "type": "RowLayout",
                     "items": [
-                    {"type": "ValidationTextBox", "name": "WeddingdayFormat", "caption": "Text message format:"},
-                    {"type": "Label", "caption": "(Specifier: %E = Entry date, %D = Current date, %N = Name, %Y = Year counter)"}
+                        {"type": "ValidationTextBox", "name": "WeddingdayFormat", "caption": "Text message format:"},
+                        {"type": "Label", "caption": "(Specifier: %E = Entry date, %D = Current date, %N = Name, %Y = Year counter)"}
+                    ]
+                },
+                {
+                    "type": "RowLayout",
+                    "items": [
+                        {"type": "Select", "name": "WeddingdayVariable", "caption": "Write text to variable:",
+                            "options": [
+                                {"label": "No", "value": 0 },
+                                {"label": "Yes", "value": 1 }
+                            ]
+                        },
+                        {"type": "ValidationTextBox", "name": "WeddingdaySeparator", "caption": "Text separator / line break:"}
                     ]
                 }
             ]
@@ -223,6 +247,18 @@
                     "items": [
                         {"type": "ValidationTextBox", "name": "DeathdayFormat", "caption": "Text message format:"},
                         {"type": "Label", "caption": "(Specifier: %E = Entry date, %D = Current date, %N = Name, %Y = Year counter)"}
+                    ]
+                },
+                {
+                    "type": "RowLayout",
+                    "items": [
+                        {"type": "Select", "name": "DeathdayVariable", "caption": "Write text to variable:",
+                            "options": [
+                                {"label": "No", "value": 0 },
+                                {"label": "Yes", "value": 1 }
+                            ]
+                        },
+                        {"type": "ValidationTextBox", "name": "DeathdaySeparator", "caption": "Text separator / line break:"}
                     ]
                 }
             ]
