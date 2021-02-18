@@ -266,11 +266,9 @@ class AlmanacModule extends IPSModule
                 // get format
                 $format = $this->ReadPropertyString(self::DP[$days][6]);
                 $data = $this->LookupDays(time(), self::DP[$days][1]);
-                foreach ($date as $item) {
+                foreach ($data as $item) {
                     $output = $this->FormatDay($item, $format);
-                    if ($visu != 0) {
-                        WFC_PushNotification($visu, 'ALMANAC', $output, 'Calendar', 0);
-                    }
+                    WFC_PushNotification($wfc, $this->Translate('Date'), $output, 'Calendar', 0);
                 }
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);
