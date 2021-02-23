@@ -195,7 +195,7 @@ Ist Todestag?        | Boolean   | Ist am aktuellen Tag ein Todestag?
 Feiertag             | String    | Name des Feriertages oder 'Kein Feiertag'
 Ferien               | String    | Name der Schulferien oder 'Keine Ferien'
 Festtag              | String    | Name des Festtages oder 'Kein Festtag'
-Geburtstag           | String    | Formatierte Ausgabe des Geburtstages oder leer 
+Geburtstag           | String    | Formatierte Ausgabe des Geburtstages oder leer
 Hochzeitstag         | String    | Formatierte Ausgabe des Hochzeitstages oder leer
 Todestag             | String    | Formatierte Ausgabe des Todestages oder leer
 Kalenderwoche        | Integer   | Nummer der aktuelle Kalenderwoche
@@ -250,7 +250,7 @@ __Beispiel__: `ALMANAC_DateInfo(12345, time());`
 > "Vacation": "Keine Ferien",  
 > "IsVacation": false,  
 > "IsBirthday": true,
-> "Birthday": [{"date": 14.2.1970, "years": 48, "name": "Valentin Tag"}],
+> "Birthday": [{"date": 14.2.1970, "years": 51, "name": "Valentin Tag"}],
 > "IsWeddingday": false,
 > "Weddingday": [],
 > "IsDeathday]: false,
