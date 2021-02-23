@@ -156,8 +156,8 @@ Geburtstage ermitteln                     | Status, ob Geburtstage ausgewertet w
 Hochzeitstage ermitteln                   | Status, ob Hochzeitstage ausgewertet werden sollen
 Todestage ermitteln                       | Status, ob Todesstage ausgewertet werden sollen
 Information zum aktuellen Datum ermitteln | Status, ob Informationen zum aktuellen Datum erwünscht sind.
-Webfront Instanz                          | ID des Webfronts, an welches die Push-Nachrichten für Geburts-, Hochzeits- und Todestage gesendet werden soll
-Meldsungsscript                           | Skript ID des Meldungsverwaltungsscripts, weiterführende Infos im Forum: [Meldungsanzeige im Webfront](https://community.symcon.de/t/meldungsanzeige-im-webfront/23473)
+WebFront Instanz                          | ID des Webfronts, an welches die Push-Nachrichten für Geburts-, Hochzeits- und Todestage gesendet werden soll
+Meldsungsskript                           | Skript ID des Meldungsverwaltungsskripts, weiterführende Infos im Forum: [Meldungsanzeige im Webfront](https://community.symcon.de/t/meldungsanzeige-im-webfront/23473)
 
 Aktionsbereich:
 
@@ -268,6 +268,7 @@ v4.0.20210214
 * _NEU_: Verwaltung und Meldung von Hochzeitstagen (Liste)
 * _NEU_: Verwaltung und Meldung von Todesstagen (Liste)
 * _NEU_: Import & Export Funktionalität für Geburts-, Hochzeits- und Todestage
+* _NEU_: Ferienzeitraum kann jetzt mit Ferienname ausgegeben werden
 * _FIX_: Struktur DateInfo erweitert und Teile umbenannt
 * _FIX_: Modul Aliase auf Jahreskalender und Almanach geändert
 
@@ -322,7 +323,8 @@ Ich möchte mich für die Unterstützung bei der Entwicklung dieses Moduls bedan
 * _KaiS_ : für den regen Austausch bei der allgemeinen Modulentwicklung
 * _Nall-chan_ : für die initial Idee mit dem Modul [_Schulferien_](https://github.com/Nall-chan/IPSSchoolHolidays)
 * _Nairda_ : für das Testen der Daten in der Schweiz
-* _tomgr_ : für das generelle Testen und Melden von Bugs
+* _ralf_, _timloe_ : für die Anregung und Austausch für eine IPSView-konforme Formatierung
+* _Attain_. _bumaas_, _tomgr_ : für das generelle Testen und Melden von Bugs
 
 Vielen Dank für die hervorragende und tolle Arbeit!
 
