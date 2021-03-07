@@ -460,7 +460,7 @@ class AlmanacModule extends IPSModule
         $isHoliday = 'Kein Feiertag';
         $now = date('Ymd', $ts);
         foreach ($data as $entry) {
-            if (($now >= $entry['start']) && ($now <= $entry['end'])) {
+            if (($now >= $entry['start']) && ($now < $entry['end'])) {
                 $isHoliday = $entry['event'];
                 $this->SendDebug('HOLIDAY: ', $isHoliday, 0);
                 break;
@@ -499,7 +499,7 @@ class AlmanacModule extends IPSModule
         $data = array_merge($data0, $data1);
         $isVacation = 'Keine Ferien';
         foreach ($data as $entry) {
-            if (($now >= $entry['start']) && ($now <= $entry['end'])) {
+            if (($now >= $entry['start']) && ($now < $entry['end'])) {
                 $isVacation = explode(' ', $entry['event'])[0];
                 $this->SendDebug('VACATION: ', $isVacation, 0);
                 if ($period) {
