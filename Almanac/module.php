@@ -202,7 +202,7 @@ class AlmanacModule extends IPSModule
         // Season (Jahreszeit)
         $this->MaintainVariable('Season', 'Jahreszeit', vtString, '', 50, $isDate);
         // Calculate next date info update interval
-        $this->UpdateTimerInterval('UpdateTimer', 0, 0, 1);
+        $this->UpdateTimerInterval('UpdateTimer', 0, 0, 30);
         // Calculate next notification timer interval
         foreach (self::DP as $key => $value) {
             $data = json_decode($this->ReadPropertyString($value[3]), true);
@@ -377,7 +377,7 @@ class AlmanacModule extends IPSModule
             }
         }
         // calculate next update interval
-        $this->UpdateTimerInterval('UpdateTimer', 0, 0, 1);
+        $this->UpdateTimerInterval('UpdateTimer', 0, 0, 30);
     }
 
     /**
