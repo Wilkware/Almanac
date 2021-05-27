@@ -2,7 +2,7 @@
 
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 [![Product](https://img.shields.io/badge/Symcon%20Version-5.2-blue.svg)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-4.2.20210406-orange.svg)](https://github.com/Wilkware/IPSymconAlmanac)
+[![Version](https://img.shields.io/badge/Modul%20Version-4.3.20210527-orange.svg)](https://github.com/Wilkware/IPSymconAlmanac)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Actions](https://github.com/Wilkware/IPSymconAlmanac/workflows/Check%20Style/badge.svg)](https://github.com/Wilkware/IPSymconAlmanac/actions)
 
@@ -259,6 +259,12 @@ __Beispiel__: `ALMANAC_DateInfo(12345, time());`
 
 ### 8. Versionshistorie
 
+v4.3.20210527
+
+* _FIX_: Fehler beim Auswerten der erweiterten Einstellungen gefixt
+* _NEU_: Debugmeldungen erweitert und vereinheitlicht
+
+
 v4.2.20210406
 
 * _FIX_: Mitternachts-Timer hat vereinzelt zu zeitig ausgelöst
@@ -333,6 +339,7 @@ Ich möchte mich für die Unterstützung bei der Entwicklung dieses Moduls bedan
 * _Nairda_ : für das Testen der Daten in der Schweiz
 * _ralf_, _timloe_ : für die Anregung und Austausch für eine IPSView-konforme Formatierung
 * _Attain_. _bumaas_, _tomgr_ : für das generelle Testen und Melden von Bugs
+* _yansoph_ : für das Testen und schnelle Feedback
 
 Vielen Dank für die hervorragende und tolle Arbeit!
 

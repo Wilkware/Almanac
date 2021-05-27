@@ -130,7 +130,7 @@ class AlmanacModule extends IPSModule
         // Schools
         $form['elements'][3]['items'][1]['items'][1]['options'] = $this->GetSchool($data[$schoolCountry], $schoolRegion);
         // Debug output
-        //$this->SendDebug('GetConfigurationForm', $form);
+        //$this->SendDebug(__FUNCTION__, $form);
         return json_encode($form);
     }
 
@@ -161,7 +161,7 @@ class AlmanacModule extends IPSModule
         $isWeddingday &= $this->ReadPropertyInteger('WeddingdayVariable');
         $isDeathday &= $this->ReadPropertyInteger('DeathdayVariable');
         // Debug
-        $this->SendDebug('ApplyChanges', 'public country=' . $publicCountry . ', public holiday=' . $publicRegion .
+        $this->SendDebug(__FUNCTION__, 'public country=' . $publicCountry . ', public holiday=' . $publicRegion .
                         ', school country=' . $schoolCountry . ', school vacation=' . $schoolRegion . ', school name=' . $schoolName .
                         ', updates=' . ($isHoliday ? 'Y' : 'N') . '|' . ($isVacation ? 'Y' : 'N') . '|' . ($isFestive ? 'Y' : 'N') . '|' . ($isDate ? 'Y' : 'N'), 0);
         // Profile
@@ -219,7 +219,7 @@ class AlmanacModule extends IPSModule
     public function RequestAction($ident, $value)
     {
         // Debug output
-        $this->SendDebug('RequestAction', $ident . ' => ' . $value);
+        $this->SendDebug(__FUNCTION__, $ident . ' => ' . $value);
         // Ident == OnXxxxxYyyyy
         switch ($ident) {
             case 'OnPublicCountry':
@@ -255,7 +255,7 @@ class AlmanacModule extends IPSModule
      */
     public function Notify(string $days)
     {
-        $this->SendDebug('Notify', $days);
+        $this->SendDebug(__FUNCTION__, $days);
         // Notify enabled?
         $isDay = $this->ReadPropertyInteger(self::DP[$days][2]);
         // Webfront configured?
@@ -272,7 +272,7 @@ class AlmanacModule extends IPSModule
                 }
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);
-                $this->SendDebug('ERROR NOTIFY', $ex->getMessage(), 0);
+                $this->SendDebug(__FUNCTION__, 'ERROR: ' . $ex->getMessage(), 0);
             }
         }
         // Calculate next notification timer interval
@@ -294,9 +294,9 @@ class AlmanacModule extends IPSModule
         $isFestive = $this->ReadPropertyBoolean('UpdateFestive');
         $isDate = $this->ReadPropertyBoolean('UpdateDate');
         // B-W-D-Days
-        $isBirth = $this->ReadPropertyInteger('BirthdayMessage');
-        $isWedding = $this->ReadPropertyInteger('WeddingdayMessage');
-        $isDeath = $this->ReadPropertyInteger('DeathdayMessage');
+        $isBirth = $this->ReadPropertyBoolean('UpdateBirthday');
+        $isWedding = $this->ReadPropertyBoolean('UpdateWedding');
+        $isDeath = $this->ReadPropertyBoolean('UpdateDeath');
         // MessageScript
         $script = $this->ReadPropertyInteger('ScriptMessage');
         // Everything to do?
@@ -310,7 +310,7 @@ class AlmanacModule extends IPSModule
                 $this->SetValueBoolean('IsHoliday', $date['IsHoliday']);
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);
-                $this->SendDebug('ERROR HOLIDAY', $ex->getMessage(), 0);
+                $this->SendDebug(__FUNCTION__, 'ERROR HOLIDAY: ' . $ex->getMessage(), 0);
             }
         }
         // School Vacations
@@ -320,7 +320,7 @@ class AlmanacModule extends IPSModule
                 $this->SetValueBoolean('IsVacation', $date['IsVacation']);
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);
-                $this->SendDebug('ERROR VACATION', $ex->getMessage(), 0);
+                $this->SendDebug(__FUNCTION__, 'ERROR VACATION: ' . $ex->getMessage(), 0);
             }
         }
         // Festive Days
@@ -330,7 +330,7 @@ class AlmanacModule extends IPSModule
                 $this->SetValueBoolean('IsFestive', $date['IsFestive']);
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);
-                $this->SendDebug('ERROR FESTIVE', $ex->getMessage(), 0);
+                $this->SendDebug(__FUNCTION__, 'ERROR FESTIVE: ' . $ex->getMessage(), 0);
             }
         }
         // General Date Info
@@ -346,7 +346,7 @@ class AlmanacModule extends IPSModule
                 $this->SetValueString('Season', $date['Season']);
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);
-                $this->SendDebug('ERROR DATE', $ex->getMessage(), 0);
+                $this->SendDebug(__FUNCTION__, 'ERROR DATE: ' . $ex->getMessage(), 0);
             }
         }
         // Birthdays
@@ -355,7 +355,7 @@ class AlmanacModule extends IPSModule
                 $this->UpdateDay(self::DP[self::BD], $date, $script);
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);
-                $this->SendDebug('ERROR BIRTH', $ex->getMessage(), 0);
+                $this->SendDebug(__FUNCTION__, 'ERROR BIRTH: ' . $ex->getMessage(), 0);
             }
         }
         // Wedding days
@@ -364,7 +364,7 @@ class AlmanacModule extends IPSModule
                 $this->UpdateDay(self::DP[self::WD], $date, $script);
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);
-                $this->SendDebug('ERROR WEDDING', $ex->getMessage(), 0);
+                $this->SendDebug(__FUNCTION__, 'ERROR WEDDING: ' . $ex->getMessage(), 0);
             }
         }
         // Death days
@@ -373,7 +373,7 @@ class AlmanacModule extends IPSModule
                 $this->UpdateDay(self::DP[self::DD], $date, $script);
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);
-                $this->SendDebug('ERROR DEATH', $ex->getMessage(), 0);
+                $this->SendDebug(__FUNCTION__, 'ERROR DEATH: ' . $ex->getMessage(), 0);
             }
         }
         // calculate next update interval
@@ -391,7 +391,7 @@ class AlmanacModule extends IPSModule
      */
     public function DateInfo(int $ts): string
     {
-        $this->SendDebug('DATE: ', date('d.m.Y', $ts));
+        $this->SendDebug(__FUNCTION__, 'DATE: ' . date('d.m.Y', $ts));
         // Output array
         $date = [];
 
@@ -462,7 +462,7 @@ class AlmanacModule extends IPSModule
         foreach ($data as $entry) {
             if (($now >= $entry['start']) && ($now < $entry['end'])) {
                 $isHoliday = $entry['event'];
-                $this->SendDebug('HOLIDAY: ', $isHoliday, 0);
+                $this->SendDebug(__FUNCTION__, 'HOLIDAY: ' . $isHoliday, 0);
                 break;
             }
         }
@@ -501,7 +501,7 @@ class AlmanacModule extends IPSModule
         foreach ($data as $entry) {
             if (($now >= $entry['start']) && ($now < $entry['end'])) {
                 $isVacation = explode(' ', $entry['event'])[0];
-                $this->SendDebug('VACATION: ', $isVacation, 0);
+                $this->SendDebug(__FUNCTION__, 'VACATION: ' . $isVacation, 0);
                 if ($period) {
                     $sp = substr($entry['start'], 6, 2) . '.' . substr($entry['start'], 4, 2) . '.' . substr($entry['start'], 0, 4);
                     $ep = substr($entry['end'], 6, 2) . '.' . substr($entry['end'], 4, 2) . '.' . substr($entry['end'], 0, 4);
@@ -548,7 +548,7 @@ class AlmanacModule extends IPSModule
         $data = json_decode(file_get_contents(__DIR__ . '/data.json'), true);
         // Region Options
         $region = $data[$cid][0]['regions'][0]['ident'];
-        $this->SendDebug('DATA: ', $region, 0);
+        $this->SendDebug(__FUNCTION__, 'REGION: ' . $region, 0);
         $this->UpdateFormField('SchoolRegion', 'value', $region);
         $this->UpdateFormField('SchoolRegion', 'options', json_encode($this->GetRegions($data[$cid])));
         // School Options
@@ -615,7 +615,7 @@ class AlmanacModule extends IPSModule
      */
     protected function OnDeleteDays($value)
     {
-        $this->SendDebug('OnDeleteDays', $value);
+        $this->SendDebug(__FUNCTION__, $value);
         // with days
         $property = self::DP[$value][1];
         $data = [];
@@ -627,9 +627,9 @@ class AlmanacModule extends IPSModule
      */
     protected function ProcessHookData()
     {
-        //$this->SendDebug('ProcessHookData', $_GET);
+        //$this->SendDebug(__FUNCTION__, $_GET);
         $export = isset($_GET['export']) ? $_GET['export'] : '';
-        //$this->SendDebug('ProcessHookData', 'Export: ' . $export);
+        //$this->SendDebug(__FUNCTION__, 'Export: ' . $export);
         $property = '';
         $filename = '';
         switch ($export) {
@@ -649,7 +649,7 @@ class AlmanacModule extends IPSModule
                 return;
         }
         // get the current entries
-        $this->SendDebug('ProcessHookData', $this->ReadPropertyString($property));
+        $this->SendDebug(__FUNCTION__, $this->ReadPropertyString($property));
         $list = json_decode($this->ReadPropertyString($property), true);
         if (empty($list) || !is_array($list)) {
             $list = [];
@@ -706,7 +706,7 @@ class AlmanacModule extends IPSModule
                     $text = 'ERROR:';
             }
             $dates[$text] = $date['name'];
-            //$this->SendDebug('Lookup', $text.' - '.$date['name']);
+            //$this->SendDebug(__FUNCTION__, $text.' - '.$date['name']);
         }
         // lookup for given date
         $day = date('Ymd', $ts);
@@ -837,11 +837,10 @@ class AlmanacModule extends IPSModule
         // check ... was semicolon
         $cols = max(array_map('count', $data));
         if ($cols != 2) {
-            $this->SendDebug('ImportCSV', 'No CSV format found!');
+            $this->SendDebug(__FUNCTION__, 'No CSV format found!');
             return;
         }
         // get the current entries
-        //$this->SendDebug("I1", $this->ReadPropertyString('Birthdays'));
         $list = json_decode($this->ReadPropertyString($property), true);
         if (empty($list) || !is_array($list)) {
             $list = [];
@@ -866,7 +865,6 @@ class AlmanacModule extends IPSModule
         // remove index key
         $data = array_values($data);
         // Update list values
-        //$this->SendDebug("I2", json_encode($data));
         $this->UpdateFormField($property, 'values', json_encode($data));
     }
 
@@ -879,13 +877,13 @@ class AlmanacModule extends IPSModule
     private function ExtractDates(string $url): array
     {
         // Debug output
-        $this->SendDebug('LINK: ', $url, 0);
+        $this->SendDebug(__FUNCTION__, 'LINK: ' . $url, 0);
         // read API URL
         $json = @file_get_contents($url);
         // error handling
         if ($json === false) {
             $this->LogMessage($this->Translate('Could not load json data!'), KL_ERROR);
-            $this->SendDebug('ExtractDates', 'ERROR LOAD DATA', 0);
+            $this->SendDebug(__FUNCTION__, 'ERROR LOAD DATA', 0);
             return [];
         }
         // json decode
