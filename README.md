@@ -264,7 +264,6 @@ v4.3.20210527
 * _FIX_: Fehler beim Auswerten der erweiterten Einstellungen gefixt
 * _NEU_: Debugmeldungen erweitert und vereinheitlicht
 
-
 v4.2.20210406
 
 * _FIX_: Mitternachts-Timer hat vereinzelt zu zeitig ausgelöst
