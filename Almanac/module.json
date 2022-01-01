@@ -1,14 +1,15 @@
 {
-  "id": "{6DFFD7EB-733C-4EDB-B116-174A0DC30E49}",
-  "name": "Almanac Module",
-  "type": 3,
-  "vendor": "",
-  "aliases":
-  [
+    "id": "{6DFFD7EB-733C-4EDB-B116-174A0DC30E49}",
+    "name": "Almanac Module",
+    "type": 3,
+    "vendor": "",
+    "aliases":
+    [
     "Jahreskalender", "Almanach"
-  ],
-  "parentRequirements": [],
-  "childRequirements": [],
-  "implemented": [],
-  "prefix": "ALMANAC"
+    ],
+    "url": "https://wilkware.de/ip-symcon-module/almanac/",
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "ALMANAC"
 }

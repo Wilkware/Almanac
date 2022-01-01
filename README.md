@@ -1,14 +1,16 @@
 # Almanac (Jahreskalender)
 
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
-[![Product](https://img.shields.io/badge/Symcon%20Version-5.2-blue.svg)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-4.3.20210527-orange.svg)](https://github.com/Wilkware/IPSymconAlmanac)
+[![Product](https://img.shields.io/badge/Symcon%20Version-6.0-blue.svg)](https://www.symcon.de/produkt/)
+[![Version](https://img.shields.io/badge/Modul%20Version-5.0.20220101-orange.svg)](https://github.com/Wilkware/IPSymconAlmanac)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Actions](https://github.com/Wilkware/IPSymconAlmanac/workflows/Check%20Style/badge.svg)](https://github.com/Wilkware/IPSymconAlmanac/actions)
 
 Dieses Modul bietet jährliche Kalenderinformationen wie Feiertage, Schulferien und Festtage.  
-Außerdem werden Informationen wie Arbeitstage im Monat, Schaltjahr, Jahreszeit oder ob Wochenende ist aktuell gehalten.
-Darüber hinaus kann man Geburtstage, Hochzeitstage und Todestage verwalten und sich täglich informieren lassen.
+Außerdem werden Informationen wie Arbeitstage im Monat, Schaltjahr, Jahreszeit oder ob Wochenende ist aktuell gehalten.  
+Darüber hinaus kann man Geburtstage, Hochzeitstage und Todestage verwalten und sich täglich informieren lassen.  
+Auch verschiedene astronomische Daten wie Mond- und Sonnenfinsternis oder die Daten der Mondphasen (Neumond, zunehmenden Mond, Vollmond und abnehmenden Mond) werden bereitgestellt.  
+Ein Zitat des Tages rundet die Funktionalität des Modules ab.
 
 ## Inhaltverzeichnis
 
@@ -29,7 +31,9 @@ Derzeit unterstützt das Modul auch eine Vielzahl verschiedenster religiöser un
 Als Gedächtnisstütze können die jährlichen Geburtstage, Hochzeitstage aber auch Todestage verwaltet werden und man
 kann sich täglich informieren lassen ob ein Termin ansteht (Meldungsverwaltung oder via Webfront-Notification).  
 Darüber hinaus werden mittels der PHP Funktion "date" verschiedene Informationen für das aktuelle Datum ermittelt.  
-In Kombination mit den ermittelten Feiertagen werden auch die Arbeitstage im aktuellen Monat bereitgestellt.
+In Kombination mit den ermittelten Feiertagen werden auch die Arbeitstage im aktuellen Monat bereitgestellt.  
+Spezielle astronomische Ereignisse wie Mond- oder Sonnenfinsternis und das Datum der 4 verschiedenen Mondphasen am aktuellen Tag wird eingeblendet.
+Aber auch ein "Zitat des Tages" kann abgerufen werden.
 
 Folgende Informationen werden ermittelt:
 
@@ -45,6 +49,9 @@ Folgende Informationen werden ermittelt:
 * Wochenende oder nicht
 * Nummer der Kalenderwoche
 * Jahreszeit (Frühling, Sommer, Herbst und Winter)
+* Ist eine Mond- oder Sonnenfinsternis
+* Tritt eine Mondphasen (Neumond, zunehmenden Mond, Vollmond oder abnehmenden Mond) ein
+* Zitat des Tages (Spruch und Autor)
 
 All diese Information können auch über die Methode [ALMANAC_DateInfo](#7-php-befehlsreferenz) als Array abgeholt werden.
 
@@ -58,7 +65,7 @@ IsWeekend             | bool    | TRUE, wenn Wochenende ist (SA-SO)
 WeekNumber            | int     | Kalenderwochennummer
 DaysInMonth           | int     | Anzahl Tage im Monat
 DayOfYear             | int     | Tag im Jahr (1-366)
-Season                | string  | Name der Jahreszeit ("Frühling", "Sommer", "Herbst" oder "Winter")
+Season                | string  | Name der Jahreszeit ("Spring", "Summer", "Fall" oder "Winter")
 Festive               | string  | Name des Festtags, oder "Kein Festtag"
 IsFestive             | bool    | TRUE, wenn Festtag ist
 WorkingDays           | int     | Arbeitstage im Monat
@@ -68,14 +75,19 @@ Vacation              | string  | Name der Schulferien, oder "Keine Ferien"
 IsVacation            | bool    | TRUE, wenn Schulferienzeit ist
 IsBirthday            | bool    | TRUE, wenn Geburtstag(e) ansteht
 Birthday              | array   | LEER, oder Feld mit Datum, Jahrestag und Name
-Isweddingday          | bool    | TRUE, wenn Hochzeitstag(e) ansteht
+IsWeddingday          | bool    | TRUE, wenn Hochzeitstag(e) ansteht
 Weddingday            | array   | LEER, oder Feld mit Datum, Jahrestag und Name
 IsDeathday            | bool    | TRUE, wenn Todestag(e) ansteht
 Deathday              | array   | LEER, oder Feld mit Datum, Jahrestag und Name
+IsEclipse             | bool    | TRUE, wenn Mond- oder Sonnenfinsternis ist
+Eclipse               | array   | LEER, oder Feld mit Name, Datum, Uhrzeit
+IsMoonphase           | bool    | TRUE, wenn Mondphase ist
+Moonphase             | array   | LEER, oder Feld mit Name, Datum, Uhrzeit
+QuoteOfTheDay         | array   | Feld mit Zitat und Autor
 
 ### 2. Voraussetzungen
 
-* IP-Symcon ab Version 5.2
+* IP-Symcon ab Version 6.0
 
 ### 3. Installation
 
@@ -145,6 +157,14 @@ Format der Textmitteilung     | Frei wählbares Format der zu sendenden Nachrich
 Text in Variable schreiben    | Auswahl ob Nachricht in Variable geschrieben werden soll
 Texttrennzeichen/Zeilenumbruch| Trennzeichen bei mehreren Ereignissen
 
+> Verschiednes ...
+
+Name                                                   | Beschreibung
+------------------------------------------------------ | ----------------------------------------------------------
+Textausgabeformat für Mond- und Sonnenfinsternisse     | Frei wählbares Format für die Ereignisausgabe
+Textausgabeformat für Mondphasen                       | Frei wählbares Format für die Ereignisausgabe
+Textausgabeformat für Zitat des Tages                  | Frei wählbares Format für die Zitatsausgabe
+
 > Erweiterte Einstellungen ...
 
 Name                                      | Beschreibung
@@ -155,6 +175,9 @@ Festtage ermitteln                        | Status, ob Ermittlung der Festtage e
 Geburtstage ermitteln                     | Status, ob Geburtstage ausgewertet werden sollen
 Hochzeitstage ermitteln                   | Status, ob Hochzeitstage ausgewertet werden sollen
 Todestage ermitteln                       | Status, ob Todesstage ausgewertet werden sollen
+Finsternisse ermitteln                    | Status, ob Ermittlung von Mond- oder Sonnenfinsternisse erwünscht ist
+Mondphasen ermitteln                      | Status, ob Ermittlung von Mondphasen erwünscht ist
+Zitat des Tages ermitteln                 | Status, ob Zitat des Tages ausgegeben werden soll
 Information zum aktuellen Datum ermitteln | Status, ob Informationen zum aktuellen Datum erwünscht sind.
 WebFront Instanz                          | ID des Webfronts, an welches die Push-Nachrichten für Geburts-, Hochzeits- und Todestage gesendet werden soll
 Meldsungsskript                           | Skript ID des Meldungsverwaltungsskripts, weiterführende Infos im Forum: [Meldungsanzeige im Webfront](https://community.symcon.de/t/meldungsanzeige-im-webfront/23473)
@@ -208,7 +231,8 @@ Folgende Profile werden angelegt:
 
 Name                 | Typ       | Beschreibung
 -------------------- | --------- | ----------------
-ALMANAC.Question     | Boolean   | FALSE = Nein / TRUE = Ja
+ALMANAC.Question     | Boolean   | FALSE = Nein(No) / TRUE = Ja(Yes)
+ALMANAC.Sesaon       | String    | Winter(Winter), Frühling(Spring), Herbst(Fall), Sommer(Summer)
 
 ### 6. WebFront
 
@@ -249,15 +273,33 @@ __Beispiel__: `ALMANAC_DateInfo(12345, time());`
 > "IsHoliday": false,  
 > "Vacation": "Keine Ferien",  
 > "IsVacation": false,  
-> "IsBirthday": true,
-> "Birthday": [{"date": 14.2.1970, "years": 51, "name": "Valentin Tag"}],
-> "IsWeddingday": false,
-> "Weddingday": [],
-> "IsDeathday]: false,
-> "Deathday": []
+> "IsBirthday": true,  
+> "Birthday": [{"date": 14.2.1970, "years": 51, "name": "Valentin Tag"}],  
+> "IsWeddingday": false,  
+> "Weddingday": [],  
+> "IsDeathday]: false,  
+> "Deathday": []  
+> "IsEclipse": true,  
+> "Eclipse": [{"name": "Partielle Sonnenfinsternis", "date": "30.04.2022", "time": "22:42:00"}],  
+> "IsMoonphase": true,  
+> "Moonphase": [{"name": "Neumond", "date": "30.04.2022", "time": "22:34:00"}],  
+> "QuoteOfTheDay": [{"quote": "Bist du wütend, zähl bis vier, hilft das nicht, dann explodier.", "author": "Wilhelm Busch"}]  
 }  
 
 ### 8. Versionshistorie
+
+v5.0.20220101
+
+* _NEU_: Kompatibilität auf IPS 6.0 hoch gesetzt
+* _NEU_: String-Profile aufgenommen (z.B. für Jahreszeit)
+* _NEU_: Bibliotheks- bzw. Modulinfos vereinheitlicht
+* _NEU_: Engliche Übersetzungen aufgenommen bzw. vervollständigt
+* _NEU_: Konfigurationsdialog überarbeitet (v6 Möglichkeiten genutzt)
+* _NEU_: Mondphasen integriert
+* _NEU_: Mond- und Sonnenfinsternisse integriert
+* _NEU_: Zitat des Tages integriert
+* _FIX_: Fehler in Webhook Helper korriegiert
+* _FIX_: Fehler bei der Ausgabe der Jahreszeit korriegiert
 
 v4.3.20210527
 
@@ -344,14 +386,18 @@ Vielen Dank für die hervorragende und tolle Arbeit!
 
 ## Entwickler
 
-* Heiko Wilknitz ([@wilkware](https://github.com/wilkware))
+Seit nunmehr über 10 Jahren fasziniert mich das Thema Haussteuerung. In den letzten Jahren betätige ich mich auch intensiv in der IP-Symcon Community und steuere dort verschiedenste Skript und Module bei. Ihr findet mich dort unter dem Namen @pitti ;-)
+
+[![GitHub](https://img.shields.io/badge/GitHub-@wilkware-181717.svg?logo=github)](https://wilkware.github.io/)
 
 ## Spenden
 
-Die Software ist für die nicht kommerzielle Nutzung kostenlos, Schenkungen als Unterstützung für den Entwickler bitte hier:
+Die Software ist für die nicht kommzerielle Nutzung kostenlos, über eine Spende bei Gefallen des Moduls würde ich mich freuen.
 
-[![License](https://img.shields.io/badge/Einfach%20spenden%20mit-PayPal-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8816166)
+[![PayPal](https://img.shields.io/badge/PayPal-spenden-00457C.svg?logo=paypal)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8816166)
 
-### Lizenz
+## Lizenz
 
-[![Licence](https://licensebuttons.net/i/l/by-nc-sa/transparent/00/00/00/88x31-e.png)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+Namensnennung - Nicht-kommerziell - Weitergabe unter gleichen Bedingungen 4.0 International
+
+[![Licence](https://img.shields.io/badge/License-CC_BY--NC--SA_4.0-EF9421.svg?logo=creativecommons)](https://creativecommons.org/licenses/by-nc-sa/4.0/)

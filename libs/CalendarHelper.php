@@ -104,7 +104,7 @@ trait CalendarHelper
     /**
      * Adds functionality to serialize arrays and objects.
      *
-     * @param int    $ts Timestamp.
+     * @param int $ts Timestamp.
      * @return string Season name (Spring, Summer, Fall, winter).
      */
     protected function Season($ts)
@@ -119,5 +119,6 @@ trait CalendarHelper
             }
             $season = $key;
         }
+        return $season;
     }
 }

@@ -40,10 +40,12 @@ trait WebhookHelper
                     $this->SendDebug('RegisterHook', 'Update hook:' . $hook . $this->InstanceID);
                 }
             }
-            if (!$found) {
+            // Neww Hook?
+            if ($found == false) {
                 $hooks[] = ['Hook' => $hook, 'TargetID' => $this->InstanceID];
                 $this->SendDebug('RegisterHook', 'New hook:' . $hook . $this->InstanceID);
             }
+            // Update or Register
             IPS_SetProperty($ids[0], 'Hooks', json_encode($hooks));
             IPS_ApplyChanges($ids[0]);
         }
@@ -62,12 +64,13 @@ trait WebhookHelper
             $found = false;
             foreach ($hooks as $key => $value) {
                 if ($value['Hook'] == $hook) {
-                    $found = $index;
+                    $found = true;
                     $this->SendDebug('UnregisterHook', $hook . $this->InstanceID);
                     break;
                 }
             }
-            if ($found !== false) {
+            // Unregister 
+            if ($found == true) {
                 array_splice($hooks, $key, 1);
                 IPS_SetProperty($ids[0], 'Hooks', json_encode($hooks));
                 IPS_ApplyChanges($ids[0]);
