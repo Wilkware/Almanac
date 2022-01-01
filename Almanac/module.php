@@ -560,7 +560,7 @@ class AlmanacModule extends IPSModule
         }
 
         // --------------------------------------------------------------------
-        // get vication data
+        // get vacation data
         // --------------------------------------------------------------------
         $period = $this->ReadPropertyBoolean('SchoolPeriod');
         $country = $this->ReadPropertyString('SchoolCountry');
@@ -574,17 +574,17 @@ class AlmanacModule extends IPSModule
         }
         $url = str_replace('REGION', $region, $url);
         // check vacation
-        if ((int) date('md', $ts) < 30) {
-            $year = date('Y', $ts) - 1;
-            $link = str_replace('YEAR', $year, $url);
+        if ((int) date('md', $ts) < 110) {
+            $prev = $year - 1;
+            $link = str_replace('YEAR', $prev, $url);
             $data0 = $this->ExtractDates($link);
         } else {
             $data0 = [];
         }
-        $year = date('Y', $ts);
         $link = str_replace('YEAR', $year, $url);
         $data1 = $this->ExtractDates($link);
         $data = array_merge($data0, $data1);
+        $this->SendDebug(__FUNCTION__, $data);
         $isVacation = 'Keine Ferien';
         foreach ($data as $entry) {
             if (($now >= $entry['start']) && ($now < $entry['end'])) {
