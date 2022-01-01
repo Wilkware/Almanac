@@ -16,14 +16,14 @@ class AlmanacModule extends IPSModule
     /**
      * Supported Dates (BD = Birthdays, WD = Weddingdays, DD = Deathdays)
      */
-    const BD = 'BD';
-    const WD = 'WD';
-    const DD = 'DD';
+    private const BD = 'BD';
+    private const WD = 'WD';
+    private const DD = 'DD';
 
     /**
      * Date Properties (Form)
      */
-    const DP = [
+    private const DP = [
         self::BD => ['UpdateBirth', 'Birthdays', 'BirthdayNotification', 'BirthdayTime', 'BirthdayMessage', 'BirthdayDuration', 'BirthdayFormat', 'BirthdayVariable', 'BirthdaySeparator'],
         self::WD => ['UpdateWedding', 'Weddingdays', 'WeddingdayNotification', 'WeddingdayTime', 'WeddingdayMessage', 'WeddingdayDuration', 'WeddingdayFormat', 'WeddingdayVariable', 'BirthdaySeparator'],
         self::DD => ['UpdateDeath', 'Deathdays', 'DeathdayNotification', 'DeathdayTime', 'DeathdayMessage', 'DeathdayDuration', 'DeathdayFormat', 'DeathdayVariable', 'DeathdaySeparator'],
@@ -414,8 +414,7 @@ class AlmanacModule extends IPSModule
                 if ($date['IsEclipse'] == true) {
                     $format = $this->ReadPropertyString('EclipseFormat');
                     $this->SetValueString('Eclipse', $this->FormatEvent($date['Eclipse'], $format));
-                }
-                else {
+                } else {
                     $this->SetValueString('Eclipse', '');
                 }
             } catch (Exception $ex) {
@@ -430,8 +429,7 @@ class AlmanacModule extends IPSModule
                 if ($date['IsMoonphase'] == true) {
                     $format = $this->ReadPropertyString('MoonphaseFormat');
                     $this->SetValueString('Moonphase', $this->FormatEvent($date['Moonphase'], $format));
-                }
-                else {
+                } else {
                     $this->SetValueString('Moonphase', '');
                 }
             } catch (Exception $ex) {
@@ -657,7 +655,7 @@ class AlmanacModule extends IPSModule
         $link = str_replace('COUNTRY', 'de', $url);
         $data = $this->ExtractDates($link, 'quotes');
         $count = count($data);
-        $qotd = random_int(0, $count-1);
+        $qotd = random_int(0, $count - 1);
         $this->SendDebug(__FUNCTION__, 'QOTD: #' . $qotd);
         $date['QuoteOfTheDay'] = ['quote' => $data[$qotd]['quote'], 'author' => $data[$qotd]['author']];
 
@@ -1050,7 +1048,7 @@ class AlmanacModule extends IPSModule
      * @param string $url API URL to receive event information.
      * @return array  array, with name, start and end date
      */
-    private function ExtractDates(string $url, string $info = 'events') : array
+    private function ExtractDates(string $url, string $info = 'events'): array
     {
         // Debug output
         $this->SendDebug(__FUNCTION__, 'LINK: ' . $url, 0);

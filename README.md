@@ -291,6 +291,7 @@ __Beispiel__: `ALMANAC_DateInfo(12345, time());`
 v5.0.20220101
 
 * _NEU_: Kompatibilität auf IPS 6.0 hoch gesetzt
+* _NEU_: Update auf Version 3 vom PHP Coding Standards Fixer
 * _NEU_: String-Profile aufgenommen (z.B. für Jahreszeit)
 * _NEU_: Bibliotheks- bzw. Modulinfos vereinheitlicht
 * _NEU_: Engliche Übersetzungen aufgenommen bzw. vervollständigt

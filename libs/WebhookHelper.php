@@ -69,7 +69,7 @@ trait WebhookHelper
                     break;
                 }
             }
-            // Unregister 
+            // Unregister
             if ($found == true) {
                 array_splice($hooks, $key, 1);
                 IPS_SetProperty($ids[0], 'Hooks', json_encode($hooks));
