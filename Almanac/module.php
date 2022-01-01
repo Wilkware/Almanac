@@ -46,7 +46,7 @@ class AlmanacModule extends IPSModule
         $this->RegisterPropertyString('SchoolName', 'alle-schulen');
         $this->RegisterAttributeString('SchoolURL', 'https://api.asmium.de/vacation/YEAR/COUNTRY/REGION/');
         // Birthdays
-        $this->RegisterPropertyString('Birthdays', '');
+        $this->RegisterPropertyString('Birthdays', '[]');
         $this->RegisterPropertyInteger('BirthdayNotification', 0);
         $this->RegisterPropertyString('BirthdayTime', '{"hour":9,"minute":0,"second":0}');
         $this->RegisterPropertyInteger('BirthdayMessage', 0);
@@ -55,7 +55,7 @@ class AlmanacModule extends IPSModule
         $this->RegisterPropertyInteger('BirthdayVariable', 0);
         $this->RegisterPropertyString('BirthdaySeparator', ', ');
         // Wedding days
-        $this->RegisterPropertyString('Weddingdays', '');
+        $this->RegisterPropertyString('Weddingdays', '[]');
         $this->RegisterPropertyInteger('WeddingdayNotification', 0);
         $this->RegisterPropertyString('WeddingdayTime', '{"hour":9,"minute":0,"second":0}');
         $this->RegisterPropertyInteger('WeddingdayMessage', 0);
@@ -64,7 +64,7 @@ class AlmanacModule extends IPSModule
         $this->RegisterPropertyInteger('WeddingdayVariable', 0);
         $this->RegisterPropertyString('WeddingdaySeparator', ', ');
         // Death days
-        $this->RegisterPropertyString('Deathdays', '');
+        $this->RegisterPropertyString('Deathdays', '[]');
         $this->RegisterPropertyInteger('DeathdayNotification', 0);
         $this->RegisterPropertyString('DeathdayTime', '{"hour":9,"minute":0,"second":0}');
         $this->RegisterPropertyInteger('DeathdayMessage', 0);
