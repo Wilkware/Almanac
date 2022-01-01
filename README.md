@@ -294,13 +294,14 @@ v5.0.20220101
 * _NEU_: Update auf Version 3 vom PHP Coding Standards Fixer
 * _NEU_: String-Profile aufgenommen (z.B. für Jahreszeit)
 * _NEU_: Bibliotheks- bzw. Modulinfos vereinheitlicht
-* _NEU_: Engliche Übersetzungen aufgenommen bzw. vervollständigt
+* _NEU_: Englische Übersetzungen aufgenommen bzw. vervollständigt
 * _NEU_: Konfigurationsdialog überarbeitet (v6 Möglichkeiten genutzt)
 * _NEU_: Mondphasen integriert
 * _NEU_: Mond- und Sonnenfinsternisse integriert
 * _NEU_: Zitat des Tages integriert
-* _FIX_: Fehler in Webhook Helper korriegiert
-* _FIX_: Fehler bei der Ausgabe der Jahreszeit korriegiert
+* _FIX_: Fehler in Webhook Helper korrigiert
+* _FIX_: Fehler bei der Ausgabe der Jahreszeit korrigiert
+* _FIX_: Leere JSON-Liste korrekt initialisiert
 
 v4.3.20210527
 
@@ -382,6 +383,7 @@ Ich möchte mich für die Unterstützung bei der Entwicklung dieses Moduls bedan
 * _ralf_, _timloe_ : für die Anregung und Austausch für eine IPSView-konforme Formatierung
 * _Attain_. _bumaas_, _tomgr_ : für das generelle Testen und Melden von Bugs
 * _yansoph_ : für das Testen und schnelle Feedback
+* _Dr.Niels_: für den Pull Request zum Initialisieren der leeren JSON-Listen
 
 Vielen Dank für die hervorragende und tolle Arbeit!
 
