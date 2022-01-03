@@ -653,7 +653,7 @@ class AlmanacModule extends IPSModule
             }
         }
         $date['Moonphase'] = $isMoonphase;
-        $date['IsMoonphase'] = (count($isMoonphase) == 0) ? false : true;
+        $date['IsMoonphase'] = $hit;
 
         // --------------------------------------------------------------------
         // get quote of the day
