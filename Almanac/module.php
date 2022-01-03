@@ -73,8 +73,8 @@ class AlmanacModule extends IPSModule
         $this->RegisterPropertyInteger('DeathdayVariable', 0);
         $this->RegisterPropertyString('DeathdaySeparator', ', ');
         // Various
-        $this->RegisterPropertyString('EclipseFormat', $this->Translate('%N at %T (%D)'));
-        $this->RegisterPropertyString('MoonphaseFormat', $this->Translate('%N at %T (%D)'));
+        $this->RegisterPropertyString('EclipseFormat', $this->Translate('Next %N is on %D at %T o\'clock'));
+        $this->RegisterPropertyString('MoonphaseFormat', $this->Translate('Next %N on %D at %T o\'clock'));
         $this->RegisterAttributeString('AstroURL', 'https://api.asmium.de/astronomy/YEAR/COUNTRY/EVENT/');
         $this->RegisterPropertyString('QuoteFormat', $this->Translate('„%Q“ - %A'));
         $this->RegisterAttributeString('QuoteURL', 'https://api.asmium.de/quotes/de/');
@@ -411,7 +411,7 @@ class AlmanacModule extends IPSModule
         if ($isEclipse == true) {
             try {
                 $this->SetValueBoolean('IsEclipse', $date['IsEclipse']);
-                if ($date['IsEclipse'] == true) {
+                if (count($date['Eclipse']) > 0) {
                     $format = $this->ReadPropertyString('EclipseFormat');
                     $this->SetValueString('Eclipse', $this->FormatEvent($date['Eclipse'], $format));
                 } else {
@@ -426,7 +426,7 @@ class AlmanacModule extends IPSModule
         if ($isMoonphase == true) {
             try {
                 $this->SetValueBoolean('IsMoonphase', $date['IsMoonphase']);
-                if ($date['IsMoonphase'] == true) {
+                if (count($date['Moonphase']) > 0) {
                     $format = $this->ReadPropertyString('MoonphaseFormat');
                     $this->SetValueString('Moonphase', $this->FormatEvent($date['Moonphase'], $format));
                 } else {
@@ -616,16 +616,20 @@ class AlmanacModule extends IPSModule
         $link = str_replace('EVENT', 'eclipses', $link);
         $data = $this->ExtractDates($link);
         $isEclipse = [];
+        $hit = false;
         foreach ($data as $entry) {
-            if ($now == $entry['date']) {
+            if ($now <= $entry['date']) {
                 $this->SendDebug(__FUNCTION__, 'ECLIPSE: ' . $entry['name']);
                 $ed = substr($entry['date'], 6, 2) . '.' . substr($entry['date'], 4, 2) . '.' . substr($entry['date'], 0, 4);
-                $isEclipse = ['name' => $entry['name'], 'date' => $ed, 'time' => date('H:i:s', intval($entry['time']))];
+                $isEclipse = ['name' => $entry['name'], 'date' => $ed, 'time' => date('H:i', intval($entry['time']))];
+                if ($now == $entry['date']) {
+                    $hit = true;
+                }
                 break;
             }
         }
         $date['Eclipse'] = $isEclipse;
-        $date['IsEclipse'] = (count($isEclipse) == 0) ? false : true;
+        $date['IsEclipse'] = $hit;
 
         // --------------------------------------------------------------------
         // get moon phase
@@ -636,11 +640,15 @@ class AlmanacModule extends IPSModule
         $link = str_replace('EVENT', 'phases', $link);
         $data = $this->ExtractDates($link);
         $isMoonphase = [];
+        $hit = false;
         foreach ($data as $entry) {
-            if ($now == $entry['date']) {
+            if ($now <= $entry['date']) {
                 $this->SendDebug(__FUNCTION__, 'MOONPHASE: ' . $entry['name']);
                 $md = substr($entry['date'], 6, 2) . '.' . substr($entry['date'], 4, 2) . '.' . substr($entry['date'], 0, 4);
-                $isMoonphase = ['name' => $entry['name'], 'date' => $md, 'time' => date('H:i:s', intval($entry['time']))];
+                $isMoonphase = ['name' => $entry['name'], 'date' => $md, 'time' => date('H:i', intval($entry['time']))];
+                if ($now == $entry['date']) {
+                    $hit = true;
+                }
                 break;
             }
         }

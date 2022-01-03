@@ -32,7 +32,7 @@ Als Gedächtnisstütze können die jährlichen Geburtstage, Hochzeitstage aber a
 kann sich täglich informieren lassen ob ein Termin ansteht (Meldungsverwaltung oder via Webfront-Notification).  
 Darüber hinaus werden mittels der PHP Funktion "date" verschiedene Informationen für das aktuelle Datum ermittelt.  
 In Kombination mit den ermittelten Feiertagen werden auch die Arbeitstage im aktuellen Monat bereitgestellt.  
-Spezielle astronomische Ereignisse wie Mond- oder Sonnenfinsternis und das Datum der 4 verschiedenen Mondphasen am aktuellen Tag wird eingeblendet.
+Spezielle astronomische Ereignisse wie Mond- oder Sonnenfinsternis und das Datum der 4 verschiedenen Mondphasen für das nächste Datum wird ermittelt.
 Aber auch ein "Zitat des Tages" kann abgerufen werden.
 
 Folgende Informationen werden ermittelt:
@@ -80,9 +80,9 @@ Weddingday            | array   | LEER, oder Feld mit Datum, Jahrestag und Name
 IsDeathday            | bool    | TRUE, wenn Todestag(e) ansteht
 Deathday              | array   | LEER, oder Feld mit Datum, Jahrestag und Name
 IsEclipse             | bool    | TRUE, wenn Mond- oder Sonnenfinsternis ist
-Eclipse               | array   | LEER, oder Feld mit Name, Datum, Uhrzeit
+Eclipse               | array   | Feld mit Name, Datum, Uhrzeit des nächsten Ereignisses (LEER, wenn im aktuellen Jahr kein Ereignis mehr ist)
 IsMoonphase           | bool    | TRUE, wenn Mondphase ist
-Moonphase             | array   | LEER, oder Feld mit Name, Datum, Uhrzeit
+Moonphase             | array   | Feld mit Name, Datum, Uhrzeit des nächsten Ereignisses (LEER, wenn im aktuellen Jahr kein Ereignis mehr ist)
 QuoteOfTheDay         | array   | Feld mit Zitat und Autor
 
 ### 2. Voraussetzungen
@@ -302,6 +302,7 @@ v5.0.20220101
 * _FIX_: Fehler in Webhook Helper korrigiert
 * _FIX_: Fehler bei der Ausgabe der Jahreszeit korrigiert
 * _FIX_: Leere JSON-Liste korrekt initialisiert
+* _FIX_: Ferienermittelung bei Jahresanfang korrigiert
 
 v4.3.20210527
 
