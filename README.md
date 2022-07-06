@@ -2,7 +2,7 @@
 
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 [![Product](https://img.shields.io/badge/Symcon%20Version-6.0-blue.svg)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-5.0.20220101-orange.svg)](https://github.com/Wilkware/IPSymconAlmanac)
+[![Version](https://img.shields.io/badge/Modul%20Version-5.1.20220706-orange.svg)](https://github.com/Wilkware/IPSymconAlmanac)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Actions](https://github.com/Wilkware/IPSymconAlmanac/workflows/Check%20Style/badge.svg)](https://github.com/Wilkware/IPSymconAlmanac/actions)
 
@@ -62,6 +62,7 @@ Index                 | Typ     | Beschreibung
 IsSummer              | bool    | TRUE, wenn Sommerzeit ist
 IsLeapYear            | bool    | TRUE, wenn Schaltjahr ist
 IsWeekend             | bool    | TRUE, wenn Wochenende ist (SA-SO)
+Weekday               | int     | Wochentag (1=Montag ... 7=Sonntag)
 WeekNumber            | int     | Kalenderwochennummer
 DaysInMonth           | int     | Anzahl Tage im Monat
 DayOfYear             | int     | Tag im Jahr (1-366)
@@ -262,6 +263,7 @@ __Beispiel__: `ALMANAC_DateInfo(12345, time());`
 > "IsSummer": false,  
 > "IsLeapYear": false,  
 > "IsWeekend": true,  
+> "Weekday": 1,  
 > "WeekNumber": 6,  
 > "DaysInMonth": 28,  
 > "DayOfYear": 45,  
@@ -287,6 +289,11 @@ __Beispiel__: `ALMANAC_DateInfo(12345, time());`
 }  
 
 ### 8. Versionshistorie
+
+v5.1.20220706
+
+* _NEU_: Wochentag (nach ISO-8601) aufgenommen
+* _FIX_: Dokumentation vereinheitlicht
 
 v5.0.20220101
 
@@ -392,16 +399,16 @@ Vielen Dank für die hervorragende und tolle Arbeit!
 
 Seit nunmehr über 10 Jahren fasziniert mich das Thema Haussteuerung. In den letzten Jahren betätige ich mich auch intensiv in der IP-Symcon Community und steuere dort verschiedenste Skript und Module bei. Ihr findet mich dort unter dem Namen @pitti ;-)
 
-[![GitHub](https://img.shields.io/badge/GitHub-@wilkware-181717.svg?logo=github)](https://wilkware.github.io/)
+[![GitHub](https://img.shields.io/badge/GitHub-@wilkware-181717.svg?style=for-the-badge&logo=github)](https://wilkware.github.io/)
 
 ## Spenden
 
 Die Software ist für die nicht kommzerielle Nutzung kostenlos, über eine Spende bei Gefallen des Moduls würde ich mich freuen.
 
-[![PayPal](https://img.shields.io/badge/PayPal-spenden-00457C.svg?logo=paypal)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8816166)
+[![PayPal](https://img.shields.io/badge/PayPal-spenden-00457C.svg?style=for-the-badge&logo=paypal)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8816166)
 
 ## Lizenz
 
 Namensnennung - Nicht-kommerziell - Weitergabe unter gleichen Bedingungen 4.0 International
 
-[![Licence](https://img.shields.io/badge/License-CC_BY--NC--SA_4.0-EF9421.svg?logo=creativecommons)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+[![Licence](https://img.shields.io/badge/License-CC_BY--NC--SA_4.0-EF9421.svg?style=for-the-badge&logo=creativecommons)](https://creativecommons.org/licenses/by-nc-sa/4.0/)

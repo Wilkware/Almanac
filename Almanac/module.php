@@ -189,6 +189,16 @@ class AlmanacModule extends IPSModule
             ['Winter', 'Winter', '', 0x65C7D0],
         ];
         $this->RegisterProfile(vtString, 'ALMANAC.Season', 'Leaf', '', '', 0, 0, 0, 0, $season);
+        $dayofweek = [
+            [1, 'Monday', '', 0x80FF80],
+            [2, 'Tuesday', '', 0x80FF80],
+            [3, 'Wednesday', '', 0x80FF80],
+            [4, 'Thursday', '', 0x80FF80],
+            [5, 'Friday', '', 0x80FF80],
+            [6, 'Saturday', '', 0xFFFF80],
+            [7, 'Sunday', '', 0xFF8080],
+        ];
+        $this->RegisterProfile(vtInteger, 'ALMANAC.Weekday', 'Calendar', '', '', 0, 0, 0, 0, $dayofweek);
         // Webhook for exports
         $this->RegisterHook('/hook/almanac' . $this->InstanceID);
         // Holiday (Feiertage)
@@ -221,6 +231,7 @@ class AlmanacModule extends IPSModule
         $this->MaintainVariable('IsSummer', $this->Translate('Is summer time?'), vtBoolean, 'ALMANAC.Question', 151, $isDate);
         $this->MaintainVariable('IsLeapyear', $this->Translate('Is leap year?'), vtBoolean, 'ALMANAC.Question', 152, $isDate);
         $this->MaintainVariable('IsWeekend', $this->Translate('Is weekend?'), vtBoolean, 'ALMANAC.Question', 153, $isDate);
+        $this->MaintainVariable('WeekDay', $this->Translate('Weekday'), vtInteger, 'ALMANAC.Weekday', 300, $isDate);
         $this->MaintainVariable('WeekNumber', $this->Translate('Week number'), vtInteger, '', 301, $isDate);
         $this->MaintainVariable('DaysInMonth', $this->Translate('Days in month'), vtInteger, '', 302, $isDate);
         $this->MaintainVariable('DayOfYear', 'Tag im Jahr', vtInteger, '', 303, $isDate);
@@ -370,6 +381,7 @@ class AlmanacModule extends IPSModule
                 $this->SetValueBoolean('IsSummer', $date['IsSummer']);
                 $this->SetValueBoolean('IsLeapyear', $date['IsLeapYear']);
                 $this->SetValueBoolean('IsWeekend', $date['IsWeekend']);
+                $this->SetValueInteger('WeekDay', $date['Weekday']);
                 $this->SetValueInteger('WeekNumber', $date['WeekNumber']);
                 $this->SetValueInteger('DaysInMonth', $date['DaysInMonth']);
                 $this->SetValueInteger('DayOfYear', $date['DayOfYear']);
@@ -474,6 +486,7 @@ class AlmanacModule extends IPSModule
         $date['IsSummer'] = boolval(date('I', $ts));
         $date['IsLeapYear'] = boolval(date('L', $ts));
         $date['IsWeekend'] = boolval(date('N', $ts) > 5);
+        $date['Weekday'] = intval(date('N', $ts));
         $date['WeekNumber'] = idate('W', $ts);
         $date['DaysInMonth'] = idate('t', $ts);
         $date['DayOfYear'] = idate('z', $ts) + 1; // idate('z') is zero based
