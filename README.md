@@ -48,6 +48,7 @@ Folgende Informationen werden ermittelt:
 * Sommerzeit oder nicht
 * Wochenende oder nicht
 * Nummer der Kalenderwoche
+* Wochentag (ISO-8601)
 * Jahreszeit (Frühling, Sommer, Herbst und Winter)
 * Ist eine Mond- oder Sonnenfinsternis
 * Tritt eine Mondphasen (Neumond, zunehmenden Mond, Vollmond oder abnehmenden Mond) ein
