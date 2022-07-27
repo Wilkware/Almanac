@@ -262,25 +262,25 @@ class AlmanacModule extends IPSModule
         switch ($ident) {
             case 'OnPublicCountry':
                 $this->OnPublicCountry($value);
-            break;
+                break;
             case 'OnSchoolCountry':
                 $this->OnSchoolCountry($value);
-            break;
+                break;
             case 'OnSchoolRegion':
                 $this->OnSchoolRegion($value);
-            break;
+                break;
             case 'OnImportBirthdays':
                 $this->OnImportBirthdays($value);
-            break;
+                break;
             case 'OnImportWeddingdays':
                 $this->OnImportWeddingdays($value);
-            break;
+                break;
             case 'OnImportDeathdays':
                 $this->OnImportDeathdays($value);
-            break;
+                break;
             case 'OnDeleteDays':
                 $this->OnDeleteDays($value);
-            break;
+                break;
         }
         // return true;
     }
@@ -813,7 +813,7 @@ class AlmanacModule extends IPSModule
                 $property = 'Deathdays';
                 $filename = $this->Translate('deathdays.csv');
                 break;
-        default:
+            default:
                 return;
         }
         // get the current entries
