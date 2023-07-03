@@ -3,9 +3,9 @@
     "name": "Almanac Module",
     "type": 3,
     "vendor": "",
-    "aliases":
-    [
-    "Jahreskalender", "Almanach"
+    "aliases": [
+        "Jahreskalender",
+        "Almanach"
     ],
     "url": "https://wilkware.de/ip-symcon-module/almanac/",
     "parentRequirements": [],

@@ -8,9 +8,10 @@ require_once __DIR__ . '/../libs/_traits.php';  // Generell funktions
 class AlmanacModule extends IPSModule
 {
     use CalendarHelper;
-    use ProfileHelper;
-    use EventHelper;
     use DebugHelper;
+    use EventHelper;
+    use ProfileHelper;
+    use VariableHelper;
     use WebhookHelper;
 
     /**
@@ -24,9 +25,9 @@ class AlmanacModule extends IPSModule
      * Date Properties (Form)
      */
     private const DP = [
-        self::BD => ['UpdateBirth', 'Birthdays', 'BirthdayNotification', 'BirthdayTime', 'BirthdayMessage', 'BirthdayDuration', 'BirthdayFormat', 'BirthdayVariable', 'BirthdaySeparator'],
-        self::WD => ['UpdateWedding', 'Weddingdays', 'WeddingdayNotification', 'WeddingdayTime', 'WeddingdayMessage', 'WeddingdayDuration', 'WeddingdayFormat', 'WeddingdayVariable', 'BirthdaySeparator'],
-        self::DD => ['UpdateDeath', 'Deathdays', 'DeathdayNotification', 'DeathdayTime', 'DeathdayMessage', 'DeathdayDuration', 'DeathdayFormat', 'DeathdayVariable', 'DeathdaySeparator'],
+        self::BD => ['UpdateBirth', 'Birthdays', 'BirthdayNotification', 'BirthdayTime', 'BirthdayMessage', 'BirthdayDuration', 'BirthdayFormat', 'BirthdayVariable', 'BirthdaySeparator', 'NoBirthday'],
+        self::WD => ['UpdateWedding', 'Weddingdays', 'WeddingdayNotification', 'WeddingdayTime', 'WeddingdayMessage', 'WeddingdayDuration', 'WeddingdayFormat', 'WeddingdayVariable', 'WeddingdaySeparator', 'NoWedding'],
+        self::DD => ['UpdateDeath', 'Deathdays', 'DeathdayNotification', 'DeathdayTime', 'DeathdayMessage', 'DeathdayDuration', 'DeathdayFormat', 'DeathdayVariable', 'DeathdaySeparator', 'NoDeath'],
     ];
 
     /**
@@ -90,6 +91,12 @@ class AlmanacModule extends IPSModule
         $this->RegisterPropertyBoolean('UpdateQuote', true);
         $this->RegisterPropertyBoolean('UpdateDate', true);
         $this->RegisterPropertyBoolean('SchoolPeriod', false);
+        $this->RegisterPropertyString('NoHoliday', $this->Translate('No public holiday'));
+        $this->RegisterPropertyString('NoVacation', $this->Translate('No school vacation'));
+        $this->RegisterPropertyString('NoFestive', $this->Translate('No festive day'));
+        $this->RegisterPropertyString('NoBirthday', $this->Translate('No birthday'));
+        $this->RegisterPropertyString('NoWedding', $this->Translate('No wedding day'));
+        $this->RegisterPropertyString('NoDeath', $this->Translate('No deathday'));
         $this->RegisterPropertyInteger('InstanceWebfront', 0);
         $this->RegisterPropertyInteger('ScriptMessage', 0);
         // Register daily update timer
@@ -501,7 +508,7 @@ class AlmanacModule extends IPSModule
         // --------------------------------------------------------------------
         $isFestive = $this->LookupCalendar($ts);
         $date['Festive'] = $isFestive;
-        $date['IsFestive'] = ($isFestive == 'Kein Festtag') ? false : true;
+        $date['IsFestive'] = ($isFestive == $this->ReadPropertyString('NoFestive')) ? false : true;
 
         // --------------------------------------------------------------------
         // get birthdays
@@ -556,7 +563,7 @@ class AlmanacModule extends IPSModule
         }
         $date['WorkingDays'] = $date['DaysInMonth'] - $nwd;
         // check holiday
-        $isHoliday = 'Kein Feiertag';
+        $isHoliday = $this->ReadPropertyString('NoHoliday');
         foreach ($data as $entry) {
             if (($now >= $entry['start']) && ($now < $entry['end'])) {
                 $isHoliday = $entry['event'];
@@ -565,10 +572,10 @@ class AlmanacModule extends IPSModule
             }
         }
         $date['Holiday'] = $isHoliday;
-        $date['IsHoliday'] = ($isHoliday == 'Kein Feiertag') ? false : true;
+        $date['IsHoliday'] = ($isHoliday == $this->ReadPropertyString('NoHoliday')) ? false : true;
         // no data, no info
         if (empty($data)) {
-            $date['Holiday'] = 'Feiertag nicht ermittelbar';
+            $date['Holiday'] = $this->Translate('Holiday not determined');
             $date['IsHoliday'] = false;
         }
 
@@ -589,7 +596,7 @@ class AlmanacModule extends IPSModule
         // check vacation
         if ((int) date('md', $ts) < 110) {
             $prev = $year - 1;
-            $link = str_replace('YEAR', $prev, $url);
+            $link = str_replace('YEAR', (string) $prev, $url);
             $data0 = $this->ExtractDates($link);
         } else {
             $data0 = [];
@@ -598,7 +605,7 @@ class AlmanacModule extends IPSModule
         $data1 = $this->ExtractDates($link);
         $data = array_merge($data0, $data1);
         $this->SendDebug(__FUNCTION__, $data);
-        $isVacation = 'Keine Ferien';
+        $isVacation = $this->ReadPropertyString('NoVacation');
         foreach ($data as $entry) {
             if (($now >= $entry['start']) && ($now < $entry['end'])) {
                 $isVacation = explode(' ', $entry['event'])[0];
@@ -612,10 +619,10 @@ class AlmanacModule extends IPSModule
             }
         }
         $date['Vacation'] = $isVacation;
-        $date['IsVacation'] = ($isVacation == 'Keine Ferien') ? false : true;
+        $date['IsVacation'] = ($isVacation == $this->ReadPropertyString('NoVacation')) ? false : true;
         // no data, no info
         if (empty($data)) {
-            $date['Vacation'] = 'Ferien nicht ermittelbar';
+            $date['Vacation'] = $this->Translate('Vacation not determined');
             $date['IsVacation'] = false;
         }
 
@@ -881,7 +888,7 @@ class AlmanacModule extends IPSModule
         if (array_key_exists($day, $dates)) {
             return $dates[$day];
         }
-        return 'Kein Festtag';
+        return $this->ReadPropertyString('NoFestive');
     }
 
     /**
@@ -923,7 +930,7 @@ class AlmanacModule extends IPSModule
     {
         $now = date('d.m.Y', time());
         $output = str_replace('%E', $item['date'], $format);
-        $output = str_replace('%Y', $item['years'], $output);
+        $output = str_replace('%Y', (string) $item['years'], $output);
         $output = str_replace('%N', $item['name'], $output);
         $output = str_replace('%D', $now, $output);
         return $output;
@@ -973,6 +980,8 @@ class AlmanacModule extends IPSModule
         $variable = $this->ReadPropertyInteger($property[7]);
         // seperator
         $separator = $this->ReadPropertyString($property[8]);
+        // no event text
+        $nothing = $this->ReadPropertyString($property[9]);
         // date array
         $ident = substr($property[1], 0, -1);
         $items = $date[$ident];
@@ -1001,7 +1010,12 @@ class AlmanacModule extends IPSModule
         }
         // write to variable
         if ($variable) {
-            $this->SetValueString($ident, $lines);
+            if($date[$ident]) {
+                $this->SetValueString($ident, $lines);
+            } else {
+                $this->SendDebug(__FUNCTION__, $nothing . ' ' . gettype($nothing));
+                $this->SetValueString($ident, $nothing);
+            }
             $ident = 'Is' . $ident;
             $this->SetValueBoolean($ident, $date[$ident]);
         }
@@ -1123,41 +1137,5 @@ class AlmanacModule extends IPSModule
             }
         }
         return $options;
-    }
-
-    /**
-     * Update a boolean value.
-     *
-     * @param string $ident Ident of the boolean variable
-     * @param bool   $value Value of the boolean variable
-     */
-    private function SetValueBoolean(string $ident, bool $value)
-    {
-        $id = $this->GetIDForIdent($ident);
-        SetValueBoolean($id, $value);
-    }
-
-    /**
-     * Update a string value.
-     *
-     * @param string $ident Ident of the string variable
-     * @param string $value Value of the string variable
-     */
-    private function SetValueString(string $ident, string $value)
-    {
-        $id = $this->GetIDForIdent($ident);
-        SetValueString($id, $value);
-    }
-
-    /**
-     * Update a integer value.
-     *
-     * @param string $ident Ident of the integer variable
-     * @param int    $value Value of the integer variable
-     */
-    private function SetValueInteger(string $ident, int $value)
-    {
-        $id = $this->GetIDForIdent($ident);
-        SetValueInteger($id, $value);
     }
 }

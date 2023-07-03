@@ -2,7 +2,7 @@
 
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 [![Product](https://img.shields.io/badge/Symcon%20Version-6.0-blue.svg)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-5.1.20220706-orange.svg)](https://github.com/Wilkware/IPSymconAlmanac)
+[![Version](https://img.shields.io/badge/Modul%20Version-5.2.20230703-orange.svg)](https://github.com/Wilkware/IPSymconAlmanac)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Actions](https://github.com/Wilkware/IPSymconAlmanac/workflows/Check%20Style/badge.svg)](https://github.com/Wilkware/IPSymconAlmanac/actions)
 
@@ -181,6 +181,12 @@ Finsternisse ermitteln                    | Status, ob Ermittlung von Mond- oder
 Mondphasen ermitteln                      | Status, ob Ermittlung von Mondphasen erwünscht ist
 Zitat des Tages ermitteln                 | Status, ob Zitat des Tages ausgegeben werden soll
 Information zum aktuellen Datum ermitteln | Status, ob Informationen zum aktuellen Datum erwünscht sind.
+Feiertage                                 | Text, welcher ausgeben wird wenn kein Feiertag vorliegt.
+Schulferien                               | Text, welcher ausgeben wird wenn keine Ferien vorliegt.
+Festtage                                  | Text, welcher ausgeben wird wenn kein Festtag vorliegt.
+Geburtstage                               | Text, welcher ausgeben wird wenn kein Geburtstag vorliegt.
+Hochzeitstage                             | Text, welcher ausgeben wird wenn kein Hochzeitstag vorliegt.
+Todestage                                 | Text, welcher ausgeben wird wenn kein Todestag vorliegt.
 WebFront Instanz                          | ID des Webfronts, an welches die Push-Nachrichten für Geburts-, Hochzeits- und Todestage gesendet werden soll
 Meldsungsskript                           | Skript ID des Meldungsverwaltungsskripts, weiterführende Infos im Forum: [Meldungsanzeige im Webfront](https://community.symcon.de/t/meldungsanzeige-im-webfront/23473)
 
@@ -280,7 +286,7 @@ __Beispiel__: `ALMANAC_DateInfo(12345, time());`
 > "Birthday": [{"date": 14.2.1970, "years": 51, "name": "Valentin Tag"}],  
 > "IsWeddingday": false,  
 > "Weddingday": [],  
-> "IsDeathday]: false,  
+> "IsDeathday": false,  
 > "Deathday": []  
 > "IsEclipse": true,  
 > "Eclipse": [{"name": "Partielle Sonnenfinsternis", "date": "30.04.2022", "time": "22:42:00"}],  
@@ -290,6 +296,16 @@ __Beispiel__: `ALMANAC_DateInfo(12345, time());`
 }  
 
 ### 8. Versionshistorie
+
+v5.2.20230703
+
+* _NEU_: Unterstützung von IPS 7.0
+* _NEU_: Umstellung auf PHP 8.2
+* _NEU_: Vorgabetexte für Ereignise die nicht eintreten integriert
+* _FIX_: Fehlende Übersetzungen nachgeholt
+* _FIX_: Veraltetet Style-Checks ausgebaut
+* _FIX_: JSON Format vereinheitlicht
+* _FIX_: Weitere Modulvereinheitlichungen vorgenommen
 
 v5.1.20220706
 

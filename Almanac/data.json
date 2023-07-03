@@ -1,74 +1,600 @@
 {
-  "de": [
-    { "country": "Germany",
-      "part": "State",
-      "regions" : [
-        {"name": "Baden-Württemberg", "ident": "baden-wuerttemberg", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Bayern", "ident": "bayern", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Berlin", "ident": "berlin", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Brandenburg", "ident": "brandenburg", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Bremen", "ident": "bremen", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Hamburg", "ident": "hamburg", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Hessen", "ident": "hessen", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Mecklenburg-Vorpommern", "ident": "mecklenburg-vorpommern", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Niedersachsen", "ident": "niedersachsen", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Nordrhein-Westfalen", "ident": "nordrhein-westfalen", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Rheinland-Pfalz", "ident": "rheinland-pfalz", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Saarland", "ident": "saarland", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Sachsen", "ident": "sachsen", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Sachsen-Anhalt", "ident": "sachsen-anhalt", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Schleswig-Holstein", "ident": "schleswig-holstein", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Thüringen", "ident": "thueringen", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] }
-      ]
-    }
-  ],
-  "at": [
-    { "country": "Austria", 
-      "part": "State",
-      "regions" : [
-        {"name": "Burgenland", "ident": "burgenland", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Kärnten", "ident": "kaernten", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Niederösterreich", "ident": "niederoesterreich", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Oberösterreich", "ident": "oberoesterreich", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Salzburg", "ident": "salzburg", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Steiermark", "ident": "steiermark", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Tirol", "ident": "tirol", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Vorarlberg", "ident": "vorarlberg", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Wien", "ident": "wien", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] }
-      ]
-    }
-  ],
-  "ch": [
-    { "country": "Swizerland", 
-      "part": "Canton",
-      "regions" : [
-        {"name": "Aargau", "ident" : "aargau", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Appenzell Ausserrhoden", "ident" : "appenzell-ausserrhoden", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Appenzell Innerrhoden", "ident" : "appenzell-innerrhoden", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}, {"name": "Oberegg", "ident": "oberegg"}] },
-        {"name": "Basel-Land", "ident" : "basel-land", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}, {"name": "Gymn. Laufen-Thierst.", "ident": "gymn-laufen-thierst"}] },
-        {"name": "Basel-Stadt", "ident" : "basel-stadt", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Bern", "ident" : "bern", "schools": [{"name": "kant. Ferienordnung BE-d", "ident": "kant-ferienordnung-be-d"}, {"name": "kant. Ferienordnung BE-f", "ident": "kant-ferienordnung-be-f"}, {"name": "Burgdorf alle Schulen", "ident": "burgdorf-alle-schulen"},{"name": "Stadt Bern Volksschule", "ident": "stadt-bern-volksschule"}, {"name": "Stadt Biel alle", "ident": "stadt-biel-alle"}, {"name": "Thun Volksschule", "ident": "thun-volksschule"}] },
-        {"name": "Freiburg", "ident" : "freiburg", "schools": [{"name": "Ecoles primaires (ville)", "ident": "ecoles-primaires-ville"}, {"name": "Ecoles sec. II", "ident": "ecoles-sec-ii"}] },
-        {"name": "Genf", "ident" : "genf", "schools": [{"name": "Toutes les écoles", "ident": "toutes-les-coles"}] },
-        {"name": "Glarus", "ident" : "glarus", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Graubünden", "ident" : "graubuenden", "schools": [{"name": "Bündner Kantonsschule", "ident": "buendner-kantonsschule"}, {"name": "Davos SAM", "ident": "davos-sam"}, {"name": "Davos Volksschule", "ident": "davos-volksschule"},{"name": "Chur Volksschule", "ident": "chur-volksschule"}, {"name": "Chur Maturitätsschule", "ident": "chur-maturitaetsschule"}] },
-        {"name": "Jura", "ident" : "jura", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Luzern", "ident" : "luzern", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Neuenburg", "ident" : "neuenburg", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Nidwalden", "ident" : "nidwalden", "schools": [{"name": "Mittelschule", "ident": "Mittelschule"}, {"name": "Volksschule", "ident": "volksschule"}] },
-        {"name": "Obwalden", "ident" : "obwalden", "schools": [{"name": "Engelberg Volksschule", "ident": "engelberg-volksschule"}, {"name": "Volksschule", "ident": "volksschule"}] },
-        {"name": "Sankt Gallen", "ident" : "sankt-gallen", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Schaffhausen", "ident" : "schaffhausen", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Schwyz", "ident" : "schwyz", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Solothurn", "ident" : "solothurn", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}, {"name": "Mittel- und Berufsschulen", "ident": "mittel-und-berufsschulen"}] },
-        {"name": "Tessin", "ident" : "tessin", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Thurgau", "ident" : "thurgau", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Uri", "ident" : "uri", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Waadt", "ident" : "waadt", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Wallis", "ident" : "wallis", "schools": [{"name": "Oberwallis", "ident": "oberwallis"}, {"name": "Romand", "ident": "romand"}] },
-        {"name": "Zug", "ident" : "zug", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] },
-        {"name": "Zürich", "ident" : "zuerich", "schools": [{"name": "Alle Schulen", "ident": "alle-schulen"}] }
-      ]
-    }
-  ]
+    "de": [
+        {
+            "country": "Germany",
+            "part": "State",
+            "regions": [
+                {
+                    "name": "Baden-Württemberg",
+                    "ident": "baden-wuerttemberg",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Bayern",
+                    "ident": "bayern",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Berlin",
+                    "ident": "berlin",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Brandenburg",
+                    "ident": "brandenburg",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Bremen",
+                    "ident": "bremen",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Hamburg",
+                    "ident": "hamburg",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Hessen",
+                    "ident": "hessen",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Mecklenburg-Vorpommern",
+                    "ident": "mecklenburg-vorpommern",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Niedersachsen",
+                    "ident": "niedersachsen",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Nordrhein-Westfalen",
+                    "ident": "nordrhein-westfalen",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Rheinland-Pfalz",
+                    "ident": "rheinland-pfalz",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Saarland",
+                    "ident": "saarland",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Sachsen",
+                    "ident": "sachsen",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Sachsen-Anhalt",
+                    "ident": "sachsen-anhalt",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Schleswig-Holstein",
+                    "ident": "schleswig-holstein",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Thüringen",
+                    "ident": "thueringen",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "at": [
+        {
+            "country": "Austria",
+            "part": "State",
+            "regions": [
+                {
+                    "name": "Burgenland",
+                    "ident": "burgenland",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Kärnten",
+                    "ident": "kaernten",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Niederösterreich",
+                    "ident": "niederoesterreich",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Oberösterreich",
+                    "ident": "oberoesterreich",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Salzburg",
+                    "ident": "salzburg",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Steiermark",
+                    "ident": "steiermark",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Tirol",
+                    "ident": "tirol",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Vorarlberg",
+                    "ident": "vorarlberg",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Wien",
+                    "ident": "wien",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "ch": [
+        {
+            "country": "Swizerland",
+            "part": "Canton",
+            "regions": [
+                {
+                    "name": "Aargau",
+                    "ident": "aargau",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Appenzell Ausserrhoden",
+                    "ident": "appenzell-ausserrhoden",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Appenzell Innerrhoden",
+                    "ident": "appenzell-innerrhoden",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        },
+                        {
+                            "name": "Oberegg",
+                            "ident": "oberegg"
+                        }
+                    ]
+                },
+                {
+                    "name": "Basel-Land",
+                    "ident": "basel-land",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        },
+                        {
+                            "name": "Gymn. Laufen-Thierst.",
+                            "ident": "gymn-laufen-thierst"
+                        }
+                    ]
+                },
+                {
+                    "name": "Basel-Stadt",
+                    "ident": "basel-stadt",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Bern",
+                    "ident": "bern",
+                    "schools": [
+                        {
+                            "name": "kant. Ferienordnung BE-d",
+                            "ident": "kant-ferienordnung-be-d"
+                        },
+                        {
+                            "name": "kant. Ferienordnung BE-f",
+                            "ident": "kant-ferienordnung-be-f"
+                        },
+                        {
+                            "name": "Burgdorf alle Schulen",
+                            "ident": "burgdorf-alle-schulen"
+                        },
+                        {
+                            "name": "Stadt Bern Volksschule",
+                            "ident": "stadt-bern-volksschule"
+                        },
+                        {
+                            "name": "Stadt Biel alle",
+                            "ident": "stadt-biel-alle"
+                        },
+                        {
+                            "name": "Thun Volksschule",
+                            "ident": "thun-volksschule"
+                        }
+                    ]
+                },
+                {
+                    "name": "Freiburg",
+                    "ident": "freiburg",
+                    "schools": [
+                        {
+                            "name": "Ecoles primaires (ville)",
+                            "ident": "ecoles-primaires-ville"
+                        },
+                        {
+                            "name": "Ecoles sec. II",
+                            "ident": "ecoles-sec-ii"
+                        }
+                    ]
+                },
+                {
+                    "name": "Genf",
+                    "ident": "genf",
+                    "schools": [
+                        {
+                            "name": "Toutes les écoles",
+                            "ident": "toutes-les-coles"
+                        }
+                    ]
+                },
+                {
+                    "name": "Glarus",
+                    "ident": "glarus",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Graubünden",
+                    "ident": "graubuenden",
+                    "schools": [
+                        {
+                            "name": "Bündner Kantonsschule",
+                            "ident": "buendner-kantonsschule"
+                        },
+                        {
+                            "name": "Davos SAM",
+                            "ident": "davos-sam"
+                        },
+                        {
+                            "name": "Davos Volksschule",
+                            "ident": "davos-volksschule"
+                        },
+                        {
+                            "name": "Chur Volksschule",
+                            "ident": "chur-volksschule"
+                        },
+                        {
+                            "name": "Chur Maturitätsschule",
+                            "ident": "chur-maturitaetsschule"
+                        }
+                    ]
+                },
+                {
+                    "name": "Jura",
+                    "ident": "jura",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Luzern",
+                    "ident": "luzern",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Neuenburg",
+                    "ident": "neuenburg",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Nidwalden",
+                    "ident": "nidwalden",
+                    "schools": [
+                        {
+                            "name": "Mittelschule",
+                            "ident": "Mittelschule"
+                        },
+                        {
+                            "name": "Volksschule",
+                            "ident": "volksschule"
+                        }
+                    ]
+                },
+                {
+                    "name": "Obwalden",
+                    "ident": "obwalden",
+                    "schools": [
+                        {
+                            "name": "Engelberg Volksschule",
+                            "ident": "engelberg-volksschule"
+                        },
+                        {
+                            "name": "Volksschule",
+                            "ident": "volksschule"
+                        }
+                    ]
+                },
+                {
+                    "name": "Sankt Gallen",
+                    "ident": "sankt-gallen",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Schaffhausen",
+                    "ident": "schaffhausen",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Schwyz",
+                    "ident": "schwyz",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Solothurn",
+                    "ident": "solothurn",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        },
+                        {
+                            "name": "Mittel- und Berufsschulen",
+                            "ident": "mittel-und-berufsschulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Tessin",
+                    "ident": "tessin",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Thurgau",
+                    "ident": "thurgau",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Uri",
+                    "ident": "uri",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Waadt",
+                    "ident": "waadt",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Wallis",
+                    "ident": "wallis",
+                    "schools": [
+                        {
+                            "name": "Oberwallis",
+                            "ident": "oberwallis"
+                        },
+                        {
+                            "name": "Romand",
+                            "ident": "romand"
+                        }
+                    ]
+                },
+                {
+                    "name": "Zug",
+                    "ident": "zug",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                },
+                {
+                    "name": "Zürich",
+                    "ident": "zuerich",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
 }

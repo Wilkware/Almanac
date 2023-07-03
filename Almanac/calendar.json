@@ -1,120 +1,715 @@
-{"dates":[
-    {"name": "Neujahr", "variant": 0, "month": 1, "day": 1},
-    {"name": "Heilige Drei Könige", "variant": 0, "month": 1, "day": 6},
-    {"name": "Weltlachtag", "variant": 0, "month": 1, "day": 10},
-    {"name": "Welt-Lepra-Tag", "variant": 0, "month": 1, "day": 25},
-    {"name": "Tag des Gedenkens an die Opfer des Nationalsozialismus", "variant": 0, "month": 1, "day": 27},
-    {"name": "Valentinstag", "variant": 0, "month": 2, "day": 14},
-    {"name": "Welttag der Gästeführer", "variant": 0, "month": 2, "day": 21},
-    {"name": "Schalttag", "variant": 0, "month": 2, "day": 29},
-    {"name": "Weltfrauentag", "variant": 0, "month": 3, "day": 8},
-    {"name": "Weltverbrauchertag", "variant": 0, "month": 3, "day": 15},
-    {"name": "Internationaler Tag des Waldes", "variant": 0, "month": 3, "day": 21},
-    {"name": "Weltwassertag", "variant": 0, "month": 3, "day": 22},
-    {"name": "Welttag der Meteorologie", "variant": 0, "month": 3, "day": 23},
-    {"name": "Welttheatertag", "variant": 0, "month": 3, "day": 27},
-    {"name": "Weltgesundheitstag", "variant": 0, "month": 4, "day": 7},
-    {"name": "Welttag des Baums", "variant": 0, "month": 4, "day": 21},
-    {"name": "Welttag der Erde", "variant": 0, "month": 4, "day": 22},
-    {"name": "Tag des deutschen Reinheitsgebots", "variant": 0, "month": 4, "day": 23},
-    {"name": "Walpurgisnacht", "variant": 0, "month": 4, "day": 30},
-    {"name": "Internationaler Tag der Arbeit", "variant": 0, "month": 5, "day": 1},
-    {"name": "Welttag der Pressefreiheit", "variant": 0, "month": 5, "day": 3},
-    {"name": "Europatag", "variant": 0, "month": 5, "day": 5},
-    {"name": "Antidiättag", "variant": 0, "month": 5, "day": 6},
-    {"name": "Internationaler Rotkreuztag", "variant": 0, "month": 5, "day": 8},
-    {"name": "Internationaler Tag der Familie", "variant": 0, "month": 5, "day": 15},
-    {"name": "Welttag des Fernmeldewesens", "variant": 0, "month": 5, "day": 17},
-    {"name": "Welttag für kulturelle Entwicklung", "variant": 0, "month": 5, "day": 21},
-    {"name": "Tag der Freiheit Afrikas", "variant": 0, "month": 5, "day": 25},
-    {"name": "Weltnichtrauchertag", "variant": 0, "month": 5, "day": 31},
-    {"name": "Tag der Organspende", "variant": 0, "month": 6, "day": 2},
-    {"name": "Welttag der Umwelt", "variant": 0, "month": 6, "day": 5},
-    {"name": "Tag der Sehbehinderten", "variant": 0, "month": 6, "day": 6},
-    {"name": "Internationaler Tag zur Bekämpfung der Ausbreitung von Wüstengebieten", "variant": 0, "month": 6, "day": 17},
-    {"name": "Tag des Schlafes", "variant": 0, "month": 6, "day": 21},
-    {"name": "Weltflüchtlingstag", "variant": 0, "month": 6, "day": 20},
-    {"name": "Johannistag", "variant": 0, "month": 6, "day": 24},
-    {"name": "Internationaler Tag gegen Drogenmissbrauch und unerlaubten Suchtstoffverkehr", "variant": 0, "month": 6, "day": 26},
-    {"name": "Siebenschläfer", "variant": 0, "month": 6, "day": 27},
-    {"name": "Weltbevölkerungstag", "variant": 0, "month": 7, "day": 11},
-    {"name": "Friedensfest in Augsburg", "variant": 0, "month": 8, "day": 8},
-    {"name": "Internationaler Tag der indigenen Völker", "variant": 0, "month": 8, "day": 9},
-    {"name": "Mariä Himmelfahrt", "variant": 0, "month": 8, "day": 15},
-    {"name": "Tag der Vereinten Nationen", "variant": 0, "month": 8, "day": 24},
-    {"name": "Antikriegstag", "variant": 0, "month": 9, "day": 1},
-    {"name": "Weltbildungstag", "variant": 0, "month": 9, "day": 8},
-    {"name": "Internationaler Tag zum Schutz der Ozonschicht", "variant": 0, "month": 9, "day": 16},
-    {"name": "Weltkindertag", "variant": 0, "month": 9, "day": 20},
-    {"name": "Welt-Alzheimer-Tag", "variant": 0, "month": 9, "day": 21},
-    {"name": "Autofreier Tag in Europa", "variant": 0, "month": 9, "day": 22},
-    {"name": "Tag der Raumfahrt", "variant": 0, "month": 9, "day": 24},
-    {"name": "Tag der Zahngesundheit", "variant": 0, "month": 9, "day": 25},
-    {"name": "Welttourismustag", "variant": 0, "month": 9, "day": 27},
-    {"name": "Weltmusiktag", "variant": 0, "month": 10, "day": 1},
-    {"name": "Tag der deutschen Einheit", "variant": 0, "month": 10, "day": 3},
-    {"name": "Welttierschutztag", "variant": 0, "month": 10, "day": 4},
-    {"name": "Welttag des Lehrers", "variant": 0, "month": 10, "day": 5},
-    {"name": "Tag des Weltpostvereins", "variant": 0, "month": 10, "day": 9},
-    {"name": "Tag des weißen Stockes", "variant": 0, "month": 10, "day": 15},
-    {"name": "Welternährungstag", "variant": 0, "month": 10, "day": 16},
-    {"name": "Internationaler Tag für die Beseitigung der Armut", "variant": 0, "month": 10, "day": 17},
-    {"name": "Tag der Vereinten Nationen", "variant": 0, "month": 10, "day": 24},
-    {"name": "Weltspartag", "variant": 0, "month": 10, "day": 30},
-    {"name": "Reformationstag", "variant": 0, "month": 10, "day": 31},
-    {"name": "Halloween", "variant": 0, "month": 10, "day": 31},
-    {"name": "Allerheiligen", "variant": 0, "month": 11, "day": 1},
-    {"name": "Allerseelen", "variant": 0, "month": 11, "day": 2},
-    {"name": "Weltmännertag", "variant": 0, "month": 11, "day": 3},
-    {"name": "Martinstag", "variant": 0, "month": 11, "day": 11},
-    {"name": "Welt-Diabetes-Tag", "variant": 0, "month": 11, "day": 14},
-    {"name": "Internationaler Tag der Toleranz", "variant": 0, "month": 11, "day": 16},
-    {"name": "Tag der Kinderrechte", "variant": 0, "month": 11, "day": 20},
-    {"name": "Weltfernsehtag", "variant": 0, "month": 11, "day": 21},
-    {"name": "Internationaler Tag gegen Gewalt gegen Frauen", "variant": 0, "month": 11, "day": 23},
-    {"name": "Internationaler Tag der Solidarität mit dem palästinensischen Volk", "variant": 0, "month": 11, "day": 29},
-    {"name": "Welt-AIDS-Tag", "variant": 0, "month": 12, "day": 1},
-    {"name": "Internationaler Tag der Behinderten", "variant": 0, "month": 12, "day": 3},
-    {"name": "Internationaler Entwickungshelfertag für die wirtschaftliche und soziale Entwicklung", "variant": 0, "month": 12, "day": 5},
-    {"name": "Nikolaus", "variant": 0, "month": 12, "day": 6},
-    {"name": "Internationaler Tag der zivilen Luftfahrt", "variant": 0, "month": 12, "day": 7},
-    {"name": "Mariä Empfängnis", "variant": 0, "month": 12, "day": 8},
-    {"name": "Tag der Menschenrechte", "variant": 0, "month": 12, "day": 10},
-    {"name": "Weltkinderfernsehtag", "variant": 0, "month": 12, "day": 15},
-    {"name": "Heiligabend", "variant": 0, "month": 12, "day": 24},
-    {"name": "1. Weihnachtstag", "variant": 0, "month": 12, "day": 25},
-    {"name": "2. Weihnachtstag", "variant": 0, "month": 12, "day": 26},
-    {"name": "Internationaler Tag der biologischen Vielfalt", "variant": 0, "month": 12, "day": 29},
-    {"name": "Silvester", "variant": 0, "month": 12, "day": 31},
-    {"name": "Muttertag", "variant": 1, "day": 75, "offset": 0, "weekday": 0},
-    {"name": "Internationaler Tag der Kooperativen", "variant": 1, "day": 130, "offset": 0, "weekday": 6},
-    {"name": "Internationaler Tag des Friedens", "variant": 1, "day": 206, "offset": 0, "weekday": 2},
-    {"name": "Erntedankfest", "variant": 1, "day": 220, "offset": 0, "weekday": 0},
-    {"name": "Welttag des Wohn- und Siedlungswesens", "variant": 1, "day": 222, "offset": 0, "weekday": 1},
-    {"name": "Internationaler Tag der Katastrophenvorbeugung", "variant": 1, "day": 229, "offset": 0, "weekday": 3},
-    {"name": "Volkstrauertag", "variant": 1, "day": 264, "offset": 0, "weekday": 0},
-    {"name": "Buß- und Bettag", "variant": 1, "day": 267, "offset": 0, "weekday": 0},
-    {"name": "Totensonntag", "variant": 1, "day": 271, "offset": 0, "weekday": 0},
-    {"name": "1. Advent", "variant": 1, "day": 278, "offset": 0, "weekday": 0},
-    {"name": "2. Advent", "variant": 1, "day": 285, "offset": 0, "weekday": 0},
-    {"name": "3. Advent", "variant": 1, "day": 292, "offset": 0, "weekday": 0},
-    {"name": "4. Advent", "variant": 1, "day": 299, "offset": 0, "weekday": 0},
-    {"name": "Weiberfastnacht", "variant": 2, "offset": -52},
-    {"name": "Rosenmontag", "variant": 2, "offset": -48},
-    {"name": "Fastnacht", "variant": 2, "offset": -47},
-    {"name": "Aschermittwoch", "variant": 2, "offset": -46},
-    {"name": "Palmsonntag", "variant": 2, "offset": -7},
-    {"name": "Gründonnerstag", "variant": 2, "offset": -3},
-    {"name": "Karfreitag", "variant": 2, "offset": -2},
-    {"name": "Ostersonntag", "variant": 2, "offset": 0},
-    {"name": "Ostermontag", "variant": 2, "offset": 1},
-    {"name": "Weißer Sonntag", "variant": 2, "offset": 7},
-    {"name": "Christi Himmelfahrt", "variant": 2, "offset": 39},
-    {"name": "Pfingstsonntag", "variant": 2, "offset": 49},
-    {"name": "Pfingstmontag", "variant": 2, "offset": 50},
-    {"name": "Fronleichnam", "variant": 2, "offset": 60},
-    {"name": "Frühlingsanfang", "variant": 3, "month": 3, "day": 20, "shift": 8},
-    {"name": "Sommeranfang", "variant": 3, "month": 6, "day": 21, "shift": 0},
-    {"name": "Herbstanfang", "variant": 3, "month": 9, "day": 22, "shift": 14},
-    {"name": "Winteranfang", "variant": 3, "month": 12, "day": 21, "shift": 12}
-]}
+{
+    "dates": [
+        {
+            "name": "Neujahr",
+            "variant": 0,
+            "month": 1,
+            "day": 1
+        },
+        {
+            "name": "Heilige Drei Könige",
+            "variant": 0,
+            "month": 1,
+            "day": 6
+        },
+        {
+            "name": "Weltlachtag",
+            "variant": 0,
+            "month": 1,
+            "day": 10
+        },
+        {
+            "name": "Welt-Lepra-Tag",
+            "variant": 0,
+            "month": 1,
+            "day": 25
+        },
+        {
+            "name": "Tag des Gedenkens an die Opfer des Nationalsozialismus",
+            "variant": 0,
+            "month": 1,
+            "day": 27
+        },
+        {
+            "name": "Valentinstag",
+            "variant": 0,
+            "month": 2,
+            "day": 14
+        },
+        {
+            "name": "Welttag der Gästeführer",
+            "variant": 0,
+            "month": 2,
+            "day": 21
+        },
+        {
+            "name": "Schalttag",
+            "variant": 0,
+            "month": 2,
+            "day": 29
+        },
+        {
+            "name": "Weltfrauentag",
+            "variant": 0,
+            "month": 3,
+            "day": 8
+        },
+        {
+            "name": "Weltverbrauchertag",
+            "variant": 0,
+            "month": 3,
+            "day": 15
+        },
+        {
+            "name": "Internationaler Tag des Waldes",
+            "variant": 0,
+            "month": 3,
+            "day": 21
+        },
+        {
+            "name": "Weltwassertag",
+            "variant": 0,
+            "month": 3,
+            "day": 22
+        },
+        {
+            "name": "Welttag der Meteorologie",
+            "variant": 0,
+            "month": 3,
+            "day": 23
+        },
+        {
+            "name": "Welttheatertag",
+            "variant": 0,
+            "month": 3,
+            "day": 27
+        },
+        {
+            "name": "Weltgesundheitstag",
+            "variant": 0,
+            "month": 4,
+            "day": 7
+        },
+        {
+            "name": "Welttag des Baums",
+            "variant": 0,
+            "month": 4,
+            "day": 21
+        },
+        {
+            "name": "Welttag der Erde",
+            "variant": 0,
+            "month": 4,
+            "day": 22
+        },
+        {
+            "name": "Tag des deutschen Reinheitsgebots",
+            "variant": 0,
+            "month": 4,
+            "day": 23
+        },
+        {
+            "name": "Walpurgisnacht",
+            "variant": 0,
+            "month": 4,
+            "day": 30
+        },
+        {
+            "name": "Internationaler Tag der Arbeit",
+            "variant": 0,
+            "month": 5,
+            "day": 1
+        },
+        {
+            "name": "Welttag der Pressefreiheit",
+            "variant": 0,
+            "month": 5,
+            "day": 3
+        },
+        {
+            "name": "Europatag",
+            "variant": 0,
+            "month": 5,
+            "day": 5
+        },
+        {
+            "name": "Antidiättag",
+            "variant": 0,
+            "month": 5,
+            "day": 6
+        },
+        {
+            "name": "Internationaler Rotkreuztag",
+            "variant": 0,
+            "month": 5,
+            "day": 8
+        },
+        {
+            "name": "Internationaler Tag der Familie",
+            "variant": 0,
+            "month": 5,
+            "day": 15
+        },
+        {
+            "name": "Welttag des Fernmeldewesens",
+            "variant": 0,
+            "month": 5,
+            "day": 17
+        },
+        {
+            "name": "Welttag für kulturelle Entwicklung",
+            "variant": 0,
+            "month": 5,
+            "day": 21
+        },
+        {
+            "name": "Tag der Freiheit Afrikas",
+            "variant": 0,
+            "month": 5,
+            "day": 25
+        },
+        {
+            "name": "Weltnichtrauchertag",
+            "variant": 0,
+            "month": 5,
+            "day": 31
+        },
+        {
+            "name": "Tag der Organspende",
+            "variant": 0,
+            "month": 6,
+            "day": 2
+        },
+        {
+            "name": "Welttag der Umwelt",
+            "variant": 0,
+            "month": 6,
+            "day": 5
+        },
+        {
+            "name": "Tag der Sehbehinderten",
+            "variant": 0,
+            "month": 6,
+            "day": 6
+        },
+        {
+            "name": "Internationaler Tag zur Bekämpfung der Ausbreitung von Wüstengebieten",
+            "variant": 0,
+            "month": 6,
+            "day": 17
+        },
+        {
+            "name": "Tag des Schlafes",
+            "variant": 0,
+            "month": 6,
+            "day": 21
+        },
+        {
+            "name": "Weltflüchtlingstag",
+            "variant": 0,
+            "month": 6,
+            "day": 20
+        },
+        {
+            "name": "Johannistag",
+            "variant": 0,
+            "month": 6,
+            "day": 24
+        },
+        {
+            "name": "Internationaler Tag gegen Drogenmissbrauch und unerlaubten Suchtstoffverkehr",
+            "variant": 0,
+            "month": 6,
+            "day": 26
+        },
+        {
+            "name": "Siebenschläfer",
+            "variant": 0,
+            "month": 6,
+            "day": 27
+        },
+        {
+            "name": "Weltbevölkerungstag",
+            "variant": 0,
+            "month": 7,
+            "day": 11
+        },
+        {
+            "name": "Friedensfest in Augsburg",
+            "variant": 0,
+            "month": 8,
+            "day": 8
+        },
+        {
+            "name": "Internationaler Tag der indigenen Völker",
+            "variant": 0,
+            "month": 8,
+            "day": 9
+        },
+        {
+            "name": "Mariä Himmelfahrt",
+            "variant": 0,
+            "month": 8,
+            "day": 15
+        },
+        {
+            "name": "Tag der Vereinten Nationen",
+            "variant": 0,
+            "month": 8,
+            "day": 24
+        },
+        {
+            "name": "Antikriegstag",
+            "variant": 0,
+            "month": 9,
+            "day": 1
+        },
+        {
+            "name": "Weltbildungstag",
+            "variant": 0,
+            "month": 9,
+            "day": 8
+        },
+        {
+            "name": "Internationaler Tag zum Schutz der Ozonschicht",
+            "variant": 0,
+            "month": 9,
+            "day": 16
+        },
+        {
+            "name": "Weltkindertag",
+            "variant": 0,
+            "month": 9,
+            "day": 20
+        },
+        {
+            "name": "Welt-Alzheimer-Tag",
+            "variant": 0,
+            "month": 9,
+            "day": 21
+        },
+        {
+            "name": "Autofreier Tag in Europa",
+            "variant": 0,
+            "month": 9,
+            "day": 22
+        },
+        {
+            "name": "Tag der Raumfahrt",
+            "variant": 0,
+            "month": 9,
+            "day": 24
+        },
+        {
+            "name": "Tag der Zahngesundheit",
+            "variant": 0,
+            "month": 9,
+            "day": 25
+        },
+        {
+            "name": "Welttourismustag",
+            "variant": 0,
+            "month": 9,
+            "day": 27
+        },
+        {
+            "name": "Weltmusiktag",
+            "variant": 0,
+            "month": 10,
+            "day": 1
+        },
+        {
+            "name": "Tag der deutschen Einheit",
+            "variant": 0,
+            "month": 10,
+            "day": 3
+        },
+        {
+            "name": "Welttierschutztag",
+            "variant": 0,
+            "month": 10,
+            "day": 4
+        },
+        {
+            "name": "Welttag des Lehrers",
+            "variant": 0,
+            "month": 10,
+            "day": 5
+        },
+        {
+            "name": "Tag des Weltpostvereins",
+            "variant": 0,
+            "month": 10,
+            "day": 9
+        },
+        {
+            "name": "Tag des weißen Stockes",
+            "variant": 0,
+            "month": 10,
+            "day": 15
+        },
+        {
+            "name": "Welternährungstag",
+            "variant": 0,
+            "month": 10,
+            "day": 16
+        },
+        {
+            "name": "Internationaler Tag für die Beseitigung der Armut",
+            "variant": 0,
+            "month": 10,
+            "day": 17
+        },
+        {
+            "name": "Tag der Vereinten Nationen",
+            "variant": 0,
+            "month": 10,
+            "day": 24
+        },
+        {
+            "name": "Weltspartag",
+            "variant": 0,
+            "month": 10,
+            "day": 30
+        },
+        {
+            "name": "Reformationstag",
+            "variant": 0,
+            "month": 10,
+            "day": 31
+        },
+        {
+            "name": "Halloween",
+            "variant": 0,
+            "month": 10,
+            "day": 31
+        },
+        {
+            "name": "Allerheiligen",
+            "variant": 0,
+            "month": 11,
+            "day": 1
+        },
+        {
+            "name": "Allerseelen",
+            "variant": 0,
+            "month": 11,
+            "day": 2
+        },
+        {
+            "name": "Weltmännertag",
+            "variant": 0,
+            "month": 11,
+            "day": 3
+        },
+        {
+            "name": "Martinstag",
+            "variant": 0,
+            "month": 11,
+            "day": 11
+        },
+        {
+            "name": "Welt-Diabetes-Tag",
+            "variant": 0,
+            "month": 11,
+            "day": 14
+        },
+        {
+            "name": "Internationaler Tag der Toleranz",
+            "variant": 0,
+            "month": 11,
+            "day": 16
+        },
+        {
+            "name": "Tag der Kinderrechte",
+            "variant": 0,
+            "month": 11,
+            "day": 20
+        },
+        {
+            "name": "Weltfernsehtag",
+            "variant": 0,
+            "month": 11,
+            "day": 21
+        },
+        {
+            "name": "Internationaler Tag gegen Gewalt gegen Frauen",
+            "variant": 0,
+            "month": 11,
+            "day": 23
+        },
+        {
+            "name": "Internationaler Tag der Solidarität mit dem palästinensischen Volk",
+            "variant": 0,
+            "month": 11,
+            "day": 29
+        },
+        {
+            "name": "Welt-AIDS-Tag",
+            "variant": 0,
+            "month": 12,
+            "day": 1
+        },
+        {
+            "name": "Internationaler Tag der Behinderten",
+            "variant": 0,
+            "month": 12,
+            "day": 3
+        },
+        {
+            "name": "Internationaler Entwickungshelfertag für die wirtschaftliche und soziale Entwicklung",
+            "variant": 0,
+            "month": 12,
+            "day": 5
+        },
+        {
+            "name": "Nikolaus",
+            "variant": 0,
+            "month": 12,
+            "day": 6
+        },
+        {
+            "name": "Internationaler Tag der zivilen Luftfahrt",
+            "variant": 0,
+            "month": 12,
+            "day": 7
+        },
+        {
+            "name": "Mariä Empfängnis",
+            "variant": 0,
+            "month": 12,
+            "day": 8
+        },
+        {
+            "name": "Tag der Menschenrechte",
+            "variant": 0,
+            "month": 12,
+            "day": 10
+        },
+        {
+            "name": "Weltkinderfernsehtag",
+            "variant": 0,
+            "month": 12,
+            "day": 15
+        },
+        {
+            "name": "Heiligabend",
+            "variant": 0,
+            "month": 12,
+            "day": 24
+        },
+        {
+            "name": "1. Weihnachtstag",
+            "variant": 0,
+            "month": 12,
+            "day": 25
+        },
+        {
+            "name": "2. Weihnachtstag",
+            "variant": 0,
+            "month": 12,
+            "day": 26
+        },
+        {
+            "name": "Internationaler Tag der biologischen Vielfalt",
+            "variant": 0,
+            "month": 12,
+            "day": 29
+        },
+        {
+            "name": "Silvester",
+            "variant": 0,
+            "month": 12,
+            "day": 31
+        },
+        {
+            "name": "Muttertag",
+            "variant": 1,
+            "day": 75,
+            "offset": 0,
+            "weekday": 0
+        },
+        {
+            "name": "Internationaler Tag der Kooperativen",
+            "variant": 1,
+            "day": 130,
+            "offset": 0,
+            "weekday": 6
+        },
+        {
+            "name": "Internationaler Tag des Friedens",
+            "variant": 1,
+            "day": 206,
+            "offset": 0,
+            "weekday": 2
+        },
+        {
+            "name": "Erntedankfest",
+            "variant": 1,
+            "day": 220,
+            "offset": 0,
+            "weekday": 0
+        },
+        {
+            "name": "Welttag des Wohn- und Siedlungswesens",
+            "variant": 1,
+            "day": 222,
+            "offset": 0,
+            "weekday": 1
+        },
+        {
+            "name": "Internationaler Tag der Katastrophenvorbeugung",
+            "variant": 1,
+            "day": 229,
+            "offset": 0,
+            "weekday": 3
+        },
+        {
+            "name": "Volkstrauertag",
+            "variant": 1,
+            "day": 264,
+            "offset": 0,
+            "weekday": 0
+        },
+        {
+            "name": "Buß- und Bettag",
+            "variant": 1,
+            "day": 267,
+            "offset": 0,
+            "weekday": 0
+        },
+        {
+            "name": "Totensonntag",
+            "variant": 1,
+            "day": 271,
+            "offset": 0,
+            "weekday": 0
+        },
+        {
+            "name": "1. Advent",
+            "variant": 1,
+            "day": 278,
+            "offset": 0,
+            "weekday": 0
+        },
+        {
+            "name": "2. Advent",
+            "variant": 1,
+            "day": 285,
+            "offset": 0,
+            "weekday": 0
+        },
+        {
+            "name": "3. Advent",
+            "variant": 1,
+            "day": 292,
+            "offset": 0,
+            "weekday": 0
+        },
+        {
+            "name": "4. Advent",
+            "variant": 1,
+            "day": 299,
+            "offset": 0,
+            "weekday": 0
+        },
+        {
+            "name": "Weiberfastnacht",
+            "variant": 2,
+            "offset": -52
+        },
+        {
+            "name": "Rosenmontag",
+            "variant": 2,
+            "offset": -48
+        },
+        {
+            "name": "Fastnacht",
+            "variant": 2,
+            "offset": -47
+        },
+        {
+            "name": "Aschermittwoch",
+            "variant": 2,
+            "offset": -46
+        },
+        {
+            "name": "Palmsonntag",
+            "variant": 2,
+            "offset": -7
+        },
+        {
+            "name": "Gründonnerstag",
+            "variant": 2,
+            "offset": -3
+        },
+        {
+            "name": "Karfreitag",
+            "variant": 2,
+            "offset": -2
+        },
+        {
+            "name": "Ostersonntag",
+            "variant": 2,
+            "offset": 0
+        },
+        {
+            "name": "Ostermontag",
+            "variant": 2,
+            "offset": 1
+        },
+        {
+            "name": "Weißer Sonntag",
+            "variant": 2,
+            "offset": 7
+        },
+        {
+            "name": "Christi Himmelfahrt",
+            "variant": 2,
+            "offset": 39
+        },
+        {
+            "name": "Pfingstsonntag",
+            "variant": 2,
+            "offset": 49
+        },
+        {
+            "name": "Pfingstmontag",
+            "variant": 2,
+            "offset": 50
+        },
+        {
+            "name": "Fronleichnam",
+            "variant": 2,
+            "offset": 60
+        },
+        {
+            "name": "Frühlingsanfang",
+            "variant": 3,
+            "month": 3,
+            "day": 20,
+            "shift": 8
+        },
+        {
+            "name": "Sommeranfang",
+            "variant": 3,
+            "month": 6,
+            "day": 21,
+            "shift": 0
+        },
+        {
+            "name": "Herbstanfang",
+            "variant": 3,
+            "month": 9,
+            "day": 22,
+            "shift": 14
+        },
+        {
+            "name": "Winteranfang",
+            "variant": 3,
+            "month": 12,
+            "day": 21,
+            "shift": 12
+        }
+    ]
+}
