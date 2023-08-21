@@ -299,9 +299,9 @@ __Beispiel__: `ALMANAC_DateInfo(12345, time());`
 
 v5.2.20230703
 
-* _NEU_: Unterstützung von IPS 7.0
-* _NEU_: Umstellung auf PHP 8.2
-* _NEU_: Vorgabetexte für Ereignise die nicht eintreten integriert
+* _NEU_: Anpassungen für IPS 7.0 (PHP 8.2)
+* _NEU_: Vorgabetexte für nicht eingetretene Ereignisse hinzugefügt
+* _FIX_: Falscher Separator bei Hochzeitstage verwendet
 * _FIX_: Fehlende Übersetzungen nachgeholt
 * _FIX_: Veraltetet Style-Checks ausgebaut
 * _FIX_: JSON Format vereinheitlicht
