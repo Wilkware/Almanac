@@ -628,6 +628,25 @@
                             "caption": "(Specifier: %Q = quote or saying, %A = author)"
                         }
                     ]
+                },
+                {
+                    "type": "Label",
+                    "caption": "Day or date format (long):",
+                    "underline": true
+                },
+                {
+                    "type": "RowLayout",
+                    "items": [
+                        {
+                            "type": "ValidationTextBox",
+                            "name": "DateFormat",
+                            "caption": "Text output format:"
+                        },
+                        {
+                            "type": "Label",
+                            "caption": "(Specifier: %j, %d, %D, %l = day; %n, %m, %M, %F = month; %y, %Y = year)"
+                        }
+                    ]
                 }
             ]
         },

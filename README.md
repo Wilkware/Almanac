@@ -1,10 +1,10 @@
 # Jahreskalender (Almanac)
 
-[![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
-[![Product](https://img.shields.io/badge/Symcon%20Version-6.0-blue.svg)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-5.2.20230703-orange.svg)](https://github.com/Wilkware/IPSymconAlmanac)
-[![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
-[![Actions](https://github.com/Wilkware/IPSymconAlmanac/workflows/Check%20Style/badge.svg)](https://github.com/Wilkware/IPSymconAlmanac/actions)
+[![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg?style=flat-square)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
+[![Product](https://img.shields.io/badge/Symcon%20Version-6.4-blue.svg?style=flat-square)](https://www.symcon.de/produkt/)
+[![Version](https://img.shields.io/badge/Modul%20Version-5.3.20240724-orange.svg?style=flat-square)](https://github.com/Wilkware/Almanac)
+[![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg?style=flat-square)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+[![Actions](https://img.shields.io/github/actions/workflow/status/wilkware/Almanac/style.yml?branch=main&label=CheckStyle&style=flat-square)](https://github.com/Wilkware/Almanac/actions)
 
 Dieses Modul bietet jährliche Kalenderinformationen wie Feiertage, Schulferien und Festtage.  
 Außerdem werden Informationen wie Arbeitstage im Monat, Schaltjahr, Jahreszeit oder ob Wochenende ist aktuell gehalten.  
@@ -67,6 +67,7 @@ Weekday               | int     | Wochentag (1=Montag ... 7=Sonntag)
 WeekNumber            | int     | Kalenderwochennummer
 DaysInMonth           | int     | Anzahl Tage im Monat
 DayOfYear             | int     | Tag im Jahr (1-366)
+DayLong               | string  | Tagesdatum (langes Format, z.B.: Montag, 1.Januar 1970)
 Season                | string  | Name der Jahreszeit ("Spring", "Summer", "Fall" oder "Winter")
 Festive               | string  | Name des Festtags, oder "Kein Festtag"
 IsFestive             | bool    | TRUE, wenn Festtag ist
@@ -89,7 +90,7 @@ QuoteOfTheDay         | array   | Feld mit Zitat und Autor
 
 ### 2. Voraussetzungen
 
-* IP-Symcon ab Version 6.0
+* IP-Symcon ab Version 6.4
 
 ### 3. Installation
 
@@ -166,6 +167,7 @@ Name                                                   | Beschreibung
 Textausgabeformat für Mond- und Sonnenfinsternisse     | Frei wählbares Format für die Ereignisausgabe
 Textausgabeformat für Mondphasen                       | Frei wählbares Format für die Ereignisausgabe
 Textausgabeformat für Zitat des Tages                  | Frei wählbares Format für die Zitatsausgabe
+Textausgabeformat für langes Tagesformat               | Frei wählbares Format für das Tagesdatum
 
 > Erweiterte Einstellungen ...
 
@@ -232,7 +234,7 @@ Todestag             | String    | Formatierte Ausgabe des Todestages oder leer
 Kalenderwoche        | Integer   | Nummer der aktuelle Kalenderwoche
 Tage im Monat        | Integer   | Wieviel Tage hat der aktuelle Monat?
 Tag im Jahr          | Integer   | Welcher Tag des Jahres?
-Arbeitstage im Monat | Integer   | Wieviel Arbeitstage hat der Monat des gewählten Bundeslandes?
+Tagesformat          | String    | Formatiertes Datum (lang)
 Jahreszeit           | String    | "Frühling", "Sommer", "Herbst" oder "Winter"
 
 Folgende Profile werden angelegt:
@@ -274,6 +276,7 @@ __Beispiel__: `ALMANAC_DateInfo(12345, time());`
 > "WeekNumber": 6,  
 > "DaysInMonth": 28,  
 > "DayOfYear": 45,  
+> "DayLong": "Dienstag, 20.Februar",  
 > "Season": "Winter",  
 > "Festive": "Valentinstag",  
 > "IsFestive": true,  
@@ -296,6 +299,16 @@ __Beispiel__: `ALMANAC_DateInfo(12345, time());`
 }  
 
 ### 8. Versionshistorie
+
+v5.3.20240724
+
+* _NEU_: Neu Statusvariable für langes Tagesformat
+* _NEU_: Kompatibilität auf IPS 6.4 hoch gesetzt
+* _FIX_: Bibliotheks- bzw. Modulinfos vereinheitlicht
+* _FIX_: Namensnennung und Repo vereinheitlicht
+* _FIX_: Update Style-Checks
+* _FIX_: Fehlende Übersetzungen nachgeholt
+* _FIX_: Dokumentation vereinheitlicht
 
 v5.2.20230703
 
@@ -420,7 +433,7 @@ Seit nunmehr über 10 Jahren fasziniert mich das Thema Haussteuerung. In den let
 
 ## Spenden
 
-Die Software ist für die nicht kommzerielle Nutzung kostenlos, über eine Spende bei Gefallen des Moduls würde ich mich freuen.
+Die Software ist für die nicht kommerzielle Nutzung kostenlos, über eine Spende bei Gefallen des Moduls würde ich mich freuen.
 
 [![PayPal](https://img.shields.io/badge/PayPal-spenden-00457C.svg?style=for-the-badge&logo=paypal)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8816166)
 

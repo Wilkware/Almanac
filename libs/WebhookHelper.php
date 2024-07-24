@@ -1,7 +1,7 @@
 <?php
 
 /**
- * CalendarHelper.php
+ * WebhookHelper.php
  *
  * Part of the Trait-Libraray for IP-Symcon Modules.
  *

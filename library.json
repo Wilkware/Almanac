@@ -1,12 +1,12 @@
 {
     "id": "{5C868298-0E0E-460C-B2EE-171513972D42}",
-    "author": "Wilkware (@Pitti)",
     "name": "Almanac",
+    "author": "Wilkware (@Pitti)",
     "url": "https://wilkware.de",
     "compatibility": {
-        "version": "6.0"
+        "version": "6.4"
     },
-    "version": "5.2",
-    "build": 20230703,
-    "date": 1688378400
+    "version": "5.3",
+    "build": 20240724,
+    "date": 1721822400
 }

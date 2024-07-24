@@ -1,13 +1,12 @@
 {
     "id": "{6DFFD7EB-733C-4EDB-B116-174A0DC30E49}",
-    "name": "Almanac Module",
+    "name": "Almanac",
+    "url": "https://wilkware.de/ip-symcon-module/abfallwirtschaft/",
     "type": 3,
     "vendor": "",
     "aliases": [
-        "Jahreskalender",
-        "Almanach"
+        "Annual calendar"
     ],
-    "url": "https://wilkware.de/ip-symcon-module/almanac/",
     "parentRequirements": [],
     "childRequirements": [],
     "implemented": [],

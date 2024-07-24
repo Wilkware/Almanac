@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../libs/_traits.php';  // Generell funktions
 
-// CLASS AlmanacModule
-class AlmanacModule extends IPSModule
+// CLASS Almanac
+class Almanac extends IPSModule
 {
     use CalendarHelper;
     use DebugHelper;
@@ -79,6 +79,7 @@ class AlmanacModule extends IPSModule
         $this->RegisterAttributeString('AstroURL', 'https://api.asmium.de/astronomy/YEAR/COUNTRY/EVENT/');
         $this->RegisterPropertyString('QuoteFormat', $this->Translate('„%Q“ - %A'));
         $this->RegisterAttributeString('QuoteURL', 'https://api.asmium.de/quotes/de/');
+        $this->RegisterPropertyString('DateFormat', '%l, %j.%F');
         // Advanced Settings
         $this->RegisterPropertyBoolean('UpdateHoliday', true);
         $this->RegisterPropertyBoolean('UpdateVacation', true);
@@ -186,16 +187,16 @@ class AlmanacModule extends IPSModule
         // Profile
         $question = [
             [0, 'No', 'Close', 0xFF0000],
-            [1, 'Yes',   'Ok', 0x00FF00],
+            [1, 'Yes', 'Ok', 0x00FF00],
         ];
-        $this->RegisterProfile(vtBoolean, 'ALMANAC.Question', 'Bulb', '', '', 0, 0, 0, 0, $question);
+        $this->RegisterProfileBoolean('ALMANAC.Question', 'Bulb', '', '', $question);
         $season = [
             ['Spring', 'Spring', '', 0x8CC63E],
             ['Summer', 'Summer', '', 0xFDD501],
             ['Fall', 'Fall', '', 0xD96F01],
             ['Winter', 'Winter', '', 0x65C7D0],
         ];
-        $this->RegisterProfile(vtString, 'ALMANAC.Season', 'Leaf', '', '', 0, 0, 0, 0, $season);
+        $this->RegisterProfileString('ALMANAC.Season', 'Leaf', '', '', $season);
         $dayofweek = [
             [1, 'Monday', '', 0x80FF80],
             [2, 'Tuesday', '', 0x80FF80],
@@ -205,47 +206,48 @@ class AlmanacModule extends IPSModule
             [6, 'Saturday', '', 0xFFFF80],
             [7, 'Sunday', '', 0xFF8080],
         ];
-        $this->RegisterProfile(vtInteger, 'ALMANAC.Weekday', 'Calendar', '', '', 0, 0, 0, 0, $dayofweek);
+        $this->RegisterProfileInteger('ALMANAC.Weekday', 'Calendar', '', '', 0, 0, 0, $dayofweek);
         // Webhook for exports
         $this->RegisterHook('/hook/almanac' . $this->InstanceID);
         // Holiday (Feiertage)
-        $this->MaintainVariable('IsHoliday', $this->Translate('Is holiday?'), vtBoolean, 'ALMANAC.Question', 101, $isHoliday);
-        $this->MaintainVariable('Holiday', $this->Translate('Holiday'), vtString, '', 201, $isHoliday);
+        $this->MaintainVariable('IsHoliday', $this->Translate('Is holiday?'), VARIABLETYPE_BOOLEAN, 'ALMANAC.Question', 101, $isHoliday);
+        $this->MaintainVariable('Holiday', $this->Translate('Holiday'), VARIABLETYPE_STRING, '', 201, $isHoliday);
         // Vacation (Schulferien)
-        $this->MaintainVariable('IsVacation', $this->Translate('Is vacation?'), vtBoolean, 'ALMANAC.Question', 102, $isVacation);
-        $this->MaintainVariable('Vacation', $this->Translate('Vacation'), vtString, '', 202, $isVacation);
+        $this->MaintainVariable('IsVacation', $this->Translate('Is vacation?'), VARIABLETYPE_BOOLEAN, 'ALMANAC.Question', 102, $isVacation);
+        $this->MaintainVariable('Vacation', $this->Translate('Vacation'), VARIABLETYPE_STRING, '', 202, $isVacation);
         // Festive (Festtage)
-        $this->MaintainVariable('IsFestive', $this->Translate('Is festive day?'), vtBoolean, 'ALMANAC.Question', 103, $isFestive);
-        $this->MaintainVariable('Festive', $this->Translate('Festive day'), vtString, '', 203, $isFestive);
+        $this->MaintainVariable('IsFestive', $this->Translate('Is festive day?'), VARIABLETYPE_BOOLEAN, 'ALMANAC.Question', 103, $isFestive);
+        $this->MaintainVariable('Festive', $this->Translate('Festive day'), VARIABLETYPE_STRING, '', 203, $isFestive);
         // Birthday (Geburtstage)
-        $this->MaintainVariable('IsBirthday', $this->Translate('Is birthday?'), vtBoolean, 'ALMANAC.Question', 104, $isBirthday);
-        $this->MaintainVariable('Birthday', $this->Translate('Birthday'), vtString, '', 204, $isBirthday);
+        $this->MaintainVariable('IsBirthday', $this->Translate('Is birthday?'), VARIABLETYPE_BOOLEAN, 'ALMANAC.Question', 104, $isBirthday);
+        $this->MaintainVariable('Birthday', $this->Translate('Birthday'), VARIABLETYPE_STRING, '', 204, $isBirthday);
         // Weddingday (Hochzeitstage)
-        $this->MaintainVariable('IsWeddingday', $this->Translate('Is wedding day?'), vtBoolean, 'ALMANAC.Question', 105, $isWeddingday);
-        $this->MaintainVariable('Weddingday', $this->Translate('Wedding day'), vtString, '', 205, $isWeddingday);
+        $this->MaintainVariable('IsWeddingday', $this->Translate('Is wedding day?'), VARIABLETYPE_BOOLEAN, 'ALMANAC.Question', 105, $isWeddingday);
+        $this->MaintainVariable('Weddingday', $this->Translate('Wedding day'), VARIABLETYPE_STRING, '', 205, $isWeddingday);
         // Deathday (Todestage)
-        $this->MaintainVariable('IsDeathday', $this->Translate('Is death day?'), vtBoolean, 'ALMANAC.Question', 106, $isDeathday);
-        $this->MaintainVariable('Deathday', $this->Translate('Death day'), vtString, '', 206, $isDeathday);
+        $this->MaintainVariable('IsDeathday', $this->Translate('Is death day?'), VARIABLETYPE_BOOLEAN, 'ALMANAC.Question', 106, $isDeathday);
+        $this->MaintainVariable('Deathday', $this->Translate('Death day'), VARIABLETYPE_STRING, '', 206, $isDeathday);
         // Eclipse (Mond- und Sonnnenfisternis)
-        $this->MaintainVariable('IsEclipse', $this->Translate('Is lunar or solar eclipse?'), vtBoolean, 'ALMANAC.Question', 107, $isEclipse);
-        $this->MaintainVariable('Eclipse', $this->Translate('Lunar or solar eclipse'), vtString, '', 207, $isEclipse);
+        $this->MaintainVariable('IsEclipse', $this->Translate('Is lunar or solar eclipse?'), VARIABLETYPE_BOOLEAN, 'ALMANAC.Question', 107, $isEclipse);
+        $this->MaintainVariable('Eclipse', $this->Translate('Lunar or solar eclipse'), VARIABLETYPE_STRING, '', 207, $isEclipse);
         // Moonphase (Mondphasen)
-        $this->MaintainVariable('IsMoonphase', $this->Translate('Is moon phase?'), vtBoolean, 'ALMANAC.Question', 108, $isMoonphase);
-        $this->MaintainVariable('Moonphase', $this->Translate('Moon phase'), vtString, '', 208, $isMoonphase);
+        $this->MaintainVariable('IsMoonphase', $this->Translate('Is moon phase?'), VARIABLETYPE_BOOLEAN, 'ALMANAC.Question', 108, $isMoonphase);
+        $this->MaintainVariable('Moonphase', $this->Translate('Moon phase'), VARIABLETYPE_STRING, '', 208, $isMoonphase);
         // Quote of the day (Zitat des Tages)
-        $this->MaintainVariable('QuoteOfTheDay', $this->Translate('Quote of the day'), vtString, '', 600, $isQuote);
+        $this->MaintainVariable('QuoteOfTheDay', $this->Translate('Quote of the day'), VARIABLETYPE_STRING, '', 600, $isQuote);
         // Date (Tagesdaten)
-        $this->MaintainVariable('IsSummer', $this->Translate('Is summer time?'), vtBoolean, 'ALMANAC.Question', 151, $isDate);
-        $this->MaintainVariable('IsLeapyear', $this->Translate('Is leap year?'), vtBoolean, 'ALMANAC.Question', 152, $isDate);
-        $this->MaintainVariable('IsWeekend', $this->Translate('Is weekend?'), vtBoolean, 'ALMANAC.Question', 153, $isDate);
-        $this->MaintainVariable('WeekDay', $this->Translate('Weekday'), vtInteger, 'ALMANAC.Weekday', 300, $isDate);
-        $this->MaintainVariable('WeekNumber', $this->Translate('Week number'), vtInteger, '', 301, $isDate);
-        $this->MaintainVariable('DaysInMonth', $this->Translate('Days in month'), vtInteger, '', 302, $isDate);
-        $this->MaintainVariable('DayOfYear', 'Tag im Jahr', vtInteger, '', 303, $isDate);
+        $this->MaintainVariable('IsSummer', $this->Translate('Is summer time?'), VARIABLETYPE_BOOLEAN, 'ALMANAC.Question', 151, $isDate);
+        $this->MaintainVariable('IsLeapyear', $this->Translate('Is leap year?'), VARIABLETYPE_BOOLEAN, 'ALMANAC.Question', 152, $isDate);
+        $this->MaintainVariable('IsWeekend', $this->Translate('Is weekend?'), VARIABLETYPE_BOOLEAN, 'ALMANAC.Question', 153, $isDate);
+        $this->MaintainVariable('WeekDay', $this->Translate('Weekday'), VARIABLETYPE_INTEGER, 'ALMANAC.Weekday', 300, $isDate);
+        $this->MaintainVariable('WeekNumber', $this->Translate('Week number'), VARIABLETYPE_INTEGER, '', 301, $isDate);
+        $this->MaintainVariable('DaysInMonth', $this->Translate('Days in month'), VARIABLETYPE_INTEGER, '', 302, $isDate);
+        $this->MaintainVariable('DayOfYear', $this->Translate('Day of year'), VARIABLETYPE_INTEGER, '', 303, $isDate);
+        $this->MaintainVariable('DayLong', $this->Translate('Day format'), VARIABLETYPE_STRING, '', 304, $isDate);
         // Working Days (Arbeitstage im Monat)
-        $this->MaintainVariable('WorkingDays', $this->Translate('Working days'), vtInteger, '', 400, $isDate);
+        $this->MaintainVariable('WorkingDays', $this->Translate('Working days'), VARIABLETYPE_INTEGER, '', 400, $isDate);
         // Season (Jahreszeit)
-        $this->MaintainVariable('Season', $this->Translate('Season'), vtString, 'ALMANAC.Season', 500, $isDate);
+        $this->MaintainVariable('Season', $this->Translate('Season'), VARIABLETYPE_STRING, 'ALMANAC.Season', 500, $isDate);
         // Calculate next date info update interval
         $this->UpdateTimerInterval('UpdateTimer', 0, 0, 30);
         // Calculate next notification timer interval
@@ -393,6 +395,7 @@ class AlmanacModule extends IPSModule
                 $this->SetValueInteger('DaysInMonth', $date['DaysInMonth']);
                 $this->SetValueInteger('DayOfYear', $date['DayOfYear']);
                 $this->SetValueInteger('WorkingDays', $date['WorkingDays']);
+                $this->SetValueString('DayLong', $date['DayLong']);
                 $this->SetValueString('Season', $date['Season']);
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);
@@ -497,6 +500,7 @@ class AlmanacModule extends IPSModule
         $date['WeekNumber'] = idate('W', $ts);
         $date['DaysInMonth'] = idate('t', $ts);
         $date['DayOfYear'] = idate('z', $ts) + 1; // idate('z') is zero based
+        $date['DayLong'] = $this->FormatLong($ts, $this->ReadPropertyString('DateFormat'));
 
         // --------------------------------------------------------------------
         // season info
@@ -939,6 +943,29 @@ class AlmanacModule extends IPSModule
     /**
      * Format a given array to a string.
      *
+     * @param int $now timestamp
+     * @param string $format Format string
+     */
+    private function FormatLong(int $now, string $format)
+    {
+        // format: %j,%d,%D,%l = day, %n,%m,%M,%F = month. $y,%Y = year)
+        $output = str_replace('%d', $this->Translate(date('d', $now)), $format);
+        $output = str_replace('%l', $this->Translate(date('l', $now)), $output);
+        $output = str_replace('%M', $this->Translate(date('M', $now)), $output);
+        $output = str_replace('%F', $this->Translate(date('F', $now)), $output);
+        $output = str_replace('%j', date('j', $now), $output);
+        $output = str_replace('%D', date('D', $now), $output);
+        $output = str_replace('%n', date('n', $now), $output);
+        $output = str_replace('%m', date('m', $now), $output);
+        $output = str_replace('%y', date('y', $now), $output);
+        $output = str_replace('%Y', date('>', $now), $output);
+        $this->SendDebug(__FUNCTION__, 'Result : ' . $output);
+        return $output;
+    }
+
+    /**
+     * Format a given array to a string.
+     *
      * @param array $item Event item
      * @param string $format Format string
      */
@@ -1010,7 +1037,7 @@ class AlmanacModule extends IPSModule
         }
         // write to variable
         if ($variable) {
-            if($date[$ident]) {
+            if ($date[$ident]) {
                 $this->SetValueString($ident, $lines);
             } else {
                 $this->SendDebug(__FUNCTION__, $nothing . ' ' . gettype($nothing));
