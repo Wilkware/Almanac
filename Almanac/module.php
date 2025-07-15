@@ -31,6 +31,22 @@ class Almanac extends IPSModule
     ];
 
     /**
+     * Cache time dor a day
+     */
+    private const SECONDS_PER_DAY = 86400;
+
+    /**
+     * Cache timeouts per URL pattern (seconds)
+     * 0 = load once, keep forever (until IPS restart or ClearCache())
+     */
+    private const CACHE_RULES = [
+        'holiday'   => 90 * self::SECONDS_PER_DAY,  // 90 days
+        'vacation'  => 30 * self::SECONDS_PER_DAY,  // 30 days
+        'astronomy' => 180 * self::SECONDS_PER_DAY, // 180 days
+        'quotes'    => 0                            // load once, keep forever
+    ];
+
+    /**
      * Create.
      */
     public function Create()
@@ -289,6 +305,12 @@ class Almanac extends IPSModule
                 break;
             case 'OnDeleteDays':
                 $this->OnDeleteDays($value);
+                break;
+            case 'CacheClear':
+                $this->ClearCache($value);
+                break;
+            case 'CacheInfo':
+                $this->SendDebug(__FUNCTION__, $this->DebugPrint($this->GetCacheInfo()), 0);
                 break;
         }
         // return true;
@@ -1114,18 +1136,122 @@ class Almanac extends IPSModule
     {
         // Debug output
         $this->SendDebug(__FUNCTION__, 'LINK: ' . $url, 0);
-        // read API URL
+
+        // Get cache data
+        $cache = json_decode($this->GetBuffer('UrlCache') ?? '{}', true);
+        if (!is_array($cache)) {
+            $cache = [];
+        }
+        // Get cache time per url
+        $timeout = $this->GetCacheTimeoutForUrl($url);
+
+        // Can read from cache?
+        if (isset($cache[$url])) {
+            $entry = $cache[$url];
+            if ($timeout === 0 || ($entry['timestamp'] + $timeout) > time()) {
+                $this->SendDebug(__FUNCTION__, 'Cache hit [' . ($timeout === 0 ? '∞' : round($timeout / 60) . ' min') . ']', 0);
+                return $entry['result'];
+            }
+        }
+
+        // Read from API
         $json = @file_get_contents($url);
-        // error handling
+        // Error handling
         if ($json === false) {
             $this->LogMessage($this->Translate('Could not load json data!'), KL_ERROR);
             $this->SendDebug(__FUNCTION__, 'ERROR LOAD DATA', 0);
             return [];
         }
-        // json decode
+
+        // JSON decode
         $data = json_decode($json, true);
-        // return the events
-        return $data['data'][$info];
+        if (!isset($data['data'][$info])) {
+            $this->SendDebug(__FUNCTION__, 'NO DATA FOUND', 0);
+            return [];
+        }
+
+        // We have data
+        $result = $data['data'][$info];
+
+        $cache[$url] = [
+            'result'    => $result,
+            'timestamp' => time()
+        ];
+        $this->SetBuffer('UrlCache', json_encode($cache));
+        $this->SendDebug(__FUNCTION__, 'Cache miss - new stroed [' . ($timeout === 0 ? '∞' : round($timeout / 60) . ' min') . ']', 0);
+
+        // Return the events
+        return $result;
+    }
+
+    /**
+     * Returns the c ache timeout for a given url
+     *
+     * @param string $url Passed Url
+     * @return int Cahce time in seconds
+     */
+    private function GetCacheTimeoutForUrl(string $url): int
+    {
+        foreach (self::CACHE_RULES as $pattern => $seconds) {
+            if (strpos($url, $pattern) !== false) {
+                return $seconds;
+            }
+        }
+        // Fallback: 1 day
+        return self::SECONDS_PER_DAY;
+    }
+
+    /**
+     * Clear the cache entries
+     *
+     * @param string $pattern Assoziated pattern per cache item
+     * @return void
+     */
+    private function ClearCache(string $pattern = ''): void
+    {
+        $cacheData = json_decode($this->GetBuffer('UrlCache') ?? '{}', true);
+        if (!is_array($cacheData)) {
+            $cacheData = [];
+        }
+
+        if ($pattern === '') {
+            $this->SendDebug(__FUNCTION__, 'All cache cleared!', 0);
+            $this->SetBuffer('UrlCache', '{}');
+            return;
+        }
+
+        foreach ($cacheData as $url => $entry) {
+            if (strpos($url, $pattern) !== false) {
+                unset($cacheData[$url]);
+            }
+        }
+        $this->SetBuffer('UrlCache', json_encode($cacheData));
+        $this->SendDebug(__FUNCTION__, 'Cache cleared for: ' . $pattern, 0);
+    }
+
+    /**
+     * Get cache info
+     *
+     * @return array
+     */
+    private function GetCacheInfo(): array
+    {
+        $cacheData = json_decode($this->GetBuffer('UrlCache') ?? '{}', true);
+        if (!is_array($cacheData)) {
+            return [];
+        }
+
+        $info = [];
+        foreach ($cacheData as $url => $entry) {
+            $timeout = $this->GetCacheTimeoutForUrl($url);
+            $remaining = ($timeout === 0) ? '∞' : max(0, ($entry['timestamp'] + $timeout) - time());
+            $info[] = [
+                'Url'       => $url,
+                'CachedAt'  => date('Y-m-d H:i:s', $entry['timestamp']),
+                'Remaining' => $remaining === '∞' ? '∞' : round($remaining / 60) . ' min'
+            ];
+        }
+        return $info;
     }
 
     /**

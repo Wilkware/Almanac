@@ -2,7 +2,7 @@
 
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg?style=flat-square)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 [![Product](https://img.shields.io/badge/Symcon%20Version-6.4-blue.svg?style=flat-square)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-5.3.20240724-orange.svg?style=flat-square)](https://github.com/Wilkware/Almanac)
+[![Version](https://img.shields.io/badge/Modul%20Version-5.4.20250715-orange.svg?style=flat-square)](https://github.com/Wilkware/Almanac)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg?style=flat-square)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Actions](https://img.shields.io/github/actions/workflow/status/wilkware/Almanac/style.yml?branch=main&label=CheckStyle&style=flat-square)](https://github.com/Wilkware/Almanac/actions)
 
@@ -19,7 +19,7 @@ Ein Zitat des Tages rundet die Funktionalität des Modules ab.
 3. [Installation](#user-content-3-installation)
 4. [Einrichten der Instanzen in IP-Symcon](#user-content-4-einrichten-der-instanzen-in-ip-symcon)
 5. [Statusvariablen und Profile](#user-content-5-statusvariablen-und-profile)
-6. [WebFront](#user-content-6-webfront)
+6. [Visualisierung](#user-content-6-visualisierung)
 7. [PHP-Befehlsreferenz](#user-content-7-php-befehlsreferenz)
 8. [Versionshistorie](#user-content-8-versionshistorie)
 
@@ -244,7 +244,7 @@ Name                 | Typ       | Beschreibung
 ALMANAC.Question     | Boolean   | FALSE = Nein(No) / TRUE = Ja(Yes)
 ALMANAC.Sesaon       | String    | Winter(Winter), Frühling(Spring), Herbst(Fall), Sommer(Summer)
 
-### 6. WebFront
+### 6. Visualisierung
 
 Man kann die Statusvariablen direkt im WF verlinken.
 
@@ -299,6 +299,12 @@ __Beispiel__: `ALMANAC_DateInfo(12345, time());`
 }  
 
 ### 8. Versionshistorie
+
+v5.4.20250715
+
+* _NEU_: Caching eingeführt um Traffic zu reduzieren
+* _FIX_: Berechnung Buß- und Bettag korriegiert
+* _FIX_: Bibliotheks- bzw. Modulinfos vereinheitlicht
 
 v5.3.20240724
 
