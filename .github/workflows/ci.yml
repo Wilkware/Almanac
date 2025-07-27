@@ -38,5 +38,4 @@ jobs:
       run: ls -la
 
     - name: Run PHPUnit tests
-      working-directory: Almanac
-      run: php ../phpunit.phar tests --testdox -c tests/phpunit.xml
+      run: php phpunit.phar tests --testdox -c tests/phpunit.xml
