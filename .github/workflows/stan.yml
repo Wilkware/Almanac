@@ -16,7 +16,7 @@ jobs:
           php-version: 8.2
 
       - name: Clone SymconStubs
-        run: git clone https://github.com/symcon/SymconStubs.git _ips-stubs
+        run: git clone https://github.com/symcon/SymconStubs.git ../_ips-stubs
 
       - name: Install PHPStan
         run: |
