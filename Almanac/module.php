@@ -1112,7 +1112,7 @@ class Almanac extends IPSModule
      *
      * @param string $property Name of the list element
      * @param string $value Data to import (base64 coded)
-     * 
+     *
      * @return void
      */
     private function ImportCSV(string $property, string $value): void

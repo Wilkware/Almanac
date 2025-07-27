@@ -26,7 +26,7 @@ trait EventHelper
      * @param int    $hour   Start hour.
      * @param int    $minute Start minute.
      * @param int    $second Start second.
-     * 
+     *
      * @return void
      */
     protected function UpdateTimerInterval(string $ident, int $hour, int $minute, int $second): void
@@ -48,7 +48,7 @@ trait EventHelper
      * @param string $ident  Internal identifier
      * @param array<int, array{0: string, 1: int, 2: string}> $datas Array with switch states.
      * @param int    $pos    Position (sort order)
-     * 
+     *
      * @return int ID of the existing schedule or of the new created schedule.
      */
     protected function CreateWeeklySchedule(int $id, string $name, string $ident, array $datas, int $pos = 0): int
@@ -77,7 +77,7 @@ trait EventHelper
      * @param int $id Weekly schedule ID
      * @param int $time Query time as system time
      * @param bool $checkonly Check only slot
-     * 
+     *
      * @return array{
      *     ActionID: int,               // Active state at the time of the query
      *     ActionName: string,          // Status description at the time of the query
@@ -434,7 +434,7 @@ trait EventHelper
      * Versucht eine Semaphore zu setzen und wiederholt dies bei Misserfolg bis zu 100 mal.
      *
      * @param string $ident Ein String der den Lock bezeichnet.
-     * 
+     *
      * @return boolean TRUE bei Erfolg, FALSE bei Misserfolg.
      */
     private function SemaphoreEnter(string $ident): bool
@@ -453,7 +453,7 @@ trait EventHelper
      * Löscht eine Semaphore.
      *
      * @param string $ident Ein String der den Lock bezeichnet.
-     * 
+     *
      * @return void
      */
     private function SemaphoreLeave(string $ident): void

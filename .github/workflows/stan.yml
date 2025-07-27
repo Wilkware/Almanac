@@ -15,8 +15,11 @@ jobs:
         with:
           php-version: 8.2
 
-      - name: Install dependencies
-        run: composer install --no-interaction --prefer-dist
+      - name: Download PHPStan
+        run: wget https://github.com/phpstan/phpstan/releases/latest/download/phpstan.phar
+
+      - name: Make PHPStan executable
+        run: chmod +x phpstan.phar
 
       - name: Run PHPStan
-        run: vendor/bin/phpstan analyse --memory-limit=512M
+        run: php phpstan.phar analyse --configuration=phpstan.neon

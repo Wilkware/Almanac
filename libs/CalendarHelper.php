@@ -36,7 +36,7 @@ trait CalendarHelper
      *
      * @param int $year  Year (YYYY).
      * @param int $month Month (1-12).
-     * 
+     *
      * @return int Number of days (28-31)
      */
     protected function DaysInMonth(int $year, int $month): int
@@ -51,7 +51,7 @@ trait CalendarHelper
      * @param int $month Month (1-12).
      * @param int $day   Day (1-31).
      * @param int $shift Shift (0,8,12,14).
-     * 
+     *
      * @return string Date in the format d.m.Y (e.g. 21.3.2021)
      */
     protected function DateForSeason(int $year, int $month, int $day, int $shift): string
@@ -66,7 +66,7 @@ trait CalendarHelper
      * @param int $day    Day (1-356).
      * @param int $offset Offset (0..).
      * @param int $wd     Weekday (0..6, 0 = sunday).
-     * 
+     *
      * @return string Date in the format d.m.Y (e.g. 1.1.1970)
      */
     protected function DateWithReference(int $year, int $day, int $offset, int $wd): string
@@ -84,7 +84,7 @@ trait CalendarHelper
      *
      * @param int $year  Year (YYYY).
      * @param int $offset Offset (+/-days).
-     * 
+     *
      * @return string Date in the format d.m.Y (e.g. 1.1.1970)
      */
     protected function DateToEaster(int $year, int $offset): string
@@ -99,7 +99,7 @@ trait CalendarHelper
      * @param int $year  Year (YYYY).
      * @param int $month Month (1-12).
      * @param int $day   Day (1-31).
-     * 
+     *
      * @return string Date in the format yyyyddmm (e.g. 19700101)
      */
     protected function DateOf(int $year, int $month, int $day): string
@@ -112,7 +112,7 @@ trait CalendarHelper
      * Adds functionality to serialize arrays and objects.
      *
      * @param int $ts Timestamp.
-     * 
+     *
      * @return string Season name (Spring, Summer, Fall, winter).
      */
     protected function Season(int $ts): string
