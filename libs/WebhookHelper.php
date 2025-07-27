@@ -23,8 +23,10 @@ trait WebhookHelper
      * Register a new web hook, if not already existing.
      *
      * @param string $hook path of the web hook.
+     *
+     * @return void
      */
-    protected function RegisterHook($hook)
+    protected function RegisterHook(string $hook): void
     {
         $ids = IPS_GetInstanceListByModuleID('{015A6EB8-D6E5-4B93-B496-0D3F77AE9FE1}');
         if (count($ids) > 0) {
@@ -37,13 +39,13 @@ trait WebhookHelper
                     }
                     $hooks[$key]['TargetID'] = $this->InstanceID;
                     $found = true;
-                    $this->SendDebug('RegisterHook', 'Update hook:' . $hook . $this->InstanceID);
+                    $this->SendDebug(__FUNCTION__, 'Update hook:' . $hook . $this->InstanceID, 0);
                 }
             }
-            // Neww Hook?
-            if ($found == false) {
+            // New Hook?
+            if ($found === false) {
                 $hooks[] = ['Hook' => $hook, 'TargetID' => $this->InstanceID];
-                $this->SendDebug('RegisterHook', 'New hook:' . $hook . $this->InstanceID);
+                $this->SendDebug(__FUNCTION__, 'New hook:' . $hook . $this->InstanceID, 0);
             }
             // Update or Register
             IPS_SetProperty($ids[0], 'Hooks', json_encode($hooks));
@@ -55,25 +57,22 @@ trait WebhookHelper
      * Unregister a web hook, if not already existing.
      *
      * @param string $hook path of the web hook.
+     *
+     * @return void
      */
-    protected function UnregisterHook($hook)
+    protected function UnregisterHook(string $hook): void
     {
         $ids = IPS_GetInstanceListByModuleID('{015A6EB8-D6E5-4B93-B496-0D3F77AE9FE1}');
         if (count($ids) > 0) {
             $hooks = json_decode(IPS_GetProperty($ids[0], 'Hooks'), true);
-            $found = false;
-            foreach ($hooks as $key => $value) {
-                if ($value['Hook'] == $hook) {
-                    $found = true;
-                    $this->SendDebug('UnregisterHook', $hook . $this->InstanceID);
+            foreach ($hooks as $i => $value) {
+                if ($value['Hook'] === $hook) {
+                    unset($hooks[$i]);
+                    $this->SendDebug(__FUNCTION__, $hook . $this->InstanceID, 0);
+                    IPS_SetProperty($ids[0], 'Hooks', json_encode(array_values($hooks)));
+                    IPS_ApplyChanges($ids[0]);
                     break;
                 }
-            }
-            // Unregister
-            if ($found == true) {
-                array_splice($hooks, $key, 1);
-                IPS_SetProperty($ids[0], 'Hooks', json_encode($hooks));
-                IPS_ApplyChanges($ids[0]);
             }
         }
     }

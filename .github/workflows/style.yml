@@ -4,6 +4,7 @@ on: [push, pull_request]
 
 jobs:
   style:
+    name: Run PHP Check Style
     runs-on: ubuntu-latest
     steps:
     - name: Checkout module
@@ -12,5 +13,5 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: 8.2
-    - name: Check style
+    - name: Run PHP-CS-Fixer
       uses: wilkware/action-ips-style@main

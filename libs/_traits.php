@@ -185,6 +185,7 @@ if (!defined('vtBoolean')) {
 /**
  * Include all helper trait classes.
  */
+require_once __DIR__ . '/../libs/CacheHelper.php';
 require_once __DIR__ . '/../libs/CalendarHelper.php';
 require_once __DIR__ . '/../libs/DebugHelper.php';
 require_once __DIR__ . '/../libs/EventHelper.php';

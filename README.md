@@ -2,7 +2,7 @@
 
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg?style=flat-square)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 [![Product](https://img.shields.io/badge/Symcon%20Version-6.4-blue.svg?style=flat-square)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-5.4.20250715-orange.svg?style=flat-square)](https://github.com/Wilkware/Almanac)
+[![Version](https://img.shields.io/badge/Modul%20Version-5.5.20250727-orange.svg?style=flat-square)](https://github.com/Wilkware/Almanac)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg?style=flat-square)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Actions](https://img.shields.io/github/actions/workflow/status/wilkware/Almanac/style.yml?branch=main&label=CheckStyle&style=flat-square)](https://github.com/Wilkware/Almanac/actions)
 
@@ -299,6 +299,14 @@ __Beispiel__: `ALMANAC_DateInfo(12345, time());`
 }  
 
 ### 8. Versionshistorie
+
+v5.5.20250727
+
+* _NEU_: PHP Static Code Analysis eingeführt
+* _NEU_: Debugging Funktionen komplett überarbeitet
+* _FIX_: Caching überarbeitet. Memory limit eingehalten
+* _FIX_: Dokumentation für PHP Static Analysis komplett überarbeitet
+* _FIX_: Bibliotheksfunktionen überarbeitet in Vorbereitung auf IPSModuleStrict
 
 v5.4.20250715
 

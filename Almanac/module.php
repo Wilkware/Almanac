@@ -7,6 +7,7 @@ require_once __DIR__ . '/../libs/_traits.php';  // Generell funktions
 // CLASS Almanac
 class Almanac extends IPSModule
 {
+    use CacheHelper;
     use CalendarHelper;
     use DebugHelper;
     use EventHelper;
@@ -49,7 +50,7 @@ class Almanac extends IPSModule
     /**
      * Create.
      */
-    public function Create()
+    public function Create(): void
     {
         //Never delete this line!
         parent::Create();
@@ -127,7 +128,7 @@ class Almanac extends IPSModule
     /**
      * Destroy.
      */
-    public function Destroy()
+    public function Destroy(): void
     {
         if (!IPS_InstanceExists($this->InstanceID)) {
             $this->UnregisterHook('/hook/almanac' . $this->InstanceID);
@@ -138,9 +139,9 @@ class Almanac extends IPSModule
     /**
      * Configuration Form.
      *
-     * @return JSON configuration string.
+     * @return string configuration string.
      */
-    public function GetConfigurationForm()
+    public function GetConfigurationForm(): string
     {
         // read setup
         $publicCountry = $this->ReadPropertyString('PublicCountry');
@@ -150,8 +151,8 @@ class Almanac extends IPSModule
         $schoolRegion = $this->ReadPropertyString('SchoolRegion');
         $schoolName = $this->ReadPropertyString('SchoolName');
         // Debug output
-        $this->SendDebug('GetConfigurationForm', 'public country=' . $publicCountry . ', public holiday=' . $publicHoliday .
-                        ', school country=' . $schoolCountry . ', school vacation=' . $schoolRegion . ', school name=' . $schoolName, 0);
+        $this->LogDebug('GetConfigurationForm', 'public country=' . $publicCountry . ', public holiday=' . $publicHoliday .
+                        ', school country=' . $schoolCountry . ', school vacation=' . $schoolRegion . ', school name=' . $schoolName);
         // Get Data
         $data = json_decode(file_get_contents(__DIR__ . '/data.json'), true);
         // Get Form
@@ -163,14 +164,14 @@ class Almanac extends IPSModule
         // Schools
         $form['elements'][3]['items'][1]['items'][1]['options'] = $this->GetSchool($data[$schoolCountry], $schoolRegion);
         // Debug output
-        //$this->SendDebug(__FUNCTION__, $form);
+        //$this->LogDebug(__FUNCTION__, $form);
         return json_encode($form);
     }
 
     /**
      * Apply Configuration Changes.
      */
-    public function ApplyChanges()
+    public function ApplyChanges(): void
     {
         // Never delete this line!
         parent::ApplyChanges();
@@ -197,13 +198,13 @@ class Almanac extends IPSModule
         $isWeddingday &= $this->ReadPropertyInteger('WeddingdayVariable');
         $isDeathday &= $this->ReadPropertyInteger('DeathdayVariable');
         // Debug
-        $this->SendDebug(__FUNCTION__, 'public country=' . $publicCountry . ', public holiday=' . $publicRegion .
+        $this->LogDebug(__FUNCTION__, 'public country=' . $publicCountry . ', public holiday=' . $publicRegion .
                         ', school country=' . $schoolCountry . ', school vacation=' . $schoolRegion . ', school name=' . $schoolName .
-                        ', updates=' . ($isHoliday ? 'Y' : 'N') . '|' . ($isVacation ? 'Y' : 'N') . '|' . ($isFestive ? 'Y' : 'N') . '|' . ($isEclipse ? 'Y' : 'N') . '|' . ($isMoonphase ? 'Y' : 'N') . '|' . ($isQuote ? 'Y' : 'N') . '|' . ($isDate ? 'Y' : 'N'), 0);
+                        ', updates=' . ($isHoliday ? 'Y' : 'N') . '|' . ($isVacation ? 'Y' : 'N') . '|' . ($isFestive ? 'Y' : 'N') . '|' . ($isEclipse ? 'Y' : 'N') . '|' . ($isMoonphase ? 'Y' : 'N') . '|' . ($isQuote ? 'Y' : 'N') . '|' . ($isDate ? 'Y' : 'N'));
         // Profile
         $question = [
-            [0, 'No', 'Close', 0xFF0000],
-            [1, 'Yes', 'Ok', 0x00FF00],
+            [false, 'No', 'Close', 0xFF0000],
+            [true,  'Yes', 'Ok', 0x00FF00],
         ];
         $this->RegisterProfileBoolean('ALMANAC.Question', 'Bulb', '', '', $question);
         $season = [
@@ -279,10 +280,10 @@ class Almanac extends IPSModule
      *  @param string $ident Ident.
      *  @param string $value Value.
      */
-    public function RequestAction($ident, $value)
+    public function RequestAction($ident, $value): bool
     {
         // Debug output
-        $this->SendDebug(__FUNCTION__, $ident . ' => ' . $value);
+        $this->LogDebug(__FUNCTION__, $ident . ' => ' . $value);
         // Ident == OnXxxxxYyyyy
         switch ($ident) {
             case 'OnPublicCountry':
@@ -307,13 +308,13 @@ class Almanac extends IPSModule
                 $this->OnDeleteDays($value);
                 break;
             case 'CacheClear':
-                $this->ClearCache($value);
+                $this->ClearCache('UrlCache', $value);
                 break;
             case 'CacheInfo':
-                $this->SendDebug(__FUNCTION__, $this->DebugPrint($this->GetCacheInfo()), 0);
+                $this->LogDebug(__FUNCTION__, $this->GetCacheInfo('UrlCache'));
                 break;
         }
-        // return true;
+        return true;
     }
 
     /**
@@ -321,10 +322,12 @@ class Almanac extends IPSModule
      * Using the custom prefix this function will be callable from PHP and JSON-RPC through:.
      *
      * ALMANAC_Notify($id, $days);
+     *
+     * @return void
      */
-    public function Notify(string $days)
+    public function Notify(string $days): void
     {
-        $this->SendDebug(__FUNCTION__, $days);
+        $this->LogDebug(__FUNCTION__, $days);
         // Notify enabled?
         $isDay = $this->ReadPropertyInteger(self::DP[$days][2]);
         // Webfront configured?
@@ -337,11 +340,12 @@ class Almanac extends IPSModule
                 $data = $this->LookupDays(time(), self::DP[$days][1]);
                 foreach ($data as $item) {
                     $output = $this->FormatDay($item, $format);
-                    WFC_PushNotification($wfc, $this->Translate('Date'), $output, 'Calendar', 0);
+                    /** @phpstan-ignore-next-line */
+                    WFC_PushNotification($wfc, $this->Translate('Date'), $output, 'Calendar');
                 }
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);
-                $this->SendDebug(__FUNCTION__, 'ERROR: ' . $ex->getMessage(), 0);
+                $this->LogDebug(__FUNCTION__, 'ERROR: ' . $ex->getMessage());
             }
         }
         // Calculate next notification timer interval
@@ -354,8 +358,10 @@ class Almanac extends IPSModule
      * Using the custom prefix this function will be callable from PHP and JSON-RPC through:.
      *
      * ALMANAC_Update($id);
+     *
+     * @return void
      */
-    public function Update()
+    public function Update(): void
     {
         // General Date
         $isHoliday = $this->ReadPropertyBoolean('UpdateHoliday');
@@ -375,6 +381,8 @@ class Almanac extends IPSModule
         // Everything to do?
         if ($isHoliday || $isVacation || $isFestive || $isBirth || $isWedding || $isDeath || $isEclipse || $isMoonphase || $isQuote || $isDate) {
             $date = json_decode($this->DateInfo(time()), true);
+        } else {
+            return;
         }
         // Public Holidays
         if ($isHoliday == true) {
@@ -383,7 +391,7 @@ class Almanac extends IPSModule
                 $this->SetValueBoolean('IsHoliday', $date['IsHoliday']);
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);
-                $this->SendDebug(__FUNCTION__, 'ERROR HOLIDAY: ' . $ex->getMessage(), 0);
+                $this->LogDebug(__FUNCTION__, 'ERROR HOLIDAY: ' . $ex->getMessage());
             }
         }
         // School Vacations
@@ -393,7 +401,7 @@ class Almanac extends IPSModule
                 $this->SetValueBoolean('IsVacation', $date['IsVacation']);
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);
-                $this->SendDebug(__FUNCTION__, 'ERROR VACATION: ' . $ex->getMessage(), 0);
+                $this->LogDebug(__FUNCTION__, 'ERROR VACATION: ' . $ex->getMessage());
             }
         }
         // Festive Days
@@ -403,7 +411,7 @@ class Almanac extends IPSModule
                 $this->SetValueBoolean('IsFestive', $date['IsFestive']);
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);
-                $this->SendDebug(__FUNCTION__, 'ERROR FESTIVE: ' . $ex->getMessage(), 0);
+                $this->LogDebug(__FUNCTION__, 'ERROR FESTIVE: ' . $ex->getMessage());
             }
         }
         // General Date Info
@@ -421,7 +429,7 @@ class Almanac extends IPSModule
                 $this->SetValueString('Season', $date['Season']);
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);
-                $this->SendDebug(__FUNCTION__, 'ERROR DATE: ' . $ex->getMessage(), 0);
+                $this->LogDebug(__FUNCTION__, 'ERROR DATE: ' . $ex->getMessage());
             }
         }
         // Birthdays
@@ -430,7 +438,7 @@ class Almanac extends IPSModule
                 $this->UpdateDay(self::DP[self::BD], $date, $script);
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);
-                $this->SendDebug(__FUNCTION__, 'ERROR BIRTH: ' . $ex->getMessage(), 0);
+                $this->LogDebug(__FUNCTION__, 'ERROR BIRTH: ' . $ex->getMessage());
             }
         }
         // Wedding days
@@ -439,7 +447,7 @@ class Almanac extends IPSModule
                 $this->UpdateDay(self::DP[self::WD], $date, $script);
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);
-                $this->SendDebug(__FUNCTION__, 'ERROR WEDDING: ' . $ex->getMessage(), 0);
+                $this->LogDebug(__FUNCTION__, 'ERROR WEDDING: ' . $ex->getMessage());
             }
         }
         // Death days
@@ -448,7 +456,7 @@ class Almanac extends IPSModule
                 $this->UpdateDay(self::DP[self::DD], $date, $script);
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);
-                $this->SendDebug(__FUNCTION__, 'ERROR DEATH: ' . $ex->getMessage(), 0);
+                $this->LogDebug(__FUNCTION__, 'ERROR DEATH: ' . $ex->getMessage());
             }
         }
         // Eclipse event
@@ -463,7 +471,7 @@ class Almanac extends IPSModule
                 }
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);
-                $this->SendDebug(__FUNCTION__, 'ERROR ECLIPSE: ' . $ex->getMessage(), 0);
+                $this->LogDebug(__FUNCTION__, 'ERROR ECLIPSE: ' . $ex->getMessage());
             }
         }
         // Moonphase event
@@ -478,7 +486,7 @@ class Almanac extends IPSModule
                 }
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);
-                $this->SendDebug(__FUNCTION__, 'ERROR Moonphase: ' . $ex->getMessage(), 0);
+                $this->LogDebug(__FUNCTION__, 'ERROR Moonphase: ' . $ex->getMessage());
             }
         }
         // Quote of the day
@@ -488,7 +496,7 @@ class Almanac extends IPSModule
                 $this->SetValueString('QuoteOfTheDay', $this->FormatQuote($date['QuoteOfTheDay'], $format));
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);
-                $this->SendDebug(__FUNCTION__, 'ERROR QuoteOfTheDay: ' . $ex->getMessage(), 0);
+                $this->LogDebug(__FUNCTION__, 'ERROR QuoteOfTheDay: ' . $ex->getMessage());
             }
         }
         // calculate next update interval
@@ -502,11 +510,12 @@ class Almanac extends IPSModule
      * ALMANAC_DateInfo($id, $ts);
      *
      * @param int $ts Timestamp of the actuale date
+     *
      * @return string all extracted infomation about the passed date as json
      */
     public function DateInfo(int $ts): string
     {
-        $this->SendDebug(__FUNCTION__, 'DATE: ' . date('d.m.Y', $ts));
+        $this->LogDebug(__FUNCTION__, 'DATE: ' . date('d.m.Y', $ts));
         // Output array
         $date = [];
         $now = date('Ymd', $ts);
@@ -593,7 +602,7 @@ class Almanac extends IPSModule
         foreach ($data as $entry) {
             if (($now >= $entry['start']) && ($now < $entry['end'])) {
                 $isHoliday = $entry['event'];
-                $this->SendDebug(__FUNCTION__, 'HOLIDAY: ' . $isHoliday, 0);
+                $this->LogDebug(__FUNCTION__, 'HOLIDAY: ' . $isHoliday);
                 break;
             }
         }
@@ -630,12 +639,12 @@ class Almanac extends IPSModule
         $link = str_replace('YEAR', $year, $url);
         $data1 = $this->ExtractDates($link);
         $data = array_merge($data0, $data1);
-        $this->SendDebug(__FUNCTION__, $data);
+        $this->LogDebug(__FUNCTION__, $data);
         $isVacation = $this->ReadPropertyString('NoVacation');
         foreach ($data as $entry) {
             if (($now >= $entry['start']) && ($now < $entry['end'])) {
                 $isVacation = explode(' ', $entry['event'])[0];
-                $this->SendDebug(__FUNCTION__, 'VACATION: ' . $isVacation, 0);
+                $this->LogDebug(__FUNCTION__, 'VACATION: ' . $isVacation);
                 if ($period) {
                     $sp = substr($entry['start'], 6, 2) . '.' . substr($entry['start'], 4, 2) . '.' . substr($entry['start'], 0, 4);
                     $ep = substr($entry['end'], 6, 2) . '.' . substr($entry['end'], 4, 2) . '.' . substr($entry['end'], 0, 4);
@@ -665,7 +674,7 @@ class Almanac extends IPSModule
         $hit = false;
         foreach ($data as $entry) {
             if ($now <= $entry['date']) {
-                $this->SendDebug(__FUNCTION__, 'ECLIPSE: ' . $entry['name']);
+                $this->LogDebug(__FUNCTION__, 'ECLIPSE: ' . $entry['name']);
                 $ed = substr($entry['date'], 6, 2) . '.' . substr($entry['date'], 4, 2) . '.' . substr($entry['date'], 0, 4);
                 $isEclipse = ['name' => $entry['name'], 'date' => $ed, 'time' => date('H:i', intval($entry['time']))];
                 if ($now == $entry['date']) {
@@ -689,7 +698,7 @@ class Almanac extends IPSModule
         $hit = false;
         foreach ($data as $entry) {
             if ($now <= $entry['date']) {
-                $this->SendDebug(__FUNCTION__, 'MOONPHASE: ' . $entry['name']);
+                $this->LogDebug(__FUNCTION__, 'MOONPHASE: ' . $entry['name']);
                 $md = substr($entry['date'], 6, 2) . '.' . substr($entry['date'], 4, 2) . '.' . substr($entry['date'], 0, 4);
                 $isMoonphase = ['name' => $entry['name'], 'date' => $md, 'time' => date('H:i', intval($entry['time']))];
                 if ($now == $entry['date']) {
@@ -710,13 +719,13 @@ class Almanac extends IPSModule
         $data = $this->ExtractDates($link, 'quotes');
         $count = count($data);
         $qotd = random_int(0, $count - 1);
-        $this->SendDebug(__FUNCTION__, 'QOTD: #' . $qotd);
+        $this->LogDebug(__FUNCTION__, 'QOTD: #' . $qotd);
         $date['QuoteOfTheDay'] = ['quote' => $data[$qotd]['quote'], 'author' => $data[$qotd]['author']];
 
         // --------------------------------------------------------------------
         // dump result
         // --------------------------------------------------------------------
-        $this->SendDebug('DATA: ', $date, 0);
+        $this->LogDebug(__FUNCTION__ . ':DATA', $date);
 
         // --------------------------------------------------------------------
         // return date info as json
@@ -728,8 +737,10 @@ class Almanac extends IPSModule
      * User has selected a new country.
      *
      * @param string $cid Country ID.
+     *
+     * @return void
      */
-    protected function OnPublicCountry($cid)
+    protected function OnPublicCountry(string $cid): void
     {
         // Get Data
         $data = json_decode(file_get_contents(__DIR__ . '/data.json'), true);
@@ -742,14 +753,16 @@ class Almanac extends IPSModule
      * User has selected a new country.
      *
      * @param string $cid Country ID.
+     *
+     * @return void
      */
-    protected function OnSchoolCountry($cid)
+    protected function OnSchoolCountry(string $cid): void
     {
         // Get Data
         $data = json_decode(file_get_contents(__DIR__ . '/data.json'), true);
         // Region Options
         $region = $data[$cid][0]['regions'][0]['ident'];
-        $this->SendDebug(__FUNCTION__, 'REGION: ' . $region, 0);
+        $this->LogDebug(__FUNCTION__, 'REGION: ' . $region);
         $this->UpdateFormField('SchoolRegion', 'value', $region);
         $this->UpdateFormField('SchoolRegion', 'options', json_encode($this->GetRegions($data[$cid])));
         // School Options
@@ -761,8 +774,10 @@ class Almanac extends IPSModule
      * User has selected a new school region.
      *
      * @param string $region region value.
+     *
+     * @return void
      */
-    protected function OnSchoolRegion($region)
+    protected function OnSchoolRegion(string $region): void
     {
         // Get Data
         $data = json_decode(file_get_contents(__DIR__ . '/data.json'), true);
@@ -783,8 +798,10 @@ class Almanac extends IPSModule
      * Import birthdays data.
      *
      * @param string $value Base64 coded data.
+     *
+     * @return void
      */
-    protected function OnImportBirthdays($value)
+    protected function OnImportBirthdays(string $value): void
     {
         $this->ImportCSV('Birthdays', $value);
     }
@@ -793,8 +810,10 @@ class Almanac extends IPSModule
      * Import wedding days data.
      *
      * @param string $value Base64 coded data.
+     *
+     * @return void
      */
-    protected function OnImportWeddingdays($value)
+    protected function OnImportWeddingdays(string $value): void
     {
         $this->ImportCSV('Weddingdays', $value);
     }
@@ -803,8 +822,10 @@ class Almanac extends IPSModule
      * Import death days data.
      *
      * @param string $value Base64 coded data.
+     *
+     * @return void
      */
-    protected function OnImportDeathdays($value)
+    protected function OnImportDeathdays(string $value): void
     {
         $this->ImportCSV('Deathdays', $value);
     }
@@ -812,11 +833,13 @@ class Almanac extends IPSModule
     /**
      * Clear the selected days list.
      *
-     * @param string $value property shor name.
+     * @param string $value property name.
+     *
+     * @return void
      */
-    protected function OnDeleteDays($value)
+    protected function OnDeleteDays(string $value): void
     {
-        $this->SendDebug(__FUNCTION__, $value);
+        $this->LogDebug(__FUNCTION__, $value);
         // with days
         $property = self::DP[$value][1];
         $data = [];
@@ -825,12 +848,14 @@ class Almanac extends IPSModule
 
     /**
      * This function will be called by the hook control. Visibility should be protected!
+     *
+     * @return void
      */
-    protected function ProcessHookData()
+    protected function ProcessHookData(): void
     {
-        //$this->SendDebug(__FUNCTION__, $_GET);
+        //$this->LogDebug(__FUNCTION__, $_GET);
         $export = isset($_GET['export']) ? $_GET['export'] : '';
-        //$this->SendDebug(__FUNCTION__, 'Export: ' . $export);
+        //$this->LogDebug(__FUNCTION__, 'Export: ' . $export);
         $property = '';
         $filename = '';
         switch ($export) {
@@ -850,7 +875,7 @@ class Almanac extends IPSModule
                 return;
         }
         // get the current entries
-        $this->SendDebug(__FUNCTION__, $this->ReadPropertyString($property));
+        $this->LogDebug(__FUNCTION__, $this->ReadPropertyString($property));
         $list = json_decode($this->ReadPropertyString($property), true);
         if (empty($list) || !is_array($list)) {
             $list = [];
@@ -879,6 +904,7 @@ class Almanac extends IPSModule
      * Lookup the calendar data to find a feast day.
      *
      * @param int $ts Date timestamp
+     *
      * @return string Name of a feast day for a given timestamp.
      */
     private function LookupCalendar(int $ts): string
@@ -886,7 +912,7 @@ class Almanac extends IPSModule
         // get generic calendar dates
         $calendar = json_decode(file_get_contents(__DIR__ . '/calendar.json'), true);
         // build year based dates
-        $year = date('Y', $ts);
+        $year = intval(date('Y', $ts));
         $dates = [];
         foreach ($calendar['dates'] as $date) {
             $text = '';
@@ -907,7 +933,7 @@ class Almanac extends IPSModule
                     $text = 'ERROR:';
             }
             $dates[$text] = $date['name'];
-            //$this->SendDebug(__FUNCTION__, $text.' - '.$date['name']);
+            //$this->LogDebug(__FUNCTION__, $text.' - '.$date['name']);
         }
         // lookup for given date
         $day = date('Ymd', $ts);
@@ -919,11 +945,13 @@ class Almanac extends IPSModule
 
     /**
      * Lookup for Birth-, Wedding, Death-Days
+     *
+     * @return list<array{date:string,years:int,name:string}> Name of a feast day for a given timestamp.
      */
-    private function LookupDays(int $ts, string $property)
+    private function LookupDays(int $ts, string $property): array
     {
         // 1 = 'Deathdays', 5 = 'DeathdayDuration', 6 = 'DeathdayFormat'
-        $year = date('Y', $ts);
+        $year = intval(date('Y', $ts));
         $day = date('j', $ts);
         $mon = date('n', $ts);
         // get the current entries
@@ -949,10 +977,12 @@ class Almanac extends IPSModule
     /**
      * Format a given array to a string.
      *
-     * @param array $item Date event item
+     * @param array{date:string,years:int,name:string} $item Date event item
      * @param string $format Format string
+     *
+     * @return string Formated date
      */
-    private function FormatDay(array $item, $format)
+    private function FormatDay(array $item, string $format): string
     {
         $now = date('d.m.Y', time());
         $output = str_replace('%E', $item['date'], $format);
@@ -963,12 +993,14 @@ class Almanac extends IPSModule
     }
 
     /**
-     * Format a given array to a string.
+     * Format a given timestamp in a string.
      *
      * @param int $now timestamp
      * @param string $format Format string
+     *
+     * @return string Formated timestamp
      */
-    private function FormatLong(int $now, string $format)
+    private function FormatLong(int $now, string $format): string
     {
         // format: %j,%d,%D,%l = day, %n,%m,%M,%F = month. $y,%Y = year)
         $output = str_replace('%d', $this->Translate(date('d', $now)), $format);
@@ -981,17 +1013,19 @@ class Almanac extends IPSModule
         $output = str_replace('%m', date('m', $now), $output);
         $output = str_replace('%y', date('y', $now), $output);
         $output = str_replace('%Y', date('>', $now), $output);
-        $this->SendDebug(__FUNCTION__, 'Result : ' . $output);
+        $this->LogDebug(__FUNCTION__, 'Result : ' . $output);
         return $output;
     }
 
     /**
      * Format a given array to a string.
      *
-     * @param array $item Event item
+     * @param array<string,string> $item Event item
      * @param string $format Format string
+     *
+     * @return string Formated event
      */
-    private function FormatEvent(array $item, $format)
+    private function FormatEvent(array $item, $format): string
     {
         $output = str_replace('%N', $item['name'], $format);
         $output = str_replace('%D', $item['date'], $output);
@@ -1000,12 +1034,14 @@ class Almanac extends IPSModule
     }
 
     /**
-     * Format a given array to a string.
+     * Format the given quotes array to a string.
      *
-     * @param array $item Event item
+     * @param array<string,string> $item Event item
      * @param string $format Format string
+     *
+     * @return string Formated quote of the day
      */
-    private function FormatQuote(array $item, $format)
+    private function FormatQuote(array $item, string $format): string
     {
         $output = str_replace('%Q', $item['quote'], $format);
         $output = str_replace('%A', $item['author'], $output);
@@ -1015,11 +1051,13 @@ class Almanac extends IPSModule
     /**
      * Update specific days-variable / dashboard.
      *
-     * @param array $property Day property idents.
-     * @param array $date Day items array.
+     * @param list<string> $property Day property idents.
+     * @param array{IsSummer:bool,IsLeapYear:bool,IsWeekend:bool,Weekday:int,WeekNumber:int,DaysInMonth:int,DayOfYear:int,DayLong:string,Season:string,Festive:string,IsFestive:bool,WorkingDays:int,Holiday:string,IsHoliday:bool,Vacation:string,IsVacation:bool,IsBirthday:bool,Birthday:list<array{date:string,years:int,name:string}>,IsWeddingday:bool,Weddingday:list<array{date:string,years:int,name:string}>,IsDeathday:bool,Deathday:list<array{date:string,years:int,name:string}>,IsEclipse:bool,Eclipse:list<array{name:string, date:string,time:string}>,IsMoonphase:bool,Moonphase:list<array{name:string,date:string,time:string}>,QuoteOfTheDay:list<array{quote:string,author:string}>} $date Info for the day
      * @param int $script Script ID
+     *
+     * @return void
      */
-    private function UpdateDay(array $property, array $date, int $script)
+    private function UpdateDay(array $property, array $date, int $script): void
     {
         // time
         $time = $this->ReadPropertyInteger($property[5]);
@@ -1059,10 +1097,9 @@ class Almanac extends IPSModule
         }
         // write to variable
         if ($variable) {
-            if ($date[$ident]) {
+            if ($lines !== '') {
                 $this->SetValueString($ident, $lines);
             } else {
-                $this->SendDebug(__FUNCTION__, $nothing . ' ' . gettype($nothing));
                 $this->SetValueString($ident, $nothing);
             }
             $ident = 'Is' . $ident;
@@ -1075,8 +1112,10 @@ class Almanac extends IPSModule
      *
      * @param string $property Name of the list element
      * @param string $value Data to import (base64 coded)
+     * 
+     * @return void
      */
-    private function ImportCSV(string $property, string $value)
+    private function ImportCSV(string $property, string $value): void
     {
         $csv = base64_decode($value);
         $lines = preg_split('/[\r\n]{1,2}(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))/', $csv);
@@ -1087,7 +1126,7 @@ class Almanac extends IPSModule
         // check ... was comma
         $cols = max(array_map('count', $data));
         if ($cols != 2) {
-            unset($data);
+            $data = [];
             foreach ($lines as $row) {
                 $data[] = str_getcsv($row, ';');
             }
@@ -1095,7 +1134,7 @@ class Almanac extends IPSModule
         // check ... was semicolon
         $cols = max(array_map('count', $data));
         if ($cols != 2) {
-            $this->SendDebug(__FUNCTION__, 'No CSV format found!');
+            $this->LogDebug(__FUNCTION__, 'No CSV format found!');
             return;
         }
         // get the current entries
@@ -1106,7 +1145,7 @@ class Almanac extends IPSModule
         // build value list
         $entry = [];
         foreach ($data as $key => $item) {
-            if (is_array($item) && isset($item[0])) {
+            if (isset($item[0])) {
                 $dt = date_parse($item[0]);
                 $bd = '{"year":' . $dt['year'] . ',"month":' . $dt['month'] . ',"day":' . $dt['day'] . '}';
                 $entry[] = ['Date' => $bd, 'Name' => $item[1]];
@@ -1130,15 +1169,15 @@ class Almanac extends IPSModule
      * Get and extract dates from json format.
      *
      * @param string $url API URL to receive event information.
-     * @return array  array, with name, start and end date
+     * @return list<array{quote:string,author:string}|array{event:string,start:string,end:string}|array{name:string,desc:string,date:string,time:string}>
      */
     private function ExtractDates(string $url, string $info = 'events'): array
     {
         // Debug output
-        $this->SendDebug(__FUNCTION__, 'LINK: ' . $url, 0);
+        $this->LogDebug(__FUNCTION__, 'LINK: ' . $url);
 
         // Get cache data
-        $cache = json_decode($this->GetBuffer('UrlCache') ?? '{}', true);
+        $cache = json_decode($this->GetCache('UrlCache'), true);
         if (!is_array($cache)) {
             $cache = [];
         }
@@ -1149,7 +1188,7 @@ class Almanac extends IPSModule
         if (isset($cache[$url])) {
             $entry = $cache[$url];
             if ($timeout === 0 || ($entry['timestamp'] + $timeout) > time()) {
-                $this->SendDebug(__FUNCTION__, 'Cache hit [' . ($timeout === 0 ? '∞' : round($timeout / 60) . ' min') . ']', 0);
+                $this->LogDebug(__FUNCTION__, 'Cache hit [' . ($timeout === 0 ? '∞' : round($timeout / 60) . ' min') . ']');
                 return $entry['result'];
             }
         }
@@ -1159,14 +1198,14 @@ class Almanac extends IPSModule
         // Error handling
         if ($json === false) {
             $this->LogMessage($this->Translate('Could not load json data!'), KL_ERROR);
-            $this->SendDebug(__FUNCTION__, 'ERROR LOAD DATA', 0);
+            $this->LogDebug(__FUNCTION__, 'ERROR LOAD DATA');
             return [];
         }
 
         // JSON decode
         $data = json_decode($json, true);
         if (!isset($data['data'][$info])) {
-            $this->SendDebug(__FUNCTION__, 'NO DATA FOUND', 0);
+            $this->LogDebug(__FUNCTION__, 'NO DATA FOUND');
             return [];
         }
 
@@ -1177,18 +1216,18 @@ class Almanac extends IPSModule
             'result'    => $result,
             'timestamp' => time()
         ];
-        $this->SetBuffer('UrlCache', json_encode($cache));
-        $this->SendDebug(__FUNCTION__, 'Cache miss - new stroed [' . ($timeout === 0 ? '∞' : round($timeout / 60) . ' min') . ']', 0);
+        $this->SetCache('UrlCache', json_encode($cache));
+        $this->LogDebug(__FUNCTION__, 'Cache miss - new stroed [' . ($timeout === 0 ? '∞' : round($timeout / 60) . ' min') . ']');
 
         // Return the events
         return $result;
     }
 
     /**
-     * Returns the c ache timeout for a given url
+     * Returns the cache timeout for a given url
      *
      * @param string $url Passed Url
-     * @return int Cahce time in seconds
+     * @return int Cache time in seconds
      */
     private function GetCacheTimeoutForUrl(string $url): int
     {
@@ -1202,63 +1241,11 @@ class Almanac extends IPSModule
     }
 
     /**
-     * Clear the cache entries
-     *
-     * @param string $pattern Assoziated pattern per cache item
-     * @return void
-     */
-    private function ClearCache(string $pattern = ''): void
-    {
-        $cacheData = json_decode($this->GetBuffer('UrlCache') ?? '{}', true);
-        if (!is_array($cacheData)) {
-            $cacheData = [];
-        }
-
-        if ($pattern === '') {
-            $this->SendDebug(__FUNCTION__, 'All cache cleared!', 0);
-            $this->SetBuffer('UrlCache', '{}');
-            return;
-        }
-
-        foreach ($cacheData as $url => $entry) {
-            if (strpos($url, $pattern) !== false) {
-                unset($cacheData[$url]);
-            }
-        }
-        $this->SetBuffer('UrlCache', json_encode($cacheData));
-        $this->SendDebug(__FUNCTION__, 'Cache cleared for: ' . $pattern, 0);
-    }
-
-    /**
-     * Get cache info
-     *
-     * @return array
-     */
-    private function GetCacheInfo(): array
-    {
-        $cacheData = json_decode($this->GetBuffer('UrlCache') ?? '{}', true);
-        if (!is_array($cacheData)) {
-            return [];
-        }
-
-        $info = [];
-        foreach ($cacheData as $url => $entry) {
-            $timeout = $this->GetCacheTimeoutForUrl($url);
-            $remaining = ($timeout === 0) ? '∞' : max(0, ($entry['timestamp'] + $timeout) - time());
-            $info[] = [
-                'Url'       => $url,
-                'CachedAt'  => date('Y-m-d H:i:s', $entry['timestamp']),
-                'Remaining' => $remaining === '∞' ? '∞' : round($remaining / 60) . ' min'
-            ];
-        }
-        return $info;
-    }
-
-    /**
      * Reads the public regions for a given country.
      *
-     * @param string $country country data array.
-     * @return array Region options array.
+     * @param list<array{country:string,part:string,regions:list<array{name:string,ident:string,schools:list<array{name:string,ident:string}>}>}> $country Country data array.
+     *
+     * @return list<array{caption:string,value:string}> Regions options array.
      */
     private function GetRegions(array $country): array
     {
@@ -1273,12 +1260,14 @@ class Almanac extends IPSModule
     /**
      * Reads the schools for a given region.
      *
-     * @param string $country country data array.
+     * @param list<array{country:string,part:string,regions:list<array{name:string,ident:string,schools:list<array{name:string,ident:string}>}>}> $country Country data array.
      * @param string $region region ident.
-     * @return array School options array.
+     *
+     * @return list<array{caption:string,value:string}> School options array.
      */
     private function GetSchool(array $country, string $region): array
     {
+        $this->LogDebug(__FUNCTION__, $country, false);
         $options = [];
         // Client List
         foreach ($country[0]['regions'] as $rid => $regions) {
