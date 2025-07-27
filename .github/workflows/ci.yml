@@ -35,4 +35,4 @@ jobs:
       run: wget -O phpunit https://phar.phpunit.de/phpunit-10.phar && chmod +x phpunit
 
     - name: Run PHPUnit tests
-      run: ./phpunit --testdox -c tests/phpunit.xml
+      run: ./phpunit tests --testdox -c tests/phpunit.xml
