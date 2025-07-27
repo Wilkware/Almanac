@@ -37,5 +37,8 @@ jobs:
     - name: Check downloaded files
       run: ls -la ..
 
+    - name: Check workdir files
+      run: ls -la .
+
     - name: Unit Tests
       run: php phpunit.phar tests --testdox -c tests/phpunit.xml
