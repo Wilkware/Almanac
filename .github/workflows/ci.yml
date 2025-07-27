@@ -32,8 +32,8 @@ jobs:
 
     # ✅ PHPUnit Unit Tests
     - name: Download PHPUnit
-      run: wget -q -O phpunit https://phar.phpunit.de/phpunit-10.phar && chmod +x phpunit
+      run: wget -O phpunit.phar https://phar.phpunit.de/phpunit-10.phar
 
     - name: Run PHPUnit tests
       working-directory: Almanac
-      run: php phpunit tests --testdox -c tests/phpunit.xml
+      run: php phpunit.phar tests --testdox -c tests/phpunit.xml
