@@ -36,6 +36,6 @@ jobs:
 
     - name: Unit Tests
       env:
-        IPS_STUBS_PATH: /home/runner/work/_ips-stubs
+        IPS_STUBS_PATH: ${{ github.workspace }}/../_ips-stubs
       run: php phpunit.phar tests --testdox -c tests/phpunit.xml
 
