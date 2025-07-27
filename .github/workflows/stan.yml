@@ -7,7 +7,7 @@ jobs:
     name: Run PHP Static Analysis
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup PHP
@@ -15,11 +15,13 @@ jobs:
         with:
           php-version: 8.2
 
-      - name: Download PHPStan
-        run: wget https://github.com/phpstan/phpstan/releases/latest/download/phpstan.phar
+      - name: Clone SymconStubs
+        run: git clone https://github.com/symcon/SymconStubs.git _ips-stubs
 
-      - name: Make PHPStan executable
-        run: chmod +x phpstan.phar
+      - name: Install PHPStan
+        run: |
+          wget https://github.com/phpstan/phpstan/releases/latest/download/phpstan.phar -O phpstan.phar
+          chmod +x phpstan.phar
 
       - name: Run PHPStan
         run: php phpstan.phar analyse --configuration=phpstan.neon
