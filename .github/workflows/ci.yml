@@ -1,14 +1,30 @@
-name: Static Analysis
+name: Continuous Integration
 
 on: [push, pull_request]
 
 jobs:
-  phpstan:
-    name: Run PHP Static Analysis
+  style:
+    name: Run Check Style
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@master
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 8.2
+        
+    - name: Run PHP-CS-Fixer
+      uses: wilkware/action-ips-style@main
+
+  stan:
+    name: Run Static Analysis
+    runs-on: ubuntu-latest
+    needs: style
+    steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@master
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
