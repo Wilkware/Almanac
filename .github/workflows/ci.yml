@@ -27,7 +27,7 @@ jobs:
     - name: Download PHPStan
       run: wget https://github.com/phpstan/phpstan/releases/latest/download/phpstan.phar
 
-    - name: Run PHPStan
+    - name: Static Alalysis
       run: php phpstan.phar analyse --configuration=phpstan.neon
 
     # ✅ PHPUnit Unit Tests
@@ -35,7 +35,7 @@ jobs:
       run: wget -O phpunit.phar https://phar.phpunit.de/phpunit-10.phar
 
     - name: Check downloaded files
-      run: ls -la
+      run: ls -la ..
 
-    - name: Run PHPUnit tests
+    - name: Unit Tests
       run: php phpunit.phar tests --testdox -c tests/phpunit.xml
