@@ -302,7 +302,7 @@ __Beispiel__: `ALMANAC_DateInfo(12345, time());`
 
 v5.5.20250727
 
-* _NEU_: PHP Static Code Analysis eingeführt
+* _NEU_: Continuous Integration mit Check Style, Static Code Analysis und Unit Tests eingeführt
 * _NEU_: Debugging Funktionen komplett überarbeitet
 * _FIX_: Caching überarbeitet. Memory limit eingehalten
 * _FIX_: Dokumentation für PHP Static Analysis komplett überarbeitet

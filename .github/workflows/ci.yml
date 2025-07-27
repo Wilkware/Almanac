@@ -3,9 +3,9 @@ name: Continuous Integration
 on: [push, pull_request]
 
 jobs:
-  style:
-    name: Run Check Style
+  ci:
     runs-on: ubuntu-latest
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@master
@@ -15,29 +15,24 @@ jobs:
       with:
         php-version: 8.2
         
-    - name: Run PHP-CS-Fixer
+    - name: Clone symcon stubs
+      run: git clone https://github.com/symcon/SymconStubs.git ../_ips-stubs
+        
+
+    # ✅ PHP-CS-Fixer Style Check
+    - name: Check style
       uses: wilkware/action-ips-style@main
 
-  stan:
-    name: Run Static Analysis
-    runs-on: ubuntu-latest
-    needs: style
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@master
+    # ✅ PHPStan Static Analysis
+    - name: Download PHPStan
+      run: wget https://github.com/phpstan/phpstan/releases/latest/download/phpstan.phar
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.2
+    - name: Run PHPStan
+      run: php phpstan.phar analyse --configuration=phpstan.neon
 
-      - name: Clone SymconStubs
-        run: git clone https://github.com/symcon/SymconStubs.git ../_ips-stubs
+    # ✅ PHPUnit Unit Tests
+    - name: Download PHPUnit
+      run: wget -O phpunit https://phar.phpunit.de/phpunit-10.phar && chmod +x phpunit
 
-      - name: Install PHPStan
-        run: |
-          wget https://github.com/phpstan/phpstan/releases/latest/download/phpstan.phar -O phpstan.phar
-          chmod +x phpstan.phar
-
-      - name: Run PHPStan
-        run: php phpstan.phar analyse --configuration=phpstan.neon
+    - name: Run PHPUnit tests
+      run: ./phpunit --testdox -c tests/phpunit.xml
