@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-include_once __DIR__ . '/../../_ips-stubs\Validator.php';
-
 class ValidationTest extends TestCaseSymconValidation
 {
     public function testValidateLibrary(): void

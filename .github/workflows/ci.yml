@@ -34,11 +34,8 @@ jobs:
     - name: Download PHPUnit
       run: wget -O phpunit.phar https://phar.phpunit.de/phpunit-10.phar
 
-    - name: Check downloaded files
-      run: ls -la ..
-
-    - name: Check workdir files
-      run: ls -la .
-
     - name: Unit Tests
+      env:
+        IPS_STUBS_PATH: /home/runner/work/_ips-stubs
       run: php phpunit.phar tests --testdox -c tests/phpunit.xml
+
