@@ -151,7 +151,6 @@ class Almanac extends IPSModule
      * @return string Content of the configuration page.
      */
     public function GetConfigurationForm(): string
-
     {
         // read setup
         $publicCountry = $this->ReadPropertyString('PublicCountry');
@@ -291,7 +290,7 @@ class Almanac extends IPSModule
      *
      * @param string $ident Ident of the variable
      * @param string $value The value to be set
-     * 
+     *
      * @return bool Always true.
      */
     public function RequestAction($ident, $value): bool
