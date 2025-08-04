@@ -290,7 +290,6 @@ class Almanac extends IPSModule
      *
      * @param string $ident Ident of the variable
      * @param string $value The value to be set
-     *
      * @return bool Always true.
      */
     public function RequestAction($ident, $value): bool
@@ -336,6 +335,7 @@ class Almanac extends IPSModule
      *
      * ALMANAC_Notify($id, $days);
      *
+     * @param string $days Name of the notification day (Birthday etc.)
      * @return void
      */
     public function Notify(string $days): void
@@ -533,7 +533,6 @@ class Almanac extends IPSModule
      * ALMANAC_DateInfo($id, $ts);
      *
      * @param int $ts Timestamp of the actuale date
-     *
      * @return string all extracted infomation about the passed date as json
      */
     public function DateInfo(int $ts): string
@@ -760,7 +759,6 @@ class Almanac extends IPSModule
      * User has selected a new country.
      *
      * @param string $cid Country ID.
-     *
      * @return void
      */
     protected function OnPublicCountry(string $cid): void
@@ -776,7 +774,6 @@ class Almanac extends IPSModule
      * User has selected a new country.
      *
      * @param string $cid Country ID.
-     *
      * @return void
      */
     protected function OnSchoolCountry(string $cid): void
@@ -797,7 +794,6 @@ class Almanac extends IPSModule
      * User has selected a new school region.
      *
      * @param string $region region value.
-     *
      * @return void
      */
     protected function OnSchoolRegion(string $region): void
@@ -821,7 +817,6 @@ class Almanac extends IPSModule
      * Import birthdays data.
      *
      * @param string $value Base64 coded data.
-     *
      * @return void
      */
     protected function OnImportBirthdays(string $value): void
@@ -833,7 +828,6 @@ class Almanac extends IPSModule
      * Import wedding days data.
      *
      * @param string $value Base64 coded data.
-     *
      * @return void
      */
     protected function OnImportWeddingdays(string $value): void
@@ -845,7 +839,6 @@ class Almanac extends IPSModule
      * Import death days data.
      *
      * @param string $value Base64 coded data.
-     *
      * @return void
      */
     protected function OnImportDeathdays(string $value): void
@@ -857,7 +850,6 @@ class Almanac extends IPSModule
      * Clear the selected days list.
      *
      * @param string $value property name.
-     *
      * @return void
      */
     protected function OnDeleteDays(string $value): void
@@ -927,7 +919,6 @@ class Almanac extends IPSModule
      * Lookup the calendar data to find a feast day.
      *
      * @param int $ts Date timestamp
-     *
      * @return string Name of a feast day for a given timestamp.
      */
     private function LookupCalendar(int $ts): string
@@ -1002,7 +993,6 @@ class Almanac extends IPSModule
      *
      * @param array{date:string,years:int,name:string} $item Date event item
      * @param string $format Format string
-     *
      * @return string Formated date
      */
     private function FormatDay(array $item, string $format): string
@@ -1045,7 +1035,6 @@ class Almanac extends IPSModule
      *
      * @param array<string,string> $item Event item
      * @param string $format Format string
-     *
      * @return string Formated event
      */
     private function FormatEvent(array $item, $format): string
@@ -1061,7 +1050,6 @@ class Almanac extends IPSModule
      *
      * @param array<string,string> $item Event item
      * @param string $format Format string
-     *
      * @return string Formated quote of the day
      */
     private function FormatQuote(array $item, string $format): string
@@ -1077,7 +1065,6 @@ class Almanac extends IPSModule
      * @param list<string> $property Day property idents.
      * @param array{IsSummer:bool,IsLeapYear:bool,IsWeekend:bool,Weekday:int,WeekNumber:int,DaysInMonth:int,DayOfYear:int,DayLong:string,Season:string,Festive:string,IsFestive:bool,WorkingDays:int,Holiday:string,IsHoliday:bool,Vacation:string,IsVacation:bool,IsBirthday:bool,Birthday:list<array{date:string,years:int,name:string}>,IsWeddingday:bool,Weddingday:list<array{date:string,years:int,name:string}>,IsDeathday:bool,Deathday:list<array{date:string,years:int,name:string}>,IsEclipse:bool,Eclipse:list<array{name:string, date:string,time:string}>,IsMoonphase:bool,Moonphase:list<array{name:string,date:string,time:string}>,QuoteOfTheDay:list<array{quote:string,author:string}>} $date Info for the day
      * @param int $script Script ID
-     *
      * @return void
      */
     private function UpdateDay(array $property, array $date, int $script): void
@@ -1135,7 +1122,6 @@ class Almanac extends IPSModule
      *
      * @param string $property Name of the list element
      * @param string $value Data to import (base64 coded)
-     *
      * @return void
      */
     private function ImportCSV(string $property, string $value): void
@@ -1267,7 +1253,6 @@ class Almanac extends IPSModule
      * Reads the public regions for a given country.
      *
      * @param list<array{country:string,part:string,regions:list<array{name:string,ident:string,schools:list<array{name:string,ident:string}>}>}> $country Country data array.
-     *
      * @return list<array{caption:string,value:string}> Regions options array.
      */
     private function GetRegions(array $country): array

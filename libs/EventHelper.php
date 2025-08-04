@@ -95,7 +95,7 @@ trait EventHelper
      *     WeekPlanID: int,             // ID of the weekly schedule
      *     WeekPlanName: string,        // Name of the weekly plan
      *     WeekPlanActiv: int           // State whether the weekly schedule is active or not
-     * }|false
+     * }
      */
     protected function GetWeeklyScheduleInfo(int $id, int $time = null, bool $checkonly = false): array
     {
