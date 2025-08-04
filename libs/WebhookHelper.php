@@ -22,8 +22,7 @@ trait WebhookHelper
     /**
      * Register a new web hook, if not already existing.
      *
-     * @param string $hook path of the web hook.
-     *
+     * @param string $hook Path of the web hook.
      * @return void
      */
     protected function RegisterHook(string $hook): void
@@ -56,8 +55,7 @@ trait WebhookHelper
     /**
      * Unregister a web hook, if not already existing.
      *
-     * @param string $hook path of the web hook.
-     *
+     * @param string $hook Path of the web hook.
      * @return void
      */
     protected function UnregisterHook(string $hook): void

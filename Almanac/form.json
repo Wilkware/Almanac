@@ -805,13 +805,17 @@
                 },
                 {
                     "type": "Label",
-                    "caption": "... to send notification messages to a web front:"
+                    "caption": "... to send notification messages to a visualisation:"
                 },
                 {
                     "type": "SelectInstance",
                     "name": "InstanceWebfront",
-                    "caption": "WebFront Instance:",
-                    "width": "275px"
+                    "caption": "Visualization Instance:",
+                    "validModules": [
+                        "{3565B1F2-8F7B-4311-A4B6-1BF1D868F39E}",
+                        "{B5B875BB-9B76-45FD-4E67-2607E45B3AC4}"
+                    ],
+                    "width": "450px"
                 },
                 {
                     "type": "Label",
@@ -821,7 +825,7 @@
                     "type": "SelectScript",
                     "name": "ScriptMessage",
                     "caption": "Message script:",
-                    "width": "275px"
+                    "width": "450px"
                 }
             ]
         }

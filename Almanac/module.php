@@ -13,6 +13,7 @@ class Almanac extends IPSModule
     use EventHelper;
     use ProfileHelper;
     use VariableHelper;
+    use VersionHelper;
     use WebhookHelper;
 
     /**
@@ -48,7 +49,10 @@ class Almanac extends IPSModule
     ];
 
     /**
-     * Create.
+     * In contrast to Construct, this function is called only once when creating the instance and starting IP-Symcon.
+     * Therefore, status variables and module properties which the module requires permanently should be created here.
+     *
+     * @return void
      */
     public function Create(): void
     {
@@ -126,7 +130,10 @@ class Almanac extends IPSModule
     }
 
     /**
-     * Destroy.
+     * This function is called when deleting the instance during operation and when updating via "Module Control".
+     * The function is not called when exiting IP-Symcon.
+     *
+     * @return void
      */
     public function Destroy(): void
     {
@@ -137,11 +144,14 @@ class Almanac extends IPSModule
     }
 
     /**
-     * Configuration Form.
+     * The content can be overwritten in order to transfer a self-created configuration page.
+     * This way, content can be generated dynamically.
+     * In this case, the "form.json" on the file system is completely ignored.
      *
-     * @return string configuration string.
+     * @return string Content of the configuration page.
      */
     public function GetConfigurationForm(): string
+
     {
         // read setup
         $publicCountry = $this->ReadPropertyString('PublicCountry');
@@ -169,7 +179,9 @@ class Almanac extends IPSModule
     }
 
     /**
-     * Apply Configuration Changes.
+     * Is executed when "Apply" is pressed on the configuration page and immediately after the instance has been created.
+     *
+     * @return void
      */
     public function ApplyChanges(): void
     {
@@ -275,10 +287,12 @@ class Almanac extends IPSModule
     }
 
     /**
-     * RequestAction.
+     * Is called when, for example, a button is clicked in the visualization.
      *
-     *  @param string $ident Ident.
-     *  @param string $value Value.
+     * @param string $ident Ident of the variable
+     * @param string $value The value to be set
+     * 
+     * @return bool Always true.
      */
     public function RequestAction($ident, $value): bool
     {
@@ -340,8 +354,18 @@ class Almanac extends IPSModule
                 $data = $this->LookupDays(time(), self::DP[$days][1]);
                 foreach ($data as $item) {
                     $output = $this->FormatDay($item, $format);
-                    /** @phpstan-ignore-next-line */
-                    WFC_PushNotification($wfc, $this->Translate('Date'), $output, 'Calendar');
+                    if ($this->IsWebFrontVisuInstance($wfc)) {
+                        //TODO:Update if added
+                        /** @phpstan-ignore-next-line */
+                        WFC_PushNotification($wfc, $this->Translate('Date'), $output, 'Calendar', 0);
+                        $this->LogDebug(__FUNCTION__, 'Send to Webfront');
+                    }
+                    if ($this->IsTileVisuInstance($wfc)) {
+                        //TODO:Update if added
+                        /** @phpstan-ignore-next-line */
+                        VISU_PostNotificationEx($wfc, $this->Translate('Date'), $output, 'Calendar', 'happy', 0);
+                        $this->LogDebug(__FUNCTION__, 'Send to TileVisu');
+                    }
                 }
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);

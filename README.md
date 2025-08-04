@@ -1,8 +1,8 @@
-# Jahreskalender (Almanac)
+# 📆 Jahreskalender (Almanac)
 
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg?style=flat-square)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 [![Product](https://img.shields.io/badge/Symcon%20Version-6.4-blue.svg?style=flat-square)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-5.5.20250727-orange.svg?style=flat-square)](https://github.com/Wilkware/Almanac)
+[![Version](https://img.shields.io/badge/Modul%20Version-5.6.20250805-orange.svg?style=flat-square)](https://github.com/Wilkware/Almanac)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg?style=flat-square)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Actions](https://img.shields.io/github/actions/workflow/status/wilkware/Almanac/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/Wilkware/Almanac/actions)
 
@@ -29,7 +29,7 @@ Das Modul nutzt eine eigens entwickelte JSON-API (CDN basierend) um die Daten f�
 in Deutschland, Österreich und der Schweiz bereitzustellen.  
 Derzeit unterstützt das Modul auch eine Vielzahl verschiedenster religiöser und weltlicher Festtage (z.B. Valentinstag oder Kindertag).  
 Als Gedächtnisstütze können die jährlichen Geburtstage, Hochzeitstage aber auch Todestage verwaltet werden und man
-kann sich täglich informieren lassen ob ein Termin ansteht (Meldungsverwaltung oder via Webfront-Notification).  
+kann sich täglich informieren lassen ob ein Termin ansteht (Meldungsverwaltung oder via Visualisierung-Notification).  
 Darüber hinaus werden mittels der PHP Funktion "date" verschiedene Informationen für das aktuelle Datum ermittelt.  
 In Kombination mit den ermittelten Feiertagen werden auch die Arbeitstage im aktuellen Monat bereitgestellt.  
 Spezielle astronomische Ereignisse wie Mond- oder Sonnenfinsternis und das Datum der 4 verschiedenen Mondphasen für das nächste Datum wird ermittelt.
@@ -108,62 +108,62 @@ Einstellungsbereich:
 
 > Feiertage ...
 
-Name               | Beschreibung
------------------- | ---------------------------------
-Land               | Auswahl des Landes (Deutschland, Österreich und Schweiz).
-Bundesland         | Auswahl des Bundeslandes/Karton für welchen man die Feiertage ermittelt haben möchte.
+Name                                | Beschreibung
+------------------------------------|----------------------------------
+Land                                | Auswahl des Landes (Deutschland, Österreich und Schweiz).
+Bundesland                          | Auswahl des Bundeslandes/Karton für welchen man die Feiertage ermittelt haben möchte.
 
 > Schulferien ...
 
-Name               | Beschreibung
------------------- | ---------------------------------
-Land               | Auswahl des Landes (Deutschland, Österreich und Schweiz).
-Bundesland         | Auswahl des Bundeslandes/Karton für welchen man die Schulferien ermittelt haben möchte.
-Schulen            | Derzeit nur für die Schweiz entscheidend, Auswahl der gewünschten Schule im Kanton.
+Name                                | Beschreibung
+------------------------------------|----------------------------------
+Land                                | Auswahl des Landes (Deutschland, Österreich und Schweiz).
+Bundesland                          | Auswahl des Bundeslandes/Karton für welchen man die Schulferien ermittelt haben möchte.
+Schulen                             | Derzeit nur für die Schweiz entscheidend, Auswahl der gewünschten Schule im Kanton.
 
 > Geburtstage ...
 
-Name                          | Beschreibung
------------------------------ | ---------------------------------
-Termine                       | Eingabe des Geburtstermins (Tag.Monat.Jahr) und den dazugehörigen Namen
-Nachricht ans Webfront senden | Auswahl ob Push-Nachricht gesendet werden soll oder nicht (Ja/Nein)
-Nachricht Sendezeit           | Uhrzeit wann täglich die Nachricht gesendet weden soll
-Meldung an Anzeige senden     | Auswahl ob Eintrag in die Meldungsverwaltung erfolgen soll oder nicht (Ja/Nein)
-Lebensdauer der Nachricht     | Wie lange so die Meldung angezeigt werden?
-Format der Textmitteilung     | Frei wählbares Format der zu sendenden Nachricht/Meldung
-Text in Variable schreiben    | Auswahl ob Nachricht in Variable geschrieben werden soll
-Texttrennzeichen/Zeilenumbruch| Trennzeichen bei mehreren Ereignissen
+Name                                | Beschreibung
+------------------------------------|---------------------------------
+Termine                             | Eingabe des Geburtstermins (Tag.Monat.Jahr) und den dazugehörigen Namen
+Nachricht ans Visualisierung senden | Auswahl ob Push-Nachricht gesendet werden soll oder nicht (Ja/Nein)
+Nachricht Sendezeit                 | Uhrzeit wann täglich die Nachricht gesendet weden soll
+Meldung an Anzeige senden           | Auswahl ob Eintrag in die Meldungsverwaltung erfolgen soll oder nicht (Ja/Nein)
+Lebensdauer der Nachricht           | Wie lange so die Meldung angezeigt werden?
+Format der Textmitteilung           | Frei wählbares Format der zu sendenden Nachricht/Meldung
+Text in Variable schreiben          | Auswahl ob Nachricht in Variable geschrieben werden soll
+Texttrennzeichen/Zeilenumbruch      | Trennzeichen bei mehreren Ereignissen
 
 > Hochzeitstage ...
 
-Name                          | Beschreibung
------------------------------ | ---------------------------------
-Termine                       | Eingabe Heiratstermins (Tag.Monat.Jahr) und den dazugehörigen Namen
-Nachricht ans Webfront senden | Auswahl ob Push-Nachricht gesendet werden soll oder nicht (Ja/Nein)
-Nachricht Sendezeit           | Uhrzeit wann täglich die Nachricht gesendet weden soll
-Meldung an Anzeige senden     | Auswahl ob Eintrag in die Meldungsverwaltung erfolgen soll oder nicht (Ja/Nein)
-Lebensdauer der Nachricht     | Wie lange so die Meldung angezeigt werden?
-Format der Textmitteilung     | Frei wählbares Format der zu sendenden Nachricht/Meldung
-Text in Variable schreiben    | Auswahl ob Nachricht in Variable geschrieben werden soll
-Texttrennzeichen/Zeilenumbruch| Trennzeichen bei mehreren Ereignissen
+Name                                | Beschreibung
+------------------------------------|---------------------------------
+Termine                             | Eingabe Heiratstermins (Tag.Monat.Jahr) und den dazugehörigen Namen
+Nachricht an Visualisierung senden  | Auswahl ob Push-Nachricht gesendet werden soll oder nicht (Ja/Nein)
+Nachricht Sendezeit                 | Uhrzeit wann täglich die Nachricht gesendet weden soll
+Meldung an Anzeige senden           | Auswahl ob Eintrag in die Meldungsverwaltung erfolgen soll oder nicht (Ja/Nein)
+Lebensdauer der Nachricht           | Wie lange so die Meldung angezeigt werden?
+Format der Textmitteilung           | Frei wählbares Format der zu sendenden Nachricht/Meldung
+Text in Variable schreiben          | Auswahl ob Nachricht in Variable geschrieben werden soll
+Texttrennzeichen/Zeilenumbruch      | Trennzeichen bei mehreren Ereignissen
 
 > Todestage ...
 
-Name                          | Beschreibung
------------------------------ | ---------------------------------
-Termine                       | Eingabe Sterbetag (Tag.Monat.Jahr) und den dazugehörigen Namen
-Nachricht ans Webfront senden | Auswahl ob Push-Nachricht gesendet werden soll oder nicht (Ja/Nein)
-Nachricht Sendezeit           | Uhrzeit wann täglich die Nachricht gesendet weden soll
-Meldung an Anzeige senden     | Auswahl ob Eintrag in die Meldungsverwaltung erfolgen soll oder nicht (Ja/Nein)
-Lebensdauer der Nachricht     | Wie lange so die Meldung angezeigt werden?
-Format der Textmitteilung     | Frei wählbares Format der zu sendenden Nachricht/Meldung
-Text in Variable schreiben    | Auswahl ob Nachricht in Variable geschrieben werden soll
-Texttrennzeichen/Zeilenumbruch| Trennzeichen bei mehreren Ereignissen
+Name                                | Beschreibung
+------------------------------------|---------------------------------
+Termine                             | Eingabe Sterbetag (Tag.Monat.Jahr) und den dazugehörigen Namen
+Nachricht an Visualisierung senden  | Auswahl ob Push-Nachricht gesendet werden soll oder nicht (Ja/Nein)
+Nachricht Sendezeit                 | Uhrzeit wann täglich die Nachricht gesendet weden soll
+Meldung an Anzeige senden           | Auswahl ob Eintrag in die Meldungsverwaltung erfolgen soll oder nicht (Ja/Nein)
+Lebensdauer der Nachricht           | Wie lange so die Meldung angezeigt werden?
+Format der Textmitteilung           | Frei wählbares Format der zu sendenden Nachricht/Meldung
+Text in Variable schreiben          | Auswahl ob Nachricht in Variable geschrieben werden soll
+Texttrennzeichen/Zeilenumbruch      | Trennzeichen bei mehreren Ereignissen
 
 > Verschiednes ...
 
 Name                                                   | Beschreibung
------------------------------------------------------- | ----------------------------------------------------------
+-------------------------------------------------------|------------------------------------------------
 Textausgabeformat für Mond- und Sonnenfinsternisse     | Frei wählbares Format für die Ereignisausgabe
 Textausgabeformat für Mondphasen                       | Frei wählbares Format für die Ereignisausgabe
 Textausgabeformat für Zitat des Tages                  | Frei wählbares Format für die Zitatsausgabe
@@ -172,7 +172,7 @@ Textausgabeformat für langes Tagesformat               | Frei wählbares Format
 > Erweiterte Einstellungen ...
 
 Name                                      | Beschreibung
------------------------------------------ | ---------------------------------
+------------------------------------------|----------------------------------
 Feirtage ermitteln                        | Status, ob Ermittlung der Feiertage erwünscht ist
 Schulferien ermitteln                     | Status, ob Ermittlung der Schulferien erwünscht ist
 Festtage ermitteln                        | Status, ob Ermittlung der Festtage erwünscht ist
@@ -189,7 +189,7 @@ Festtage                                  | Text, welcher ausgeben wird wenn kei
 Geburtstage                               | Text, welcher ausgeben wird wenn kein Geburtstag vorliegt.
 Hochzeitstage                             | Text, welcher ausgeben wird wenn kein Hochzeitstag vorliegt.
 Todestage                                 | Text, welcher ausgeben wird wenn kein Todestag vorliegt.
-WebFront Instanz                          | ID des Webfronts, an welches die Push-Nachrichten für Geburts-, Hochzeits- und Todestage gesendet werden soll
+Visualisierungs-Instanz                   | ID der Visualisierung, an welches die Push-Nachrichten für Geburts-, Hochzeits- und Todestage gesendet werden soll
 Meldsungsskript                           | Skript ID des Meldungsverwaltungsskripts, weiterführende Infos im Forum: [Meldungsanzeige im Webfront](https://community.symcon.de/t/meldungsanzeige-im-webfront/23473)
 
 Aktionsbereich:
@@ -197,7 +197,7 @@ Aktionsbereich:
 > Import & Export von ...
 
 Aktion         | Beschreibung
--------------- | ------------------------------------------------------------
+---------------|-------------------------------------------------------------
 GEBURTSTAGE    | Öffnet Popup für die Möglichkeit zum Import/Export/Leeren der Geburtstagsliste als CSV Datei (geburtstage.csv)
 HOCHZEITSTAGE  | Öffnet Popup für die Möglichkeit zum Import/Export/Leeren der Hochzeitsliste als CSV Datei (hochzeitstage.csv)
 TODESTAGE      | Öffnet Popup für die Möglichkeit zum Import/Export/Leeren der Sterbeliste als CSV Datei (todestage.csv)
@@ -207,7 +207,7 @@ _Hinweis:_ CSV-Format ist Termin, Name => 1.1.1970,"Herr Max Mustermann"
 > Tagesdaten ...
 
 Aktion         | Beschreibung
--------------- | ------------------------------------------------------------
+---------------|-------------------------------------------------------------
 AKTUALISIEREN  | Ermittelt für das aktuelle Datum alle Informationen (Update)
 
 ### 5. Statusvariablen und Profile
@@ -215,7 +215,7 @@ AKTUALISIEREN  | Ermittelt für das aktuelle Datum alle Informationen (Update)
 Die Statusvariablen werden automatisch angelegt. Das Löschen einzelner kann zu Fehlfunktionen führen.
 
 Name                 | Typ       | Beschreibung
--------------------- | --------- | ----------------
+---------------------|-----------|-----------------
 Ist Feiertag?        | Boolean   | Ist aktueller Tag ein Feiertag?
 Ist Ferienzeit?      | Boolean   | Fällt aktueller Tag in die Ferien?
 Ist Sommerzeit?      | Boolean   | Ist aktuell Sommerzeit aktiv?
@@ -240,7 +240,7 @@ Jahreszeit           | String    | "Frühling", "Sommer", "Herbst" oder "Winter"
 Folgende Profile werden angelegt:
 
 Name                 | Typ       | Beschreibung
--------------------- | --------- | ----------------
+---------------------|-----------|-----------------
 ALMANAC.Question     | Boolean   | FALSE = Nein(No) / TRUE = Ja(Yes)
 ALMANAC.Sesaon       | String    | Winter(Winter), Frühling(Spring), Herbst(Fall), Sommer(Summer)
 
@@ -299,6 +299,12 @@ __Beispiel__: `ALMANAC_DateInfo(12345, time());`
 }  
 
 ### 8. Versionshistorie
+
+v5.6.20250805
+
+* _FIX_: Nachrichten an Visualisierungen unterscheiden jetzt zwischen WebFront und TileVisu
+* _FIX_: Kleiner Namings in Konfiguration und Übersetzungen angepasst
+* _FIX_: Kleiner Optimierung in der CI-Kette vorgenommen
 
 v5.5.20250727
 

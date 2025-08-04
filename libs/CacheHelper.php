@@ -25,7 +25,6 @@ trait CacheHelper
      *
      * @param string $name  The buffer name.
      * @param string $empty The default content to return if the buffer is empty or invalid.
-     *
      * @return string The decompressed content from the buffer.
      */
     protected function GetCache(string $name, string $empty = '{}'): string
@@ -46,7 +45,6 @@ trait CacheHelper
      *
      * @param string $name    The buffer name.
      * @param string $content The uncompressed content to store (e.g., JSON string).
-     *
      * @return void
      */
     protected function SetCache(string $name, string $content): void
@@ -65,7 +63,6 @@ trait CacheHelper
      *
      * @param string $name    The buffer name.
      * @param string $pattern Associated pattern per cache item.
-     *
      * @return void
      */
     protected function ClearCache(string $name, string $pattern = ''): void
@@ -96,7 +93,6 @@ trait CacheHelper
      * Returns an overview of the current cache content, including remaining lifetime per entry.
      *
      * @param string $name The buffer name.
-     *
      * @return list<array<string, string>> An array with cache information.
      */
     protected function GetCacheInfo(string $name): array
