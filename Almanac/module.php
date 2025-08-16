@@ -866,7 +866,7 @@ class Almanac extends IPSModule
      *
      * @return void
      */
-    protected function ProcessHookData(): void
+    protected function ProcessHookData()
     {
         //$this->LogDebug(__FUNCTION__, $_GET);
         $export = isset($_GET['export']) ? $_GET['export'] : '';

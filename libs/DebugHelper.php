@@ -81,10 +81,10 @@ trait DebugHelper
      *
      * @param string $msg  Title of the log message.
      * @param int    $type message typ (KL_DEBUG| KL_ERROR| KL_MESSAGE| KL_NOTIFY (default)| KL_WARNING).
-     * @return void
+     * @return bool  Always true
      */
-    protected function LogMessage($msg, $type = KL_NOTIFY): void
+    protected function LogMessage($msg, $type = KL_NOTIFY): bool
     {
-        parent::LogMessage($msg, $type);
+        return parent::LogMessage($msg, $type);
     }
 }

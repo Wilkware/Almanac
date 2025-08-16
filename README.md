@@ -2,7 +2,7 @@
 
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg?style=flat-square)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 [![Product](https://img.shields.io/badge/Symcon%20Version-6.4-blue.svg?style=flat-square)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-5.6.20250805-orange.svg?style=flat-square)](https://github.com/Wilkware/Almanac)
+[![Version](https://img.shields.io/badge/Modul%20Version-5.7.20250816-orange.svg?style=flat-square)](https://github.com/Wilkware/Almanac)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg?style=flat-square)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Actions](https://img.shields.io/github/actions/workflow/status/wilkware/Almanac/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/Wilkware/Almanac/actions)
 
@@ -299,6 +299,10 @@ __Beispiel__: `ALMANAC_DateInfo(12345, time());`
 }  
 
 ### 8. Versionshistorie
+
+v5.7.20250816
+
+* _FIX_: Signatur von ProcessHookData zurückgesetzt (kein Rückgabewert)
 
 v5.6.20250805
 
