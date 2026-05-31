@@ -2,50 +2,133 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../libs/_traits.php';  // Generell funktions
+// Generell funktions
+require_once __DIR__ . '/../libs/_traits.php';
 
-// CLASS Almanac
-class Almanac extends IPSModule
+/**
+ * CLASS Almanac
+ */
+class Almanac extends IPSModuleStrict
 {
     use CacheHelper;
     use CalendarHelper;
     use DebugHelper;
     use EventHelper;
-    use ProfileHelper;
     use VariableHelper;
     use VersionHelper;
-    use WebhookHelper;
 
     /**
      * Supported Dates (BD = Birthdays, WD = Weddingdays, DD = Deathdays)
      */
-    private const BD = 'BD';
-    private const WD = 'WD';
-    private const DD = 'DD';
+    private const ALMANAC_BD = 'BD';
+    private const ALMANAC_WD = 'WD';
+    private const ALMANAC_DD = 'DD';
 
     /**
      * Date Properties (Form)
      */
-    private const DP = [
-        self::BD => ['UpdateBirth', 'Birthdays', 'BirthdayNotification', 'BirthdayTime', 'BirthdayMessage', 'BirthdayDuration', 'BirthdayFormat', 'BirthdayVariable', 'BirthdaySeparator', 'NoBirthday'],
-        self::WD => ['UpdateWedding', 'Weddingdays', 'WeddingdayNotification', 'WeddingdayTime', 'WeddingdayMessage', 'WeddingdayDuration', 'WeddingdayFormat', 'WeddingdayVariable', 'WeddingdaySeparator', 'NoWedding'],
-        self::DD => ['UpdateDeath', 'Deathdays', 'DeathdayNotification', 'DeathdayTime', 'DeathdayMessage', 'DeathdayDuration', 'DeathdayFormat', 'DeathdayVariable', 'DeathdaySeparator', 'NoDeath'],
+    private const ALMANAC_DP = [
+        self::ALMANAC_BD => ['UpdateBirth', 'Birthdays', 'BirthdayNotification', 'BirthdayTime', 'BirthdayMessage', 'BirthdayDuration', 'BirthdayFormat', 'BirthdayVariable', 'BirthdaySeparator', 'NoBirthday'],
+        self::ALMANAC_WD => ['UpdateWedding', 'Weddingdays', 'WeddingdayNotification', 'WeddingdayTime', 'WeddingdayMessage', 'WeddingdayDuration', 'WeddingdayFormat', 'WeddingdayVariable', 'WeddingdaySeparator', 'NoWedding'],
+        self::ALMANAC_DD => ['UpdateDeath', 'Deathdays', 'DeathdayNotification', 'DeathdayTime', 'DeathdayMessage', 'DeathdayDuration', 'DeathdayFormat', 'DeathdayVariable', 'DeathdaySeparator', 'NoDeath'],
     ];
 
     /**
      * Cache time dor a day
      */
-    private const SECONDS_PER_DAY = 86400;
+    private const ALMANAC_SECONDS_PER_DAY = 86400;
 
     /**
      * Cache timeouts per URL pattern (seconds)
      * 0 = load once, keep forever (until IPS restart or ClearCache())
      */
-    private const CACHE_RULES = [
-        'holiday'   => 90 * self::SECONDS_PER_DAY,  // 90 days
-        'vacation'  => 30 * self::SECONDS_PER_DAY,  // 30 days
-        'astronomy' => 180 * self::SECONDS_PER_DAY, // 180 days
+    private const ALMANAC_CACHE_RULES = [
+        'holiday'   => 90 * self::ALMANAC_SECONDS_PER_DAY,  // 90 days
+        'vacation'  => 30 * self::ALMANAC_SECONDS_PER_DAY,  // 30 days
+        'astronomy' => 180 * self::ALMANAC_SECONDS_PER_DAY, // 180 days
         'quotes'    => 0                            // load once, keep forever
+    ];
+
+    /**
+     * Prefix for custom functions which should be available from outside
+     */
+    private const ALMANAC_PREFIX_HOOK = 'almanac';
+
+    /**
+     * @var array<string,mixed> Question Presentation (Value)
+     */
+    private const ALMANAC_PRESENTATION_QUESTION = [
+        'USAGE_TYPE'          => 0,
+        'THOUSANDS_SEPARATOR' => '',
+        'SHOW_PREVIEW'        => true,
+        'PRESENTATION'        => VARIABLE_PRESENTATION_VALUE_PRESENTATION,
+        'SUFFIX'              => '',
+        'COLOR'               => -1,
+        'PREFIX'              => '',
+        'CONTENT_COLOR'       => -1,
+        'MAX'                 => 100,
+        'MULTILINE'           => false,
+        'DECIMAL_SEPARATOR'   => 'Client',
+        'PERCENTAGE'          => false,
+        'DIGITS'              => 2,
+        'INTERVALS'           => '[]',
+        'DISPLAY_TYPE'        => 0,
+        'ICON'                => 'question',
+        'INTERVALS_ACTIVE'    => false,
+        'PREVIEW_STYLE'       => 1,
+        'MIN'                 => 0,
+        'OPTIONS'             => '[{"ColorDisplay":16711680,"ContentColorDisplay":-1,"Value":false,"Caption":"No","IconActive":true,"IconValue":"calendar-xmark","ColorActive":true,"ColorValue":16711680,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":65280,"ContentColorDisplay":-1,"Value":true,"Caption":"Yes","IconActive":true,"IconValue":"calendar-check","ColorActive":true,"ColorValue":65280,"ContentColorActive":false,"ContentColorValue":-1}]',
+    ];
+
+    /**
+     * @var array<string,mixed> 4 Season Presentation (Value)
+     */
+    private const ALMANAC_PRESENTATION_SEASON = [
+        'USAGE_TYPE'          => 0,
+        'THOUSANDS_SEPARATOR' => '',
+        'SHOW_PREVIEW'        => true,
+        'PRESENTATION'        => VARIABLE_PRESENTATION_VALUE_PRESENTATION,
+        'SUFFIX'              => '',
+        'COLOR'               => -1,
+        'PREFIX'              => '',
+        'CONTENT_COLOR'       => -1,
+        'MAX'                 => 100,
+        'MULTILINE'           => false,
+        'DECIMAL_SEPARATOR'   => 'Client',
+        'PERCENTAGE'          => false,
+        'DIGITS'              => 2,
+        'INTERVALS'           => '[]',
+        'DISPLAY_TYPE'        => 0,
+        'ICON'                => 'leaf',
+        'INTERVALS_ACTIVE'    => false,
+        'PREVIEW_STYLE'       => 1,
+        'MIN'                 => 0,
+        'OPTIONS'             => '[{"ColorDisplay":9225790,"ContentColorDisplay":-1,"Value":"Spring","Caption":"Spring","IconActive":false,"IconValue":"","ColorActive":true,"ColorValue":9225790,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":16635137,"ContentColorDisplay":-1,"Value":"Summer","Caption":"Summer","IconActive":false,"IconValue":"","ColorActive":true,"ColorValue":16635137,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":14249729,"ContentColorDisplay":-1,"Value":"Fall","Caption":"Fall","IconActive":false,"IconValue":"","ColorActive":true,"ColorValue":14249729,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":6670288,"ContentColorDisplay":-1,"Value":"Winter","Caption":"Winter","IconActive":false,"IconValue":"","ColorActive":true,"ColorValue":6670288,"ContentColorActive":false,"ContentColorValue":-1}]',
+    ];
+
+    /**
+     * @var array<string,mixed> Wekday Presentation (Value)
+     */
+    private const ALMANAC_PRESENTATION_WEEKDAY = [
+        'USAGE_TYPE'          => 0,
+        'THOUSANDS_SEPARATOR' => '',
+        'SHOW_PREVIEW'        => true,
+        'PRESENTATION'        => VARIABLE_PRESENTATION_VALUE_PRESENTATION,
+        'SUFFIX'              => '',
+        'COLOR'               => -1,
+        'MAX'                 => 0,
+        'MULTILINE'           => false,
+        'DECIMAL_SEPARATOR'   => 'Client',
+        'PERCENTAGE'          => false,
+        'DIGITS'              => 0,
+        'INTERVALS'           => '[{"ColorDisplay":8454016,"ContentColorDisplay":-1,"IntervalMinValue":1,"IntervalMaxValue":1,"ConstantActive":true,"ConstantValue":"Monday","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":8454016,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":8454016,"ContentColorDisplay":-1,"IntervalMinValue":2,"IntervalMaxValue":2,"ConstantActive":true,"ConstantValue":"Tuesday","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":8454016,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":8454016,"ContentColorDisplay":-1,"IntervalMinValue":3,"IntervalMaxValue":3,"ConstantActive":true,"ConstantValue":"Wednesday","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":8454016,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":8454016,"ContentColorDisplay":-1,"IntervalMinValue":4,"IntervalMaxValue":4,"ConstantActive":true,"ConstantValue":"Thursday","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":8454016,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":8454016,"ContentColorDisplay":-1,"IntervalMinValue":5,"IntervalMaxValue":5,"ConstantActive":true,"ConstantValue":"Friday","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":8454016,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":16777088,"ContentColorDisplay":-1,"IntervalMinValue":6,"IntervalMaxValue":6,"ConstantActive":true,"ConstantValue":"Saturday","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":16777088,"ContentColorActive":false,"ContentColorValue":-1},{"ColorDisplay":16744576,"ContentColorDisplay":-1,"IntervalMinValue":7,"IntervalMaxValue":7,"ConstantActive":true,"ConstantValue":"Sunday","ConversionFactor":1,"IconActive":false,"IconValue":"","PrefixActive":false,"PrefixValue":"","SuffixActive":false,"SuffixValue":"","DigitsActive":false,"DigitsValue":0,"ColorActive":true,"ColorValue":16744576,"ContentColorActive":false,"ContentColorValue":-1}]',
+        'DISPLAY_TYPE'        => 0,
+        'ICON'                => 'Calendar',
+        'INTERVALS_ACTIVE'    => true,
+        'PREVIEW_STYLE'       => 1,
+        'MIN'                 => 0,
+        'CONTENT_COLOR'       => -1,
+        'PREFIX'              => '',
     ];
 
     /**
@@ -101,6 +184,11 @@ class Almanac extends IPSModule
         $this->RegisterPropertyString('QuoteFormat', $this->Translate('„%Q“ - %A'));
         $this->RegisterAttributeString('QuoteURL', 'https://api.asmium.de/quotes/de/');
         $this->RegisterPropertyString('DateFormat', '%l, %j.%F');
+        // Visualization
+        $this->RegisterPropertyInteger('Desktop', 6);
+        $this->RegisterPropertyInteger('Tablet', 4);
+        $this->RegisterPropertyInteger('Mobile', 2);
+        $this->RegisterPropertyString('Slots', '[]');
         // Advanced Settings
         $this->RegisterPropertyBoolean('UpdateHoliday', true);
         $this->RegisterPropertyBoolean('UpdateVacation', true);
@@ -124,9 +212,12 @@ class Almanac extends IPSModule
         // Register daily update timer
         $this->RegisterTimer('UpdateTimer', 0, 'ALMANAC_Update(' . $this->InstanceID . ');');
         // Register birth|wedding|death day notification timer
-        $this->RegisterTimer('UpdateBirth', 0, 'ALMANAC_Notify(' . $this->InstanceID . ', "' . self::BD . '");');
-        $this->RegisterTimer('UpdateWedding', 0, 'ALMANAC_Notify(' . $this->InstanceID . ', "' . self::WD . '");');
-        $this->RegisterTimer('UpdateDeath', 0, 'ALMANAC_Notify(' . $this->InstanceID . ', "' . self::DD . '");');
+        $this->RegisterTimer('UpdateBirth', 0, 'ALMANAC_Notify(' . $this->InstanceID . ', "' . self::ALMANAC_BD . '");');
+        $this->RegisterTimer('UpdateWedding', 0, 'ALMANAC_Notify(' . $this->InstanceID . ', "' . self::ALMANAC_WD . '");');
+        $this->RegisterTimer('UpdateDeath', 0, 'ALMANAC_Notify(' . $this->InstanceID . ', "' . self::ALMANAC_DD . '");');
+
+        // Set visualization type to 1, as we want to offer HTML
+        $this->SetVisualizationType(1);
     }
 
     /**
@@ -137,9 +228,6 @@ class Almanac extends IPSModule
      */
     public function Destroy(): void
     {
-        if (!IPS_InstanceExists($this->InstanceID)) {
-            $this->UnregisterHook('/hook/almanac' . $this->InstanceID);
-        }
         parent::Destroy();
     }
 
@@ -167,11 +255,16 @@ class Almanac extends IPSModule
         // Get Form
         $form = json_decode(file_get_contents(__DIR__ . '/form.json'), true);
         // Holiday Regions
-        $form['elements'][2]['items'][1]['options'] = $this->GetRegions($data[$publicCountry]);
+        $form['elements'][1]['items'][1]['options'] = $this->GetRegions($data[$publicCountry]);
         // Vacation Regions
-        $form['elements'][3]['items'][1]['items'][0]['options'] = $this->GetRegions($data[$schoolCountry]);
+        $form['elements'][2]['items'][1]['items'][0]['options'] = $this->GetRegions($data[$schoolCountry]);
         // Schools
-        $form['elements'][3]['items'][1]['items'][1]['options'] = $this->GetSchool($data[$schoolCountry], $schoolRegion);
+        $form['elements'][2]['items'][1]['items'][1]['options'] = $this->GetSchool($data[$schoolCountry], $schoolRegion);
+        // Extract Version
+        $ins = IPS_GetInstance($this->InstanceID);
+        $mod = IPS_GetModule($ins['ModuleInfo']['ModuleID']);
+        $lib = IPS_GetLibrary($mod['LibraryID']);
+        $form['actions'][2]['items'][2]['caption'] = sprintf('v%s.%d', $lib['Version'], $lib['Build']);
         // Debug output
         //$this->LogDebug(__FUNCTION__, $form);
         return json_encode($form);
@@ -205,69 +298,50 @@ class Almanac extends IPSModule
         $isQuote = $this->ReadPropertyBoolean('UpdateQuote');
         $isDate = $this->ReadPropertyBoolean('UpdateDate');
         // Birthday, Weddingday, Deathday needs variable?
-        $isBirthday &= $this->ReadPropertyInteger('BirthdayVariable');
-        $isWeddingday &= $this->ReadPropertyInteger('WeddingdayVariable');
-        $isDeathday &= $this->ReadPropertyInteger('DeathdayVariable');
+        $isBirthday = $isBirthday && boolval($this->ReadPropertyInteger('BirthdayVariable'));
+        $isWeddingday = $isWeddingday && boolval($this->ReadPropertyInteger('WeddingdayVariable'));
+        $isDeathday = $isDeathday && boolval($this->ReadPropertyInteger('DeathdayVariable'));
         // Debug
         $this->LogDebug(__FUNCTION__, 'public country=' . $publicCountry . ', public holiday=' . $publicRegion .
                         ', school country=' . $schoolCountry . ', school vacation=' . $schoolRegion . ', school name=' . $schoolName .
                         ', updates=' . ($isHoliday ? 'Y' : 'N') . '|' . ($isVacation ? 'Y' : 'N') . '|' . ($isFestive ? 'Y' : 'N') . '|' . ($isEclipse ? 'Y' : 'N') . '|' . ($isMoonphase ? 'Y' : 'N') . '|' . ($isQuote ? 'Y' : 'N') . '|' . ($isDate ? 'Y' : 'N'));
-        // Profile
-        $question = [
-            [false, 'No', 'Close', 0xFF0000],
-            [true,  'Yes', 'Ok', 0x00FF00],
-        ];
-        $this->RegisterProfileBoolean('ALMANAC.Question', 'Bulb', '', '', $question);
-        $season = [
-            ['Spring', 'Spring', '', 0x8CC63E],
-            ['Summer', 'Summer', '', 0xFDD501],
-            ['Fall', 'Fall', '', 0xD96F01],
-            ['Winter', 'Winter', '', 0x65C7D0],
-        ];
-        $this->RegisterProfileString('ALMANAC.Season', 'Leaf', '', '', $season);
-        $dayofweek = [
-            [1, 'Monday', '', 0x80FF80],
-            [2, 'Tuesday', '', 0x80FF80],
-            [3, 'Wednesday', '', 0x80FF80],
-            [4, 'Thursday', '', 0x80FF80],
-            [5, 'Friday', '', 0x80FF80],
-            [6, 'Saturday', '', 0xFFFF80],
-            [7, 'Sunday', '', 0xFF8080],
-        ];
-        $this->RegisterProfileInteger('ALMANAC.Weekday', 'Calendar', '', '', 0, 0, 0, $dayofweek);
+        // Presentations
+        $question = $this->TranslatePresentation(self::ALMANAC_PRESENTATION_QUESTION, 'OPTIONS', 'Caption');
+        $weekday = $this->TranslatePresentation(self::ALMANAC_PRESENTATION_WEEKDAY, 'INTERVALS', 'ConstantValue');
+        $season = $this->TranslatePresentation(self::ALMANAC_PRESENTATION_SEASON, 'OPTIONS', 'Value');
         // Webhook for exports
-        $this->RegisterHook('/hook/almanac' . $this->InstanceID);
+        $this->RegisterHook(self::ALMANAC_PREFIX_HOOK . $this->InstanceID);
         // Holiday (Feiertage)
-        $this->MaintainVariable('IsHoliday', $this->Translate('Is holiday?'), VARIABLETYPE_BOOLEAN, 'ALMANAC.Question', 101, $isHoliday);
+        $this->MaintainVariable('IsHoliday', $this->Translate('Is holiday?'), VARIABLETYPE_BOOLEAN, $question, 101, $isHoliday);
         $this->MaintainVariable('Holiday', $this->Translate('Holiday'), VARIABLETYPE_STRING, '', 201, $isHoliday);
         // Vacation (Schulferien)
-        $this->MaintainVariable('IsVacation', $this->Translate('Is vacation?'), VARIABLETYPE_BOOLEAN, 'ALMANAC.Question', 102, $isVacation);
+        $this->MaintainVariable('IsVacation', $this->Translate('Is vacation?'), VARIABLETYPE_BOOLEAN, $question, 102, $isVacation);
         $this->MaintainVariable('Vacation', $this->Translate('Vacation'), VARIABLETYPE_STRING, '', 202, $isVacation);
         // Festive (Festtage)
-        $this->MaintainVariable('IsFestive', $this->Translate('Is festive day?'), VARIABLETYPE_BOOLEAN, 'ALMANAC.Question', 103, $isFestive);
+        $this->MaintainVariable('IsFestive', $this->Translate('Is festive day?'), VARIABLETYPE_BOOLEAN, $question, 103, $isFestive);
         $this->MaintainVariable('Festive', $this->Translate('Festive day'), VARIABLETYPE_STRING, '', 203, $isFestive);
         // Birthday (Geburtstage)
-        $this->MaintainVariable('IsBirthday', $this->Translate('Is birthday?'), VARIABLETYPE_BOOLEAN, 'ALMANAC.Question', 104, $isBirthday);
+        $this->MaintainVariable('IsBirthday', $this->Translate('Is birthday?'), VARIABLETYPE_BOOLEAN, $question, 104, $isBirthday);
         $this->MaintainVariable('Birthday', $this->Translate('Birthday'), VARIABLETYPE_STRING, '', 204, $isBirthday);
         // Weddingday (Hochzeitstage)
-        $this->MaintainVariable('IsWeddingday', $this->Translate('Is wedding day?'), VARIABLETYPE_BOOLEAN, 'ALMANAC.Question', 105, $isWeddingday);
+        $this->MaintainVariable('IsWeddingday', $this->Translate('Is wedding day?'), VARIABLETYPE_BOOLEAN, $question, 105, $isWeddingday);
         $this->MaintainVariable('Weddingday', $this->Translate('Wedding day'), VARIABLETYPE_STRING, '', 205, $isWeddingday);
         // Deathday (Todestage)
-        $this->MaintainVariable('IsDeathday', $this->Translate('Is death day?'), VARIABLETYPE_BOOLEAN, 'ALMANAC.Question', 106, $isDeathday);
+        $this->MaintainVariable('IsDeathday', $this->Translate('Is death day?'), VARIABLETYPE_BOOLEAN, $question, 106, $isDeathday);
         $this->MaintainVariable('Deathday', $this->Translate('Death day'), VARIABLETYPE_STRING, '', 206, $isDeathday);
         // Eclipse (Mond- und Sonnnenfisternis)
-        $this->MaintainVariable('IsEclipse', $this->Translate('Is lunar or solar eclipse?'), VARIABLETYPE_BOOLEAN, 'ALMANAC.Question', 107, $isEclipse);
+        $this->MaintainVariable('IsEclipse', $this->Translate('Is lunar or solar eclipse?'), VARIABLETYPE_BOOLEAN, $question, 107, $isEclipse);
         $this->MaintainVariable('Eclipse', $this->Translate('Lunar or solar eclipse'), VARIABLETYPE_STRING, '', 207, $isEclipse);
         // Moonphase (Mondphasen)
-        $this->MaintainVariable('IsMoonphase', $this->Translate('Is moon phase?'), VARIABLETYPE_BOOLEAN, 'ALMANAC.Question', 108, $isMoonphase);
+        $this->MaintainVariable('IsMoonphase', $this->Translate('Is moon phase?'), VARIABLETYPE_BOOLEAN, $question, 108, $isMoonphase);
         $this->MaintainVariable('Moonphase', $this->Translate('Moon phase'), VARIABLETYPE_STRING, '', 208, $isMoonphase);
         // Quote of the day (Zitat des Tages)
         $this->MaintainVariable('QuoteOfTheDay', $this->Translate('Quote of the day'), VARIABLETYPE_STRING, '', 600, $isQuote);
         // Date (Tagesdaten)
-        $this->MaintainVariable('IsSummer', $this->Translate('Is summer time?'), VARIABLETYPE_BOOLEAN, 'ALMANAC.Question', 151, $isDate);
-        $this->MaintainVariable('IsLeapyear', $this->Translate('Is leap year?'), VARIABLETYPE_BOOLEAN, 'ALMANAC.Question', 152, $isDate);
-        $this->MaintainVariable('IsWeekend', $this->Translate('Is weekend?'), VARIABLETYPE_BOOLEAN, 'ALMANAC.Question', 153, $isDate);
-        $this->MaintainVariable('WeekDay', $this->Translate('Weekday'), VARIABLETYPE_INTEGER, 'ALMANAC.Weekday', 300, $isDate);
+        $this->MaintainVariable('IsSummer', $this->Translate('Is summer time?'), VARIABLETYPE_BOOLEAN, $question, 151, $isDate);
+        $this->MaintainVariable('IsLeapyear', $this->Translate('Is leap year?'), VARIABLETYPE_BOOLEAN, $question, 152, $isDate);
+        $this->MaintainVariable('IsWeekend', $this->Translate('Is weekend?'), VARIABLETYPE_BOOLEAN, $question, 153, $isDate);
+        $this->MaintainVariable('WeekDay', $this->Translate('Weekday'), VARIABLETYPE_INTEGER, $weekday, 300, $isDate);
         $this->MaintainVariable('WeekNumber', $this->Translate('Week number'), VARIABLETYPE_INTEGER, '', 301, $isDate);
         $this->MaintainVariable('DaysInMonth', $this->Translate('Days in month'), VARIABLETYPE_INTEGER, '', 302, $isDate);
         $this->MaintainVariable('DayOfYear', $this->Translate('Day of year'), VARIABLETYPE_INTEGER, '', 303, $isDate);
@@ -275,24 +349,26 @@ class Almanac extends IPSModule
         // Working Days (Arbeitstage im Monat)
         $this->MaintainVariable('WorkingDays', $this->Translate('Working days'), VARIABLETYPE_INTEGER, '', 400, $isDate);
         // Season (Jahreszeit)
-        $this->MaintainVariable('Season', $this->Translate('Season'), VARIABLETYPE_STRING, 'ALMANAC.Season', 500, $isDate);
+        $this->MaintainVariable('Season', $this->Translate('Season'), VARIABLETYPE_STRING, $season, 500, $isDate);
         // Calculate next date info update interval
         $this->UpdateTimerInterval('UpdateTimer', 0, 0, 30);
         // Calculate next notification timer interval
-        foreach (self::DP as $key => $value) {
+        foreach (self::ALMANAC_DP as $key => $value) {
             $data = json_decode($this->ReadPropertyString($value[3]), true);
             $this->UpdateTimerInterval($value[0], $data['hour'], $data['minute'], $data['second']);
         }
+        // Update visualization
+        $this->UpdateVisualizationValue($this->GetFullUpdateMessage());
     }
 
     /**
      * Is called when, for example, a button is clicked in the visualization.
      *
      * @param string $ident Ident of the variable
-     * @param string $value The value to be set
-     * @return bool Always true.
+     * @param mixed $value The value to be set
+     * @return void
      */
-    public function RequestAction($ident, $value): bool
+    public function RequestAction(string $ident, mixed $value): void
     {
         // Debug output
         $this->LogDebug(__FUNCTION__, $ident . ' => ' . $value);
@@ -326,7 +402,23 @@ class Almanac extends IPSModule
                 $this->LogDebug(__FUNCTION__, $this->GetCacheInfo('UrlCache'));
                 break;
         }
-        return true;
+    }
+
+    /**
+     * If the HTML-SDK is to be used, this function must be overwritten in order to return the HTML content.
+     *
+     * @return string Initial display of a representation via HTML SDK
+     */
+    public function GetVisualizationTile(): string
+    {
+        // Add a script to set the values when loading, analogous to changes at runtime
+        // Although the return from GetFullUpdateMessage is already JSON-encoded, json_encode is still executed a second time
+        // This adds quotation marks to the string and any quotation marks within it are escaped correctly
+        $initialHandling = '<script>handleMessage(' . json_encode($this->GetFullUpdateMessage()) . ');</script>';
+        // Add static HTML from file
+        $module = file_get_contents(__DIR__ . '/module.html');
+        // Important: $initialHandling at the end, as the handleMessage function is only defined in the HTML
+        return $module . $initialHandling;
     }
 
     /**
@@ -342,15 +434,15 @@ class Almanac extends IPSModule
     {
         $this->LogDebug(__FUNCTION__, $days);
         // Notify enabled?
-        $isDay = $this->ReadPropertyInteger(self::DP[$days][2]);
+        $isDay = $this->ReadPropertyInteger(self::ALMANAC_DP[$days][2]);
         // Webfront configured?
         $wfc = $this->ReadPropertyInteger('InstanceWebfront');
         // Lookup
         if ($isDay && ($wfc != 0)) {
             try {
                 // get format
-                $format = $this->ReadPropertyString(self::DP[$days][6]);
-                $data = $this->LookupDays(time(), self::DP[$days][1]);
+                $format = $this->ReadPropertyString(self::ALMANAC_DP[$days][6]);
+                $data = $this->LookupDays(time(), self::ALMANAC_DP[$days][1]);
                 foreach ($data as $item) {
                     $output = $this->FormatDay($item, $format);
                     if ($this->IsWebFrontVisuInstance($wfc)) {
@@ -372,8 +464,8 @@ class Almanac extends IPSModule
             }
         }
         // Calculate next notification timer interval
-        $data = json_decode($this->ReadPropertyString(self::DP[$days][3]), true);
-        $this->UpdateTimerInterval(self::DP[$days][0], $data['hour'], $data['minute'], $data['second']);
+        $data = json_decode($this->ReadPropertyString(self::ALMANAC_DP[$days][3]), true);
+        $this->UpdateTimerInterval(self::ALMANAC_DP[$days][0], $data['hour'], $data['minute'], $data['second']);
     }
 
     /**
@@ -403,8 +495,11 @@ class Almanac extends IPSModule
         $script = $this->ReadPropertyInteger('ScriptMessage');
         // Everything to do?
         if ($isHoliday || $isVacation || $isFestive || $isBirth || $isWedding || $isDeath || $isEclipse || $isMoonphase || $isQuote || $isDate) {
-            $date = json_decode($this->DateInfo(time()), true);
+            $info = $this->DateInfo(time());
+            $date = json_decode($info, true);
+            $this->SetCache('DateInfo', $info);
         } else {
+            $this->ClearCache('DateInfo');
             return;
         }
         // Public Holidays
@@ -458,7 +553,7 @@ class Almanac extends IPSModule
         // Birthdays
         if ($isBirth == true) {
             try {
-                $this->UpdateDay(self::DP[self::BD], $date, $script);
+                $this->UpdateDay(self::ALMANAC_DP[self::ALMANAC_BD], $date, $script);
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);
                 $this->LogDebug(__FUNCTION__, 'ERROR BIRTH: ' . $ex->getMessage());
@@ -467,7 +562,7 @@ class Almanac extends IPSModule
         // Wedding days
         if ($isWedding == true) {
             try {
-                $this->UpdateDay(self::DP[self::WD], $date, $script);
+                $this->UpdateDay(self::ALMANAC_DP[self::ALMANAC_WD], $date, $script);
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);
                 $this->LogDebug(__FUNCTION__, 'ERROR WEDDING: ' . $ex->getMessage());
@@ -476,7 +571,7 @@ class Almanac extends IPSModule
         // Death days
         if ($isDeath == true) {
             try {
-                $this->UpdateDay(self::DP[self::DD], $date, $script);
+                $this->UpdateDay(self::ALMANAC_DP[self::ALMANAC_DD], $date, $script);
             } catch (Exception $ex) {
                 $this->LogMessage($ex->getMessage(), KL_ERROR);
                 $this->LogDebug(__FUNCTION__, 'ERROR DEATH: ' . $ex->getMessage());
@@ -522,6 +617,8 @@ class Almanac extends IPSModule
                 $this->LogDebug(__FUNCTION__, 'ERROR QuoteOfTheDay: ' . $ex->getMessage());
             }
         }
+        // Update visualization
+        $this->UpdateVisualizationValue($this->GetFullUpdateMessage());
         // calculate next update interval
         $this->UpdateTimerInterval('UpdateTimer', 0, 0, 30);
     }
@@ -570,21 +667,21 @@ class Almanac extends IPSModule
         // --------------------------------------------------------------------
         // get birthdays
         // --------------------------------------------------------------------
-        $isBirth = $this->LookupDays($ts, self::DP[self::BD][1]);
+        $isBirth = $this->LookupDays($ts, self::ALMANAC_DP[self::ALMANAC_BD][1]);
         $date['Birthday'] = $isBirth;
         $date['IsBirthday'] = (count($isBirth) == 0) ? false : true;
 
         // --------------------------------------------------------------------
         // get weddingdays
         // --------------------------------------------------------------------
-        $isWedding = $this->LookupDays($ts, self::DP[self::WD][1]);
+        $isWedding = $this->LookupDays($ts, self::ALMANAC_DP[self::ALMANAC_WD][1]);
         $date['Weddingday'] = $isWedding;
         $date['IsWeddingday'] = (count($isWedding) == 0) ? false : true;
 
         // --------------------------------------------------------------------
         // get deathdays
         // --------------------------------------------------------------------
-        $isDeath = $this->LookupDays($ts, self::DP[self::DD][1]);
+        $isDeath = $this->LookupDays($ts, self::ALMANAC_DP[self::ALMANAC_DD][1]);
         $date['Deathday'] = $isDeath;
         $date['IsDeathday'] = (count($isDeath) == 0) ? false : true;
 
@@ -856,7 +953,7 @@ class Almanac extends IPSModule
     {
         $this->LogDebug(__FUNCTION__, $value);
         // with days
-        $property = self::DP[$value][1];
+        $property = self::ALMANAC_DP[$value][1];
         $data = [];
         $this->UpdateFormField($property, 'values', json_encode($data));
     }
@@ -866,7 +963,7 @@ class Almanac extends IPSModule
      *
      * @return void
      */
-    protected function ProcessHookData()
+    protected function ProcessHookData(): void
     {
         //$this->LogDebug(__FUNCTION__, $_GET);
         $export = isset($_GET['export']) ? $_GET['export'] : '';
@@ -913,6 +1010,129 @@ class Almanac extends IPSModule
         foreach ($entry as $fields) {
             fputcsv($output, $fields);
         }
+    }
+
+    /**
+     * Generate a message that updates all elements in the HTML display.
+     *
+     * @return string JSON encoded message information
+     */
+    private function GetFullUpdateMessage(): string
+    {
+        // Configuration for the visualization, e.g. number of columns and slot configuration
+        $this->LogDebug(__FUNCTION__, $this->ReadPropertyString('Slots'));
+
+        $config = json_decode($this->ReadPropertyString('Slots'), true) ?? [];
+
+        $configuration = [
+            'Desktop' => $this->ReadPropertyInteger('Desktop'),
+            'Tablet'  => $this->ReadPropertyInteger('Tablet'),
+            'Mobile'  => $this->ReadPropertyInteger('Mobile'),
+            'Slots'   => $config,
+        ];
+
+        // Rohdaten vom Almanac holen
+        $info = json_decode($this->GetCache('DateInfo'), true);
+        // Security: if no data, return empty result (e.g. on first start or if cache cleared)
+        if (empty($info)) {
+            $this->LogMessage('Almanac: GetCache() returned no data – Visu update skipped.', KL_WARNING);
+            return json_encode([]);
+        }
+
+        // ── Arrays zu lesbaren Strings aufbereiten ──────────────────────────
+
+        // Birthday: mehrere Einträge möglich
+        $birthday = '';
+        if (!empty($info['Birthday']) && is_array($info['Birthday'])) {
+            $parts = [];
+            foreach ($info['Birthday'] as $b) {
+                $parts[] = $b['name'] . ' (' . $b['years'] . ' J.)';
+            }
+            $birthday = implode(', ', $parts);
+        }
+
+        // Weddingday
+        $weddingday = '';
+        if (!empty($info['Weddingday']) && is_array($info['Weddingday'])) {
+            $parts = [];
+            foreach ($info['Weddingday'] as $w) {
+                $parts[] = $w['name'] . ' (' . $w['years'] . ' J.)';
+            }
+            $weddingday = implode(', ', $parts);
+        }
+
+        // Deathday
+        $deathday = '';
+        if (!empty($info['Deathday']) && is_array($info['Deathday'])) {
+            $parts = [];
+            foreach ($info['Deathday'] as $d) {
+                $parts[] = $d['name'] . ' (' . $d['years'] . ' J.)';
+            }
+            $deathday = implode(', ', $parts);
+        }
+
+        // Eclipse: Typ + Datum
+        $eclipse = '';
+        if (!empty($info['Eclipse']) && is_array($info['Eclipse'])) {
+            $e = $info['Eclipse'];
+            $eclipse = $e['name'] . ', ' . $e['date'];
+        }
+
+        // Moonphase: Name + Datum + Uhrzeit
+        $moonphase = '';
+        if (!empty($info['Moonphase']) && is_array($info['Moonphase'])) {
+            $m = $info['Moonphase'];
+            $moonphase = $m['name'] . ', ' . $m['date'] . ' ' . substr($m['time'], 0, 5);
+        }
+
+        // Quote: Zitat + Autor
+        $quote = '';
+        if (!empty($info['QuoteOfTheDay'])) {
+            $q = $info['QuoteOfTheDay'];
+            $quote = '„' . $q['quote'] . '" — ' . $q['author'];
+        }
+
+        // Field names must match exactly with getVar() calls in module.html
+        $data = [
+            // Boolean-Flags
+            'IsSummer'      => (bool) $info['IsSummer'],
+            'IsLeapYear'    => (bool) $info['IsLeapYear'],
+            'IsWeekend'     => (bool) $info['IsWeekend'],
+            'IsFestive'     => (bool) $info['IsFestive'],
+            'IsHoliday'     => (bool) $info['IsHoliday'],
+            'IsVacation'    => (bool) $info['IsVacation'],
+            'IsBirthday'    => (bool) $info['IsBirthday'],
+            'IsWeddingday'  => (bool) $info['IsWeddingday'],
+            'IsDeathday'    => (bool) $info['IsDeathday'],
+            'IsEclipse'     => (bool) $info['IsEclipse'],
+            'IsMoonphase'   => (bool) $info['IsMoonphase'],
+
+            // Anzeigewerte
+            'Season'        => (string) $this->Translate($info['Season']),
+            'DayLong'       => (string) $info['DayLong'],
+            'Festive'       => (string) $info['Festive'],
+            'Holiday'       => (string) $info['Holiday'],
+            'Vacation'      => (string) $info['Vacation'],
+            'WeekNumber'    => (int) $info['WeekNumber'],
+            'DaysInMonth'   => (int) $info['DaysInMonth'],
+            'DayOfYear'     => (int) $info['DayOfYear'],
+            'WorkingDays'   => (int) $info['WorkingDays'],
+
+            // Aufbereitete Array-Werte
+            'Birthday'      => $birthday,
+            'Weddingday'    => $weddingday,
+            'Deathday'      => $deathday,
+            'Eclipse'       => $eclipse,
+            'Moonphase'     => $moonphase,
+            'QuoteOfDay'    => $quote,
+        ];
+        // Return both together
+        $result = [
+            'config' => $configuration,
+            'data'   => $data,
+        ];
+        $this->LogDebug(__FUNCTION__, $result);
+        return json_encode($result);
     }
 
     /**
@@ -1240,13 +1460,13 @@ class Almanac extends IPSModule
      */
     private function GetCacheTimeoutForUrl(string $url): int
     {
-        foreach (self::CACHE_RULES as $pattern => $seconds) {
+        foreach (self::ALMANAC_CACHE_RULES as $pattern => $seconds) {
             if (strpos($url, $pattern) !== false) {
                 return $seconds;
             }
         }
         // Fallback: 1 day
-        return self::SECONDS_PER_DAY;
+        return self::ALMANAC_SECONDS_PER_DAY;
     }
 
     /**

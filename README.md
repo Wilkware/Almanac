@@ -2,7 +2,7 @@
 
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg?style=flat-square)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 [![Product](https://img.shields.io/badge/Symcon%20Version-6.4-blue.svg?style=flat-square)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-5.7.20250816-orange.svg?style=flat-square)](https://github.com/Wilkware/Almanac)
+[![Version](https://img.shields.io/badge/Modul%20Version-6.0.20260531-orange.svg?style=flat-square)](https://github.com/Wilkware/Almanac)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg?style=flat-square)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Actions](https://img.shields.io/github/actions/workflow/status/wilkware/Almanac/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/Wilkware/Almanac/actions)
 
@@ -18,7 +18,7 @@ Ein Zitat des Tages rundet die Funktionalität des Modules ab.
 2. [Voraussetzungen](#user-content-2-voraussetzungen)
 3. [Installation](#user-content-3-installation)
 4. [Einrichten der Instanzen in IP-Symcon](#user-content-4-einrichten-der-instanzen-in-ip-symcon)
-5. [Statusvariablen und Profile](#user-content-5-statusvariablen-und-profile)
+5. [Statusvariablen und Darstellungen](#user-content-5-statusvariablen-und-darstellungen)
 6. [Visualisierung](#user-content-6-visualisierung)
 7. [PHP-Befehlsreferenz](#user-content-7-php-befehlsreferenz)
 8. [Versionshistorie](#user-content-8-versionshistorie)
@@ -86,11 +86,11 @@ IsEclipse             | bool    | TRUE, wenn Mond- oder Sonnenfinsternis ist
 Eclipse               | array   | Feld mit Name, Datum, Uhrzeit des nächsten Ereignisses (LEER, wenn im aktuellen Jahr kein Ereignis mehr ist)
 IsMoonphase           | bool    | TRUE, wenn Mondphase ist
 Moonphase             | array   | Feld mit Name, Datum, Uhrzeit des nächsten Ereignisses (LEER, wenn im aktuellen Jahr kein Ereignis mehr ist)
-QuoteOfTheDay         | array   | Feld mit Zitat und Autor
+QuoteOfTheDay         | array   | Zitat und Autor
 
 ### 2. Voraussetzungen
 
-* IP-Symcon ab Version 6.4
+* IP-Symcon ab Version 8.1
 
 ### 3. Installation
 
@@ -106,14 +106,14 @@ __Konfigurationsseite__:
 
 Einstellungsbereich:
 
-> Feiertage ...
+>🏖️ Feiertage ...
 
 Name                                | Beschreibung
 ------------------------------------|----------------------------------
 Land                                | Auswahl des Landes (Deutschland, Österreich und Schweiz).
 Bundesland                          | Auswahl des Bundeslandes/Karton für welchen man die Feiertage ermittelt haben möchte.
 
-> Schulferien ...
+>✈️ Schulferien ...
 
 Name                                | Beschreibung
 ------------------------------------|----------------------------------
@@ -121,7 +121,7 @@ Land                                | Auswahl des Landes (Deutschland, Österrei
 Bundesland                          | Auswahl des Bundeslandes/Karton für welchen man die Schulferien ermittelt haben möchte.
 Schulen                             | Derzeit nur für die Schweiz entscheidend, Auswahl der gewünschten Schule im Kanton.
 
-> Geburtstage ...
+>🎂 Geburtstage ...
 
 Name                                | Beschreibung
 ------------------------------------|---------------------------------
@@ -134,7 +134,7 @@ Format der Textmitteilung           | Frei wählbares Format der zu sendenden Na
 Text in Variable schreiben          | Auswahl ob Nachricht in Variable geschrieben werden soll
 Texttrennzeichen/Zeilenumbruch      | Trennzeichen bei mehreren Ereignissen
 
-> Hochzeitstage ...
+>💍 Hochzeitstage ...
 
 Name                                | Beschreibung
 ------------------------------------|---------------------------------
@@ -147,7 +147,7 @@ Format der Textmitteilung           | Frei wählbares Format der zu sendenden Na
 Text in Variable schreiben          | Auswahl ob Nachricht in Variable geschrieben werden soll
 Texttrennzeichen/Zeilenumbruch      | Trennzeichen bei mehreren Ereignissen
 
-> Todestage ...
+>🪦 Todestage ...
 
 Name                                | Beschreibung
 ------------------------------------|---------------------------------
@@ -160,7 +160,7 @@ Format der Textmitteilung           | Frei wählbares Format der zu sendenden Na
 Text in Variable schreiben          | Auswahl ob Nachricht in Variable geschrieben werden soll
 Texttrennzeichen/Zeilenumbruch      | Trennzeichen bei mehreren Ereignissen
 
-> Verschiednes ...
+>🔭 Verschiednes ...
 
 Name                                                   | Beschreibung
 -------------------------------------------------------|------------------------------------------------
@@ -169,7 +169,16 @@ Textausgabeformat für Mondphasen                       | Frei wählbares Format
 Textausgabeformat für Zitat des Tages                  | Frei wählbares Format für die Zitatsausgabe
 Textausgabeformat für langes Tagesformat               | Frei wählbares Format für das Tagesdatum
 
-> Erweiterte Einstellungen ...
+>✨ Visualisierung ...
+
+Name                                      | Beschreibung
+------------------------------------------|------------------------------------------------
+Rechner/Großer Bildschirm (≥1024px)       | Spaltenanzahl (1-6) innerhalb der Kachel für Desktop
+Tablet/Mittelgroßer Bildschirm (≥600px)   | Spaltenanzahl (1-4) innerhalb der Kachel für Tablets
+Mobiltelefon/Kleiner Bildschirm (<600px)  | Spaltenanzahl (1-2) innerhalb der Kachel für Handys
+Komplikationen (Tabelle)                  | Definition der Reihenfolge, zu verwendendes Icon, Platzbedarf und Sichtbarkeit je Gerät
+
+>⚙️ Erweiterte Einstellungen ...
 
 Name                                      | Beschreibung
 ------------------------------------------|----------------------------------
@@ -194,7 +203,7 @@ Meldsungsskript                           | Skript ID des Meldungsverwaltungsskr
 
 Aktionsbereich:
 
-> Import & Export von ...
+>♾️ Import & Export von ...
 
 Aktion         | Beschreibung
 ---------------|-------------------------------------------------------------
@@ -204,15 +213,17 @@ TODESTAGE      | Öffnet Popup für die Möglichkeit zum Import/Export/Leeren de
 
 _Hinweis:_ CSV-Format ist Termin, Name => 1.1.1970,"Herr Max Mustermann"
 
-> Tagesdaten ...
+>💡 Tagesdaten ...
 
 Aktion         | Beschreibung
 ---------------|-------------------------------------------------------------
 AKTUALISIEREN  | Ermittelt für das aktuelle Datum alle Informationen (Update)
 
-### 5. Statusvariablen und Profile
+### 5. Statusvariablen und Darstellungen
 
 Die Statusvariablen werden automatisch angelegt. Das Löschen einzelner kann zu Fehlfunktionen führen.
+
+#### Statusvariablen
 
 Name                 | Typ       | Beschreibung
 ---------------------|-----------|-----------------
@@ -237,16 +248,22 @@ Tag im Jahr          | Integer   | Welcher Tag des Jahres?
 Tagesformat          | String    | Formatiertes Datum (lang)
 Jahreszeit           | String    | "Frühling", "Sommer", "Herbst" oder "Winter"
 
-Folgende Profile werden angelegt:
+#### Darstellungen
 
-Name                 | Typ       | Beschreibung
----------------------|-----------|-----------------
-ALMANAC.Question     | Boolean   | FALSE = Nein(No) / TRUE = Ja(Yes)
-ALMANAC.Sesaon       | String    | Winter(Winter), Frühling(Spring), Herbst(Fall), Sommer(Summer)
+Folgende Dartsellungen werden hinterlegt:
+
+Template-Name            | Typ           | Beschreibung
+------------------------ | ------------- | ----------------
+\<direkte Assoziazion\>  | Wertanzeige   | FALSE = Nein(No) / TRUE = Ja(Yes)
+\<direkte Assoziazion\>  | Wertanzeige   | Winter(Winter), Frühling(Spring), Herbst(Fall), Sommer(Summer)
+\<direkte Assoziazion\>  | Wertanzeige   | Montag(Monday), Dienstag(Thuesday) ... Sunday(Sonntag)
 
 ### 6. Visualisierung
 
-Man kann die Statusvariablen direkt im WF verlinken.
+Man kann sowohl das gesamte Modul (HTML-SDK Support) als auch nur die Statusvariablen direkt in der Visualisierung verlinken.
+
+Wird das ganze Modul verlinkt, dann werden die Informationen als Inline-Kacheln angezeigt, welche in der Modul-Konfiguration entsprechend definiert wurden.  
+__HINWEIS__: Vorrausgesetzt es wurde mindestens einmal erfolgreich das Datenupdate (Tagesdaten) durchlaufen!
 
 ### 7. PHP-Befehlsreferenz
 
@@ -286,19 +303,31 @@ __Beispiel__: `ALMANAC_DateInfo(12345, time());`
 > "Vacation": "Keine Ferien",  
 > "IsVacation": false,  
 > "IsBirthday": true,  
-> "Birthday": [{"date": 14.2.1970, "years": 51, "name": "Valentin Tag"}],  
+> "Birthday": [{"date": "14.2.1970", "years": 51, "name": "Valentin Tag"}],  
 > "IsWeddingday": false,  
 > "Weddingday": [],  
 > "IsDeathday": false,  
-> "Deathday": []  
+> "Deathday": [],  
 > "IsEclipse": true,  
-> "Eclipse": [{"name": "Partielle Sonnenfinsternis", "date": "30.04.2022", "time": "22:42:00"}],  
+> "Eclipse": {"name": "Partielle Sonnenfinsternis", "date": "30.04.2022", "time": "22:42:00"},  
 > "IsMoonphase": true,  
-> "Moonphase": [{"name": "Neumond", "date": "30.04.2022", "time": "22:34:00"}],  
-> "QuoteOfTheDay": [{"quote": "Bist du wütend, zähl bis vier, hilft das nicht, dann explodier.", "author": "Wilhelm Busch"}]  
+> "Moonphase": {"name": "Neumond", "date": "30.04.2022", "time": "22:34:00"},  
+> "QuoteOfTheDay": {"quote": "Bist du wütend, zähl bis vier, hilft das nicht, dann explodier.", "author": "Wilhelm Busch"}  
 }  
 
 ### 8. Versionshistorie
+
+v6.0.20260531
+* _NEU_: Support für TileVisu (Kachel-Visualisierung)
+* _NEU_: Kompatibilität auf IPS 8.1 vereinheitlicht
+* _NEU_: Umstellung auf Strict-Modus (IPSModuleStrict)
+* _NEU_: Umstellung auf Darstellungen
+* _NEU_: Umstellung auf internen Webhook
+* _NEU_: Modulversion wird in Quellcodesektion angezeigt
+* _FIX_: Modulkonfiguration überarbeitet und vereinheitlicht
+* _FIX_: Interne Bibliotheken und Konfiguration überarbeitet und vereinheitlicht
+* _FIX_: Diverse kleinere Fehler korrigiert
+* _FIX_: Fehler in Dokumentation korrigiert
 
 v5.7.20250816
 

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            overflow: hidden;
+        }
+
+        #almanac-card {
+            width: 100%;
+            height: 100%;
+        }
+
+        #compl-grid {
+            width: 100%;
+            height: 100%;
+            display: grid;
+            gap: 12px;
+        }
+
+        .compl {
+            border-radius: 8px;
+            padding: 8px 10px 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            transition: background 0.3s ease;
+        }
+
+        .compl.state-on {
+            background: color-mix(in srgb, var(--accent-color) 10%, transparent);
+        }
+
+        .compl.state-off,
+        .compl.state-neutral {
+            background: color-mix(in srgb, var(--content-color) 10%, transparent);
+        }
+
+        .compl-icon {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-size: 22px;
+            overflow: hidden;
+        }
+
+        .state-on .compl-icon {
+            color: var(--accent-color);
+            opacity: 0.8;
+            filter: drop-shadow(0 0 5px color-mix(in srgb, var(--accent-color) 80%, transparent));
+        }
+
+        .state-off .compl-icon {
+            color: color-mix(in srgb, var(--content-color) 40%, transparent);
+            opacity: 0.4;
+            filter: none;
+        }
+
+        .state-neutral .compl-icon {
+            color: var(--content-color);
+            opacity: 0.8;
+            filter: drop-shadow(0 0 5px color-mix(in srgb, var(--content-color) 80%, transparent));
+        }
+
+        .compl-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .state-on .compl-label {
+            color: var(--accent-color);
+        }
+
+        .state-off .compl-label {
+            color: color-mix(in srgb, var(--content-color) 40%, transparent);
+        }
+
+        .state-neutral .compl-label {
+            color: var(--content-color);
+        }
+
+        .compl-val {
+            font-size: 11px;
+            font-weight: 400;
+            line-height: 1.3;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            /* display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical; */
+            position: relative;
+        }
+
+        .state-on .compl-val,
+        .state-neutral .compl-val {
+            color: var(--content-color);
+        }
+
+        .state-off .compl-val {
+            color: color-mix(in srgb, var(--content-color) 25%, transparent);
+        }
+    </style>
+    <script src="/icons.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="almanac-card">
+        <div id="compl-grid"></div>
+    </div>
+
+    <script>
+        // Globaler State
+        let _config = null;
+        let _data   = null;
+        // ── Komplikations-Definitionen ───────────────────────────────────────────────
+        // label    : Anzeigename
+        // boolVar  : Name der Boolean-Statusvariable in IPS (null = kein Boolean)
+        // strVar   : Name der String/Int-Statusvariable für den Anzeigewert
+        // fmt      : optionale Formatierungsfunktion (erhält den rohen Variablenwert)
+        const DEFS = {
+            holiday: { label: translate('Holiday'), boolVar: 'IsHoliday', strVar: 'Holiday' },
+            vacation: { label: translate('Vacation'), boolVar: 'IsVacation', strVar: 'Vacation' },
+            festive: { label: translate('Festive day'), boolVar: 'IsFestive', strVar: 'Festive' },
+            birthday: { label: translate('Birthday'), boolVar: 'IsBirthday', strVar: 'Birthday' },
+            weddingday: { label: translate('Wedding day'), boolVar: 'IsWeddingday', strVar: 'Weddingday' },
+            deathday: { label: translate('Death day'), boolVar: 'IsDeathday', strVar: 'Deathday' },
+            eclipse: { label: translate('Eclipse'), boolVar: 'IsEclipse', strVar: 'Eclipse' },
+            moonphase: { label: translate('Moon phase'), boolVar: 'IsMoonphase', strVar: 'Moonphase' },
+            summer: { label: translate('Summer time'), boolVar: 'IsSummer', strVar: null, fmt: v => v ? 'MESZ (UTC+2)' : 'MEZ (UTC+1)' },
+            leapyear: { label: translate('Leap year'), boolVar: 'IsLeapYear', strVar: null, fmt: v => v ? 'Ja' : 'Nein' },
+            weekend: { label: translate('Weekend'), boolVar: 'IsWeekend', strVar: null, fmt: v => v ? 'Ja' : 'Nein' },
+            season: { label: translate('Season'), boolVar: null, strVar: 'Season' },
+            weekday: { label: translate('Weekday'), boolVar: null, strVar: 'DayLong' },
+            weeknumber: { label: translate('Week number'), boolVar: null, strVar: 'WeekNumber', fmt: v => 'KW\u00a0' + v },
+            daysinmonth: { label: translate('Days in month'), boolVar: null, strVar: 'DaysInMonth', fmt: v => v + '\u00a0Tage' },
+            dayofyear: { label: translate('Day of year'), boolVar: null, strVar: 'DayOfYear', fmt: v => v + '. Tag' },
+            workingdays: { label: translate('Workdays'), boolVar: null, strVar: 'WorkingDays', fmt: v => v + '\u00a0Arbeitstage' },
+            quote: { label: translate('Quote of the day'), boolVar: null, strVar: 'QuoteOfDay' },
+        };
+
+        // Hier werden die Daten vom Modul verarbeitet.
+        function handleMessage(data) {
+            //console.log('Rohdaten empfangen:', data);
+            const decodedData = JSON.parse(data);
+            //console.log('Decodierte Daten:', decodedData);
+            for (const parameter in decodedData) {
+                console.log('Parameter:', parameter, 'Wert:', decodedData[parameter]);
+                switch (parameter) {
+                    case 'config':
+                        _config = decodedData[parameter]
+                        break;
+                    case 'data':
+                        _data = decodedData[parameter]
+                        break;
+                    default:
+                        console.log('Unbekannter Parameter:', parameter);
+                        break;
+                }
+            }
+            render();
+        }
+
+        function resolveIcon(ipsName) {
+            if (!ipsName) return 'fa-circle';
+            // fa- Präfix voranstellen
+            return 'fa-' + ipsName;
+        }
+
+        function getConfig() {
+            if (_config) return _config;
+            // Fallback beim ersten Laden falls handleMessage noch nicht gefeuert hat
+            return {
+                Desktop: 6,Tablet: 4, Mobile: 2,
+                Slots: []
+            };
+        }
+
+        function getVar(name, fallback) {
+            if (_data && name in _data) return _data[name];
+            return fallback;
+        }
+
+        // ── Breakpoint ───────────────────────────────────────────────────────────────
+        function getBreakpoint(w) {
+            return w >= 1024 ? 'desktop' : w >= 600 ? 'tablet' : 'mobile';
+        }
+
+        // ── Zellhöhe berechnen ───────────────────────────────────────────────────────
+        // Zellhöhe ergibt sich aus der tatsächlichen Kachelhöhe (offsetHeight),
+        // die TileVisu anhand der Gittereinstellung bestimmt.
+        function calcCellHeight(tileH, slots, cols, gap) {
+            // Slots in Zeilen einteilen um maximale Zeilenanzahl zu ermitteln
+            let col = 0, rowIdx = 1;
+            const rowOf = [];
+            slots.forEach(s => {
+                const cs = Math.min(s.cs, cols);
+                if (col + cs > cols) { rowIdx++; col = 0; }
+                rowOf.push(rowIdx);
+                col += cs;
+            });
+            let totalRows = 0;
+            slots.forEach((s, i) => {
+                totalRows = Math.max(totalRows, rowOf[i] + s.rs - 1);
+            });
+            totalRows = Math.max(totalRows, 1);
+            return Math.floor((tileH - (totalRows - 1) * gap) / totalRows);
+        }
+
+        // ── Rendern ──────────────────────────────────────────────────────────────────
+        function render() {
+            const tile = document.getElementById('almanac-card');
+            const grid = document.getElementById('compl-grid');
+            const config = getConfig();
+            const GAP = 12; // px — muss mit CSS gap übereinstimmen
+
+            // Breakpoint und Spaltenanzahl aus Konfiguration
+            const bp = getBreakpoint(tile.offsetWidth);
+            const colKey = { desktop: 'Desktop', tablet: 'Tablet', mobile: 'Mobile' }[bp];
+            const cols = config[colKey] || 3;
+
+            // Präfix für Span-Felder je Breakpoint
+            const colField = { desktop: 'coldesktop', tablet: 'coltablet', mobile: 'colmobile' }[bp];
+            const rowField = { desktop: 'rowdesktop', tablet: 'rowtablet', mobile: 'rowmobile' }[bp];
+
+            // Nur angezeigte Slots, Reihenfolge aus Liste (changeOrder)
+            const slots = (config.Slots || [])
+                .filter(s => s.display && s.complication && s.complication !== 'none')
+                .map(s => ({
+                    complication: s.complication,
+                    icon: s.icon || '',
+                    cs: Math.max(1, s[colField] || 1),
+                    rs: Math.max(1, s[rowField] || 1),
+                }));
+
+            // Zellhöhe automatisch aus Kachelhöhe berechnen
+            const tileH = tile.offsetHeight;
+            const cellH = calcCellHeight(tileH, slots, cols, GAP);
+
+            // Grid-Spalten setzen
+            grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+
+            // Komplikationen rendern
+            grid.innerHTML = slots.map(slot => {
+                const def = DEFS[slot.complication];
+                if (!def) return '';
+
+                const cs = Math.min(slot.cs, cols);
+                const rs = slot.rs;
+                const height = cellH * rs + (rs - 1) * GAP;
+                const icon = resolveIcon(slot.icon);
+
+                // Boolean lesen
+                const boolVal = def.boolVar !== null ? getVar(def.boolVar, false) : null;
+
+                // Anzeigewert
+                let strVal = '';
+                if (def.fmt && boolVal !== null) {
+                    // Boolean-Komplikation mit Formatierung (z.B. Sommerzeit, Wochenende)
+                    strVal = def.fmt(boolVal);
+                } else if (def.fmt && def.strVar) {
+                    // Neutrale Komplikation mit Formatierung (z.B. KW, Tag im Jahr, Arbeitstage)
+                    // fmt bekommt den Rohwert aus der Statusvariable
+                    const raw = getVar(def.strVar, '—');
+                    strVal = def.fmt(Array.isArray(raw) ? raw[0] : raw);
+                } else if (def.strVar) {
+                    const raw = getVar(def.strVar, '—');
+                    strVal = Array.isArray(raw) ? raw.join(', ') : String(raw);
+                }
+
+                // CSS-Zustandsklasse
+                const stateClass = boolVal === null ? 'state-neutral'
+                    : boolVal ? 'state-on'
+                        : 'state-off';
+
+                return `<div class="compl ${stateClass}"
+        style="grid-column:span ${cs}; grid-row:span ${rs}; height:${height}px;">
+      <i class="fa-light ${icon} compl-icon" aria-hidden="true"></i>
+      <div class="compl-label">${def.label}</div>
+      <div class="compl-val">${strVal}</div>
+    </div>`;
+            }).join('');
+        }
+    </script>
+</body>
+
+</html>

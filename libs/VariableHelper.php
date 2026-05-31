@@ -24,13 +24,14 @@ trait VariableHelper
      *
      * @param string $ident Ident of the boolean variable
      * @param bool   $value Value of the boolean variable
+     *
      * @return void
      */
     protected function SetValueBoolean(string $ident, bool $value): void
     {
         $id = @$this->GetIDForIdent($ident);
-        if ($id !== false) {
-            SetValueBoolean($id, $value);
+        if (IPS_VariableExists($id)) {
+            $this->SetValue($ident, $value);
         }
     }
 
@@ -39,13 +40,14 @@ trait VariableHelper
      *
      * @param string $ident Ident of the string variable
      * @param string $value Value of the string variable
+     *
      * @return void
      */
     protected function SetValueString(string $ident, string $value): void
     {
         $id = @$this->GetIDForIdent($ident);
-        if ($id !== false) {
-            SetValueString($id, $value);
+        if (IPS_VariableExists($id)) {
+            $this->SetValue($ident, $value);
         }
     }
 
@@ -54,13 +56,14 @@ trait VariableHelper
      *
      * @param string $ident Ident of the integer variable
      * @param int    $value Value of the integer variable
+     *
      * @return void
      */
     protected function SetValueInteger(string $ident, int $value): void
     {
         $id = @$this->GetIDForIdent($ident);
-        if ($id !== false) {
-            SetValueInteger($id, $value);
+        if (IPS_VariableExists($id)) {
+            $this->SetValue($ident, $value);
         }
     }
 
@@ -69,13 +72,14 @@ trait VariableHelper
      *
      * @param string $ident Ident of the float variable
      * @param float  $value Value of the float variable
+     *
      * @return void
      */
     protected function SetValueFloat(string $ident, float $value): void
     {
         $id = @$this->GetIDForIdent($ident);
-        if ($id !== false) {
-            SetValueFloat($id, $value);
+        if (IPS_VariableExists($id)) {
+            $this->SetValue($ident, $value);
         }
     }
 
@@ -84,12 +88,13 @@ trait VariableHelper
      *
      * @param string $ident Ident of the integer variable.
      * @param bool   $value Enable or disable value the variable.
+     *
      * @return void
      */
     protected function SetVariableDisabled(string $ident, bool $value): void
     {
         $id = @$this->GetIDForIdent($ident);
-        if ($id !== false) {
+        if (IPS_VariableExists($id)) {
             IPS_SetDisabled($id, $value);
         }
     }
@@ -99,6 +104,7 @@ trait VariableHelper
      *
      * @param string $ident Variable identifier
      * @param bool   $exist may exist variable
+     *
      * @return string (correct) variable identifier
      */
     protected function GetVariableIdent(string $ident, bool $exist = false): string
@@ -128,12 +134,31 @@ trait VariableHelper
         if ($exist) {
             $counter = 1;
             $originalIdent = $ident;
-            while (@$this->GetIDForIdent($ident) !== false) {
+            while (IPS_VariableExists(@$this->GetIDForIdent($ident))) {
                 $ident = $originalIdent . '_' . $counter;
                 $counter++;
             }
         }
 
         return $ident;
+    }
+
+    /**
+     * Translate all specific values recursively inside a configuration array.
+     *
+     * @param array<string,mixed> $configuration Configuration structure
+     * @param string              $index         Index of the configuration array to translate
+     * @param string              $key           Key of the configuration array to translate
+     *
+     * @return array<string,mixed> Modified configuration array
+     */
+    protected function TranslatePresentation(array $configuration, string $index, string $key): array
+    {
+        $template = json_decode($configuration[$index], true);
+        foreach ($template as &$a) {
+            $a[$key] = $this->Translate($a[$key]);
+        }
+        $configuration[$index] = json_encode($template, JSON_UNESCAPED_UNICODE);
+        return $configuration;
     }
 }
