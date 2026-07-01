@@ -966,7 +966,7 @@ class Almanac extends IPSModuleStrict
     protected function ProcessHookData(): void
     {
         //$this->LogDebug(__FUNCTION__, $_GET);
-        $export = isset($_GET['export']) ? $_GET['export'] : '';
+        $export = $_GET['export'] ?? '';
         //$this->LogDebug(__FUNCTION__, 'Export: ' . $export);
         $property = '';
         $filename = '';
