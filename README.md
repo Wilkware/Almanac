@@ -12,6 +12,8 @@ Darüber hinaus kann man Geburtstage, Hochzeitstage und Todestage verwalten und 
 Auch verschiedene astronomische Daten wie Mond- und Sonnenfinsternis oder die Daten der Mondphasen (Neumond, zunehmenden Mond, Vollmond und abnehmenden Mond) werden bereitgestellt.  
 Ein Zitat des Tages rundet die Funktionalität des Modules ab.
 
+![Module-Visu](imgs/almanac.png)
+
 ## Inhaltverzeichnis
 
 1. [Funktionsumfang](#user-content-1-funktionsumfang)
