@@ -2,14 +2,26 @@
 
 declare(strict_types=1);
 
-// Generell funktions
+/** Generell funktions  */
 require_once __DIR__ . '/../libs/_traits.php';
+
+/** Namespaced traits */
+use Wilkware\Almanac\CacheHelper;
+use Wilkware\Almanac\CalendarHelper;
+use Wilkware\Almanac\DebugHelper;
+use Wilkware\Almanac\EventHelper;
+use Wilkware\Almanac\VariableHelper;
+use Wilkware\Almanac\VersionHelper;
 
 /**
  * CLASS Almanac
  */
 class Almanac extends IPSModuleStrict
 {
+    // -------------------------------------------------------------------------
+    // Traits
+    // -------------------------------------------------------------------------
+
     use CacheHelper;
     use CalendarHelper;
     use DebugHelper;
@@ -17,28 +29,29 @@ class Almanac extends IPSModuleStrict
     use VariableHelper;
     use VersionHelper;
 
-    /**
-     * Supported Dates (BD = Birthdays, WD = Weddingdays, DD = Deathdays)
-     */
+    // -------------------------------------------------------------------------
+    // Constants
+    // -------------------------------------------------------------------------
+
+    /** @var string Supported Dates (BD = Birthdays) */
     private const ALMANAC_BD = 'BD';
+    /** @var string Supported Dates (WD = Weddingdays) */
     private const ALMANAC_WD = 'WD';
+    /** @var string Supported Dates (DD = Deathdays) */
     private const ALMANAC_DD = 'DD';
 
-    /**
-     * Date Properties (Form)
-     */
+    /** @var array<string,array<string>> Date Properties (Form) */
     private const ALMANAC_DP = [
         self::ALMANAC_BD => ['UpdateBirth', 'Birthdays', 'BirthdayNotification', 'BirthdayTime', 'BirthdayMessage', 'BirthdayDuration', 'BirthdayFormat', 'BirthdayVariable', 'BirthdaySeparator', 'NoBirthday'],
         self::ALMANAC_WD => ['UpdateWedding', 'Weddingdays', 'WeddingdayNotification', 'WeddingdayTime', 'WeddingdayMessage', 'WeddingdayDuration', 'WeddingdayFormat', 'WeddingdayVariable', 'WeddingdaySeparator', 'NoWedding'],
         self::ALMANAC_DD => ['UpdateDeath', 'Deathdays', 'DeathdayNotification', 'DeathdayTime', 'DeathdayMessage', 'DeathdayDuration', 'DeathdayFormat', 'DeathdayVariable', 'DeathdaySeparator', 'NoDeath'],
     ];
 
-    /**
-     * Cache time dor a day
-     */
+    /** @var int Cache time dor a day */
     private const ALMANAC_SECONDS_PER_DAY = 86400;
 
     /**
+     * @var array<string,int>
      * Cache timeouts per URL pattern (seconds)
      * 0 = load once, keep forever (until IPS restart or ClearCache())
      */
@@ -49,10 +62,12 @@ class Almanac extends IPSModuleStrict
         'quotes'    => 0                            // load once, keep forever
     ];
 
-    /**
-     * Prefix for custom functions which should be available from outside
-     */
+    /** @var string Prefix for custom functions which should be available from outside */
     private const ALMANAC_PREFIX_HOOK = 'almanac';
+
+    // -------------------------------------------------------------------------
+    // Presentations
+    // -------------------------------------------------------------------------
 
     /**
      * @var array<string,mixed> Question Presentation (Value)
@@ -130,6 +145,10 @@ class Almanac extends IPSModuleStrict
         'CONTENT_COLOR'       => -1,
         'PREFIX'              => '',
     ];
+
+    // -------------------------------------------------------------------------
+    // Methods
+    // -------------------------------------------------------------------------
 
     /**
      * In contrast to Construct, this function is called only once when creating the instance and starting IP-Symcon.
@@ -1033,10 +1052,21 @@ class Almanac extends IPSModuleStrict
 
         // Rohdaten vom Almanac holen
         $info = json_decode($this->GetCache('DateInfo'), true);
-        // Security: if no data, return empty result (e.g. on first start or if cache cleared)
+
+        // Falls der Cache leer ist, einmal neu erzeugen
         if (empty($info)) {
-            $this->LogMessage('Almanac: GetCache() returned no data – Visu update skipped.', KL_WARNING);
-            return json_encode([]);
+            $this->LogMessage('Almanac: Cache empty - rebuilding.', KL_DEBUG);
+
+            $this->Update();
+
+            // Cache erneut lesen
+            $info = json_decode($this->GetCache('DateInfo'), true);
+
+            // Falls immer noch keine Daten vorhanden sind, leeres Ergebnis zurückgeben
+            if (empty($info)) {
+                $this->LogMessage('Almanac: Update() did not provide any data.', KL_WARNING);
+                return json_encode([]);
+            }
         }
 
         // ── Arrays zu lesbaren Strings aufbereiten ──────────────────────────

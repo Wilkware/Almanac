@@ -14,6 +14,10 @@
 
 declare(strict_types=1);
 
+/** @symcon-namespace */
+
+namespace Wilkware\Almanac;
+
 /**
  * Helper class for the JSON cache handling.
  */
