@@ -596,5 +596,23 @@
                 }
             ]
         }
+    ],
+    "hr": [
+        {
+            "country": "Croatia",
+            "part": "Country",
+            "regions": [
+                {
+                    "name": "Croatia",
+                    "ident": "kroatien",
+                    "schools": [
+                        {
+                            "name": "Alle Schulen",
+                            "ident": "alle-schulen"
+                        }
+                    ]
+                }
+            ]
+        }
     ]
 }

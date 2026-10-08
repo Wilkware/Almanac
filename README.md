@@ -1,8 +1,9 @@
 # 📆 Jahreskalender (Almanac)
 
+[![Home](https://img.shields.io/badge/Home-wilkware.de-0b1830.svg?style=flat-square)](https://wilkware.de/module/almanac/)
 [![Version](https://img.shields.io/badge/Symcon-PHP--Modul-red.svg?style=flat-square)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 [![Product](https://img.shields.io/badge/Symcon%20Version-8.1-blue.svg?style=flat-square)](https://www.symcon.de/produkt/)
-[![Version](https://img.shields.io/badge/Modul%20Version-6.1.20260731-orange.svg?style=flat-square)](https://github.com/Wilkware/Almanac)
+[![Version](https://img.shields.io/badge/Modul%20Version-6.2.20261007-orange.svg?style=flat-square)](https://github.com/Wilkware/Almanac)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg?style=flat-square)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Actions](https://img.shields.io/github/actions/workflow/status/wilkware/Almanac/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/Wilkware/Almanac/actions)
 
@@ -14,21 +15,22 @@ Ein Zitat des Tages rundet die Funktionalität des Modules ab.
 
 ![Module-Visu](imgs/almanac.png)
 
-## Inhaltverzeichnis
+## Inhaltsverzeichnis
 
 1. [Funktionsumfang](#user-content-1-funktionsumfang)
 2. [Voraussetzungen](#user-content-2-voraussetzungen)
 3. [Installation](#user-content-3-installation)
-4. [Einrichten der Instanzen in IP-Symcon](#user-content-4-einrichten-der-instanzen-in-ip-symcon)
-5. [Statusvariablen und Darstellungen](#user-content-5-statusvariablen-und-darstellungen)
-6. [Visualisierung](#user-content-6-visualisierung)
-7. [PHP-Befehlsreferenz](#user-content-7-php-befehlsreferenz)
-8. [Versionshistorie](#user-content-8-versionshistorie)
+4. [Einrichtung](#user-content-4-einrichtung)
+5. [Statusvariablen](#user-content-5-statusvariablen)
+6. [Darstellungen](#user-content-6-darstellungen)
+7. [Visualisierung](#user-content-7-visualisierung)
+8. [Befehlsreferenz](#user-content-8-befehlsreferenz)
+9. [Versionshistorie](#user-content-9-versionshistorie)
 
 ### 1. Funktionsumfang
 
 Das Modul nutzt eine eigens entwickelte JSON-API (CDN basierend) um die Daten für Feiertage und Schulferien
-in Deutschland, Österreich und der Schweiz bereitzustellen.  
+in Deutschland, Österreich, der Schweiz und Kroatien bereitzustellen.  
 Derzeit unterstützt das Modul auch eine Vielzahl verschiedenster religiöser und weltlicher Festtage (z.B. Valentinstag oder Kindertag).  
 Als Gedächtnisstütze können die jährlichen Geburtstage, Hochzeitstage aber auch Todestage verwaltet werden und man
 kann sich täglich informieren lassen ob ein Termin ansteht (Meldungsverwaltung oder via Visualisierung-Notification).  
@@ -41,7 +43,7 @@ Folgende Informationen werden ermittelt:
 
 * Sind Ferien und welche
 * Feiertag oder nicht und wie heißt er
-* Festag oder nicht und wie heißt er
+* Festtag oder nicht und wie heißt er
 * Hat jemand Geburtstag, Hochzeitstag oder Todestag
 * Der Tag des Jahres
 * Anzahl Tage im Monat
@@ -56,7 +58,7 @@ Folgende Informationen werden ermittelt:
 * Tritt eine Mondphasen (Neumond, zunehmenden Mond, Vollmond oder abnehmenden Mond) ein
 * Zitat des Tages (Spruch und Autor)
 
-All diese Information können auch über die Methode [ALMANAC_DateInfo](#7-php-befehlsreferenz) als Array abgeholt werden.
+All diese Information können auch über die Methode [ALMANAC_DateInfo](#user-content-8-befehlsreferenz) als JSON abgeholt werden.
 
 Folgende Informationen stehen als key => value Paare zur Verfügung:
 
@@ -92,77 +94,77 @@ QuoteOfTheDay         | array   | Zitat und Autor
 
 ### 2. Voraussetzungen
 
-* IP-Symcon ab Version 8.1
+* Symcon ab Version 8.1
 
 ### 3. Installation
 
-* Über den Modul Store das Modul Almanac installieren.
-* Alternativ Über das Modul-Control folgende URL hinzufügen.  
-`https://github.com/Wilkware/IPSymconAlmanac` oder `git://github.com/Wilkware/IPSymconAlmanac.git`
+* Über den Modul Store das Modul _Almanach_ installieren.
+* Alternativ über das Modul Control folgende URL hinzufügen.  
+`https://github.com/Wilkware/Almanac` oder `git://github.com/Wilkware/Almanac.git`
 
-### 4. Einrichten der Instanzen in IP-Symcon
+### 4. Einrichtung
 
-* Unter "Instanz hinzufügen" ist das 'Almanac'-Modul (Alias: Jahreskalender, Almanach) unter dem Hersteller '(Sonstige)' aufgeführt.
+* Unter 'Instanz hinzufügen' ist das _Almanach_-Modul (Alias: _Jahreskalender_) unter dem Hersteller '(Sonstige)' aufgeführt.
 
 __Konfigurationsseite__:
 
 Einstellungsbereich:
 
->🏖️ Feiertage ...
+> 🏖️ Feiertage ...
 
 Name                                | Beschreibung
 ------------------------------------|----------------------------------
-Land                                | Auswahl des Landes (Deutschland, Österreich und Schweiz).
-Bundesland                          | Auswahl des Bundeslandes/Karton für welchen man die Feiertage ermittelt haben möchte.
+Land                                | Auswahl des Landes (Deutschland, Österreich, Schweiz und Kroatien).
+Bundesland                          | Auswahl des Bundeslandes/Kantons für welchen man die Feiertage ermittelt haben möchte.
 
->✈️ Schulferien ...
+> ✈️ Schulferien ...
 
 Name                                | Beschreibung
 ------------------------------------|----------------------------------
-Land                                | Auswahl des Landes (Deutschland, Österreich und Schweiz).
-Bundesland                          | Auswahl des Bundeslandes/Karton für welchen man die Schulferien ermittelt haben möchte.
+Land                                | Auswahl des Landes (Deutschland, Österreich, Schweiz und Kroatien).
+Bundesland                          | Auswahl des Bundeslandes/Kantons für welchen man die Schulferien ermittelt haben möchte.
 Schulen                             | Derzeit nur für die Schweiz entscheidend, Auswahl der gewünschten Schule im Kanton.
 
->🎂 Geburtstage ...
+> 🎂 Geburtstage ...
 
 Name                                | Beschreibung
 ------------------------------------|---------------------------------
 Termine                             | Eingabe des Geburtstermins (Tag.Monat.Jahr) und den dazugehörigen Namen
-Nachricht ans Visualisierung senden | Auswahl ob Push-Nachricht gesendet werden soll oder nicht (Ja/Nein)
-Nachricht Sendezeit                 | Uhrzeit wann täglich die Nachricht gesendet weden soll
+Nachricht an Visualisierung senden  | Auswahl ob Push-Nachricht gesendet werden soll oder nicht (Ja/Nein)
+Nachricht Sendezeit                 | Uhrzeit wann täglich die Nachricht gesendet werden soll
 Meldung an Anzeige senden           | Auswahl ob Eintrag in die Meldungsverwaltung erfolgen soll oder nicht (Ja/Nein)
-Lebensdauer der Nachricht           | Wie lange so die Meldung angezeigt werden?
+Lebensdauer der Nachricht           | Wie lange soll die Meldung angezeigt werden?
 Format der Textmitteilung           | Frei wählbares Format der zu sendenden Nachricht/Meldung
 Text in Variable schreiben          | Auswahl ob Nachricht in Variable geschrieben werden soll
 Texttrennzeichen/Zeilenumbruch      | Trennzeichen bei mehreren Ereignissen
 
->💍 Hochzeitstage ...
+> 💍 Hochzeitstage ...
 
 Name                                | Beschreibung
 ------------------------------------|---------------------------------
 Termine                             | Eingabe Heiratstermins (Tag.Monat.Jahr) und den dazugehörigen Namen
 Nachricht an Visualisierung senden  | Auswahl ob Push-Nachricht gesendet werden soll oder nicht (Ja/Nein)
-Nachricht Sendezeit                 | Uhrzeit wann täglich die Nachricht gesendet weden soll
+Nachricht Sendezeit                 | Uhrzeit wann täglich die Nachricht gesendet werden soll
 Meldung an Anzeige senden           | Auswahl ob Eintrag in die Meldungsverwaltung erfolgen soll oder nicht (Ja/Nein)
-Lebensdauer der Nachricht           | Wie lange so die Meldung angezeigt werden?
+Lebensdauer der Nachricht           | Wie lange soll die Meldung angezeigt werden?
 Format der Textmitteilung           | Frei wählbares Format der zu sendenden Nachricht/Meldung
 Text in Variable schreiben          | Auswahl ob Nachricht in Variable geschrieben werden soll
 Texttrennzeichen/Zeilenumbruch      | Trennzeichen bei mehreren Ereignissen
 
->🪦 Todestage ...
+> 🪦 Todestage ...
 
 Name                                | Beschreibung
 ------------------------------------|---------------------------------
 Termine                             | Eingabe Sterbetag (Tag.Monat.Jahr) und den dazugehörigen Namen
 Nachricht an Visualisierung senden  | Auswahl ob Push-Nachricht gesendet werden soll oder nicht (Ja/Nein)
-Nachricht Sendezeit                 | Uhrzeit wann täglich die Nachricht gesendet weden soll
+Nachricht Sendezeit                 | Uhrzeit wann täglich die Nachricht gesendet werden soll
 Meldung an Anzeige senden           | Auswahl ob Eintrag in die Meldungsverwaltung erfolgen soll oder nicht (Ja/Nein)
-Lebensdauer der Nachricht           | Wie lange so die Meldung angezeigt werden?
+Lebensdauer der Nachricht           | Wie lange soll die Meldung angezeigt werden?
 Format der Textmitteilung           | Frei wählbares Format der zu sendenden Nachricht/Meldung
 Text in Variable schreiben          | Auswahl ob Nachricht in Variable geschrieben werden soll
 Texttrennzeichen/Zeilenumbruch      | Trennzeichen bei mehreren Ereignissen
 
->🔭 Verschiednes ...
+> 🔭 Verschiedenes ...
 
 Name                                                   | Beschreibung
 -------------------------------------------------------|------------------------------------------------
@@ -171,7 +173,7 @@ Textausgabeformat für Mondphasen                       | Frei wählbares Format
 Textausgabeformat für Zitat des Tages                  | Frei wählbares Format für die Zitatsausgabe
 Textausgabeformat für langes Tagesformat               | Frei wählbares Format für das Tagesdatum
 
->✨ Visualisierung ...
+> ✨ Visualisierung ...
 
 Name                                      | Beschreibung
 ------------------------------------------|------------------------------------------------
@@ -180,11 +182,11 @@ Tablet/Mittelgroßer Bildschirm (≥600px)   | Spaltenanzahl (1-4) innerhalb der
 Mobiltelefon/Kleiner Bildschirm (<600px)  | Spaltenanzahl (1-2) innerhalb der Kachel für Handys
 Komplikationen (Tabelle)                  | Definition der Reihenfolge, zu verwendendes Icon, Platzbedarf und Sichtbarkeit je Gerät
 
->⚙️ Erweiterte Einstellungen ...
+> ⚙️ Erweiterte Einstellungen ...
 
 Name                                      | Beschreibung
 ------------------------------------------|----------------------------------
-Feirtage ermitteln                        | Status, ob Ermittlung der Feiertage erwünscht ist
+Feiertage ermitteln                       | Status, ob Ermittlung der Feiertage erwünscht ist
 Schulferien ermitteln                     | Status, ob Ermittlung der Schulferien erwünscht ist
 Festtage ermitteln                        | Status, ob Ermittlung der Festtage erwünscht ist
 Geburtstage ermitteln                     | Status, ob Geburtstage ausgewertet werden sollen
@@ -201,11 +203,11 @@ Geburtstage                               | Text, welcher ausgeben wird wenn kei
 Hochzeitstage                             | Text, welcher ausgeben wird wenn kein Hochzeitstag vorliegt.
 Todestage                                 | Text, welcher ausgeben wird wenn kein Todestag vorliegt.
 Visualisierungs-Instanz                   | ID der Visualisierung, an welches die Push-Nachrichten für Geburts-, Hochzeits- und Todestage gesendet werden soll
-Meldsungsskript                           | Skript ID des Meldungsverwaltungsskripts, weiterführende Infos im Forum: [Meldungsanzeige im Webfront](https://community.symcon.de/t/meldungsanzeige-im-webfront/23473)
+Meldungsskript                            | Skript ID des Meldungsverwaltungsskripts, weiterführende Infos im Forum: [Meldungsanzeige im Webfront](https://community.symcon.de/t/meldungsanzeige-im-webfront/23473)
 
 Aktionsbereich:
 
->♾️ Import & Export von ...
+> ♾️ Import & Export von ...
 
 Aktion         | Beschreibung
 ---------------|-------------------------------------------------------------
@@ -215,58 +217,66 @@ TODESTAGE      | Öffnet Popup für die Möglichkeit zum Import/Export/Leeren de
 
 _Hinweis:_ CSV-Format ist Termin, Name => 1.1.1970,"Herr Max Mustermann"
 
->💡 Tagesdaten ...
+> 💡 Tagesdaten ...
 
 Aktion         | Beschreibung
 ---------------|-------------------------------------------------------------
 AKTUALISIEREN  | Ermittelt für das aktuelle Datum alle Informationen (Update)
 
-### 5. Statusvariablen und Darstellungen
+### 5. Statusvariablen
 
-Die Statusvariablen werden automatisch angelegt. Das Löschen einzelner kann zu Fehlfunktionen führen.
+Die Statusvariablen werden automatisch angelegt, sofern die jeweilige Ermittlung unter 'Erweiterte Einstellungen' aktiviert ist.  
+Die Variablen für Geburts-, Hochzeits- und Todestage werden zusätzlich nur angelegt, wenn 'Text in Variable schreiben' aktiviert ist.  
+Das Löschen einzelner Variablen kann zu Fehlfunktionen führen.
 
-#### Statusvariablen
+Ident             | Name                             | Typ     | Beschreibung
+----------------- | -------------------------------- | ------- | ------------------------------
+IsHoliday         | Ist Feiertag?                    | Boolean | Ist aktueller Tag ein Feiertag?
+IsVacation        | Ist Ferienzeit?                  | Boolean | Fällt aktueller Tag in die Ferien?
+IsFestive         | Ist Festtag?                     | Boolean | Ist aktueller Tag ein Festtag?
+IsBirthday        | Ist Geburtstag?                  | Boolean | Ist am aktuellen Tag ein Geburtstag?
+IsWeddingday      | Ist Hochzeitstag?                | Boolean | Ist am aktuellen Tag ein Hochzeitstag?
+IsDeathday        | Ist Todestag?                    | Boolean | Ist am aktuellen Tag ein Todestag?
+IsEclipse         | Ist Mond- oder Sonnenfinsternis? | Boolean | Ist am aktuellen Tag eine Mond- oder Sonnenfinsternis?
+IsMoonphase       | Ist Mondphase?                   | Boolean | Tritt am aktuellen Tag eine Mondphase ein?
+IsSummer          | Ist Sommerzeit?                  | Boolean | Ist aktuell Sommerzeit aktiv?
+IsLeapyear        | Ist Schaltjahr?                  | Boolean | Ist aktuelles Jahr ein Schaltjahr?
+IsWeekend         | Ist Wochenende?                  | Boolean | Ist gerade Wochenende?
+Holiday           | Feiertag                         | String  | Name des Feiertages oder 'Kein Feiertag'
+Vacation          | Ferien                           | String  | Name der Schulferien oder 'Keine Ferien'
+Festive           | Festtag                          | String  | Name des Festtages oder 'Kein Festtag'
+Birthday          | Geburtstag                       | String  | Formatierte Ausgabe des Geburtstages oder 'Kein Geburtstag'
+Weddingday        | Hochzeitstag                     | String  | Formatierte Ausgabe des Hochzeitstages oder 'Kein Hochzeitstag'
+Deathday          | Todestag                         | String  | Formatierte Ausgabe des Todestages oder 'Kein Todestag'
+Eclipse           | Mond- oder Sonnenfinsternis      | String  | Formatierte Ausgabe der nächsten Mond- oder Sonnenfinsternis
+Moonphase         | Mondphase                        | String  | Formatierte Ausgabe der nächsten Mondphase
+WeekDay           | Wochentag                        | Integer | Aktueller Wochentag (ISO-8601)
+WeekNumber        | Kalenderwoche                    | Integer | Nummer der aktuellen Kalenderwoche
+DaysInMonth       | Tage im Monat                    | Integer | Wieviel Tage hat der aktuelle Monat?
+DayOfYear         | Tag im Jahr                      | Integer | Welcher Tag des Jahres?
+DayLong           | Tagesformat                      | String  | Formatiertes Datum (lang)
+WorkingDays       | Arbeitstage im Monat             | Integer | Anzahl der Arbeitstage im aktuellen Monat
+Season            | Jahreszeit                       | String  | Aktuelle Jahreszeit
+QuoteOfTheDay     | Zitat des Tages                  | String  | Formatierte Ausgabe des Zitats des Tages
 
-Name                 | Typ       | Beschreibung
----------------------|-----------|-----------------
-Ist Feiertag?        | Boolean   | Ist aktueller Tag ein Feiertag?
-Ist Ferienzeit?      | Boolean   | Fällt aktueller Tag in die Ferien?
-Ist Sommerzeit?      | Boolean   | Ist aktuell Sommerzeit aktiv?
-Ist Schaltjahr?      | Boolean   | Ist aktueller Jahr ein Schaltjahr?
-Ist Wochenende?      | Boolean   | Ist gerade Wochenende?
-Ist Festtag?         | Boolean   | Ist aktueller Tag ein Festtag?
-Ist Geburtstag?      | Boolean   | Ist am aktuellen Tag ein Geburtstag?
-Ist Hochzeitstag?    | Boolean   | Ist am aktuellen Tag ein Hochzeitstag?
-Ist Todestag?        | Boolean   | Ist am aktuellen Tag ein Todestag?
-Feiertag             | String    | Name des Feriertages oder 'Kein Feiertag'
-Ferien               | String    | Name der Schulferien oder 'Keine Ferien'
-Festtag              | String    | Name des Festtages oder 'Kein Festtag'
-Geburtstag           | String    | Formatierte Ausgabe des Geburtstages oder leer
-Hochzeitstag         | String    | Formatierte Ausgabe des Hochzeitstages oder leer
-Todestag             | String    | Formatierte Ausgabe des Todestages oder leer
-Kalenderwoche        | Integer   | Nummer der aktuelle Kalenderwoche
-Tage im Monat        | Integer   | Wieviel Tage hat der aktuelle Monat?
-Tag im Jahr          | Integer   | Welcher Tag des Jahres?
-Tagesformat          | String    | Formatiertes Datum (lang)
-Jahreszeit           | String    | "Frühling", "Sommer", "Herbst" oder "Winter"
+### 6. Darstellungen
 
-#### Darstellungen
+Die Darstellungen werden direkt an den Statusvariablen hinterlegt, es werden keine Profile angelegt.
 
-Folgende Dartsellungen werden hinterlegt:
+Variable                         | Darstellung   | Werte
+-------------------------------- | ------------- | ------------------------------
+Alle 'Ist ...?'-Variablen        | Wertanzeige   | Nein (false), Ja (true)
+Wochentag                        | Wertanzeige   | Montag (1) ... Sonntag (7)
+Jahreszeit                       | Wertanzeige   | Frühling, Sommer, Herbst, Winter
+Alle übrigen Variablen           | Wertanzeige   | Nur Icon (identisch zu den Icons der Kachel-Komplikationen)
 
-Template-Name            | Typ           | Beschreibung
------------------------- | ------------- | ----------------
-\<direkte Assoziazion\>  | Wertanzeige   | FALSE = Nein(No) / TRUE = Ja(Yes)
-\<direkte Assoziazion\>  | Wertanzeige   | Winter(Winter), Frühling(Spring), Herbst(Fall), Sommer(Summer)
-\<direkte Assoziazion\>  | Wertanzeige   | Montag(Monday), Dienstag(Thuesday) ... Sunday(Sonntag)
-
-### 6. Visualisierung
+### 7. Visualisierung
 
 Man kann sowohl das gesamte Modul (HTML-SDK Support) als auch nur die Statusvariablen direkt in der Visualisierung verlinken.
 
 Wird das ganze Modul verlinkt, dann werden die Informationen als Inline-Kacheln angezeigt, welche in der Modul-Konfiguration entsprechend definiert wurden.
 
-### 7. PHP-Befehlsreferenz
+### 8. Befehlsreferenz
 
 ```php
 void ALMANAC_Update(int $InstanzID):
@@ -278,45 +288,76 @@ Die Funktion liefert keinerlei Rückgabewert.
 __Beispiel__: `ALMANAC_Update(12345);`
 
 ```php
+void ALMANAC_Notify(int $InstanzID, string $Days);
+```
+
+Sendet für den aktuellen Tag die Push-Nachrichten der gewünschten Termine an die konfigurierte Visualisierungs-Instanz.  
+Mögliche Werte für `$Days`: `BD` (Geburtstage), `WD` (Hochzeitstage) oder `DD` (Todestage).  
+Die Funktion wird intern zur eingestellten Sendezeit aufgerufen und liefert keinerlei Rückgabewert.
+
+__Beispiel__: `ALMANAC_Notify(12345, 'BD');`
+
+```php
 string ALMANAC_DateInfo(int $InstanzID, int $Timestamp);
 ```
 
-Gibt für das übergebene Datum (Unix Timestamp) alle Informationen als assoziatives Array zurück.
+Gibt für das übergebene Datum (Unix Timestamp) alle Informationen als JSON-String zurück (mit `json_decode($result, true)` in ein assoziatives Array umwandelbar).
 __HINWEIS:__ Das Datum sollte nur maximal +/- 1 Jahr vom aktuellen Tag entfernt liegen.
 
 __Beispiel__: `ALMANAC_DateInfo(12345, time());`
 
-> {  
-> "IsSummer": false,  
-> "IsLeapYear": false,  
-> "IsWeekend": true,  
-> "Weekday": 1,  
-> "WeekNumber": 6,  
-> "DaysInMonth": 28,  
-> "DayOfYear": 45,  
-> "DayLong": "Dienstag, 20.Februar",  
-> "Season": "Winter",  
-> "Festive": "Valentinstag",  
-> "IsFestive": true,  
-> "WorkingDays": 20,  
-> "Holiday": "Kein Feiertag",  
-> "IsHoliday": false,  
-> "Vacation": "Keine Ferien",  
-> "IsVacation": false,  
-> "IsBirthday": true,  
-> "Birthday": [{"date": "14.2.1970", "years": 51, "name": "Valentin Tag"}],  
-> "IsWeddingday": false,  
-> "Weddingday": [],  
-> "IsDeathday": false,  
-> "Deathday": [],  
-> "IsEclipse": true,  
-> "Eclipse": {"name": "Partielle Sonnenfinsternis", "date": "30.04.2022", "time": "22:42:00"},  
-> "IsMoonphase": true,  
-> "Moonphase": {"name": "Neumond", "date": "30.04.2022", "time": "22:34:00"},  
-> "QuoteOfTheDay": {"quote": "Bist du wütend, zähl bis vier, hilft das nicht, dann explodier.", "author": "Wilhelm Busch"}  
-}  
+```json
+{
+    "IsSummer": false,
+    "IsLeapYear": false,
+    "IsWeekend": false,
+    "Weekday": 1,
+    "WeekNumber": 7,
+    "DaysInMonth": 28,
+    "DayOfYear": 45,
+    "DayLong": "Montag, 14.Februar",
+    "Season": "Winter",
+    "Festive": "Valentinstag",
+    "IsFestive": true,
+    "WorkingDays": 20,
+    "Holiday": "Kein Feiertag",
+    "IsHoliday": false,
+    "Vacation": "Keine Ferien",
+    "IsVacation": false,
+    "IsBirthday": true,
+    "Birthday": [{"date": "14.2.1970", "years": 52, "name": "Valentin Tag"}],
+    "IsWeddingday": false,
+    "Weddingday": [],
+    "IsDeathday": false,
+    "Deathday": [],
+    "IsEclipse": false,
+    "Eclipse": {"name": "Partielle Sonnenfinsternis", "date": "30.04.2022", "time": "22:42:00"},
+    "IsMoonphase": false,
+    "Moonphase": {"name": "Vollmond", "date": "16.02.2022", "time": "17:56:00"},
+    "QuoteOfTheDay": {"quote": "Bist du wütend, zähl bis vier, hilft das nicht, dann explodier.", "author": "Wilhelm Busch"}
+}
+```
+### 9. Versionshistorie
 
-### 8. Versionshistorie
+v6.2.20261007
+* _NEU_: Feiertage und Schulferien für Kroatien
+* _NEU_: Länderauswahl wird übersetzt
+* _NEU_: Datenermittlung erst nach vollständigem Systemstart
+* _NEU_: Timeout für API-Abfragen
+* _NEU_: Bei der täglichen Aktualisierung werden nur die aktivierten Daten über die API abgefragt
+* _NEU_: Alle Statusvariablen haben jetzt ein Icon
+* _FIX_: Jahresangabe (%Y) im langen Datumsformat korrigiert
+* _FIX_: Darstellung der Jahreszeit (Farbe/Beschriftung) korrigiert
+* _FIX_: Fehlende Zitat-Daten führen nicht mehr zum Abbruch der Aktualisierung
+* _FIX_: Konfigurationsänderungen werden sofort übernommen (nicht erst um Mitternacht)
+* _FIX_: Keine doppelten Meldungen in der Meldungsverwaltung nach Neustart oder Speichern
+* _FIX_: Benachrichtigungs-Timer laufen nur noch bei aktivierter Benachrichtigung
+* _FIX_: CSV-Import überspringt ungültige Datumsangaben und Zeilen ohne Namen
+* _FIX_: CSV-Export (Dateiname) korrigiert
+* _FIX_: Fehlende Übersetzungen ergänzt
+* _FIX_: Übersetzung der Darstellungen überarbeitet
+* _FIX_: Darstellungen bereinigt, nur noch gültige Parameter je Variablentyp
+* _FIX_: Fehler in Dokumentation korrigiert
 
 v6.1.20260731
 * _NEU_: Einführung von namespaced Traits
@@ -324,7 +365,7 @@ v6.1.20260731
 
 v6.0.20260531
 * _NEU_: Support für TileVisu (Kachel-Visualisierung)
-* _NEU_: Kompatibilität auf IPS 8.1 vereinheitlicht
+* _NEU_: Kompatibilität auf Symcon 8.1 vereinheitlicht
 * _NEU_: Umstellung auf Strict-Modus (IPSModuleStrict)
 * _NEU_: Umstellung auf Darstellungen
 * _NEU_: Umstellung auf internen Webhook
@@ -361,7 +402,7 @@ v5.4.20250715
 v5.3.20240724
 
 * _NEU_: Neu Statusvariable für langes Tagesformat
-* _NEU_: Kompatibilität auf IPS 6.4 hoch gesetzt
+* _NEU_: Kompatibilität auf Symcon 6.4 hoch gesetzt
 * _FIX_: Bibliotheks- bzw. Modulinfos vereinheitlicht
 * _FIX_: Namensnennung und Repo vereinheitlicht
 * _FIX_: Update Style-Checks
@@ -370,7 +411,7 @@ v5.3.20240724
 
 v5.2.20230703
 
-* _NEU_: Anpassungen für IPS 7.0 (PHP 8.2)
+* _NEU_: Anpassungen für Symcon 7.0 (PHP 8.2)
 * _NEU_: Vorgabetexte für nicht eingetretene Ereignisse hinzugefügt
 * _FIX_: Falscher Separator bei Hochzeitstage verwendet
 * _FIX_: Fehlende Übersetzungen nachgeholt
@@ -385,7 +426,7 @@ v5.1.20220706
 
 v5.0.20220101
 
-* _NEU_: Kompatibilität auf IPS 6.0 hoch gesetzt
+* _NEU_: Kompatibilität auf Symcon 6.0 hoch gesetzt
 * _NEU_: Update auf Version 3 vom PHP Coding Standards Fixer
 * _NEU_: String-Profile aufgenommen (z.B. für Jahreszeit)
 * _NEU_: Bibliotheks- bzw. Modulinfos vereinheitlicht
@@ -463,7 +504,7 @@ v1.1.20190312
 
 v1.0.20180505
 
-* _FIX_: BugFix IPS 5.0
+* _FIX_: BugFix Symcon 5.0
 
 v1.0.20171230
 
@@ -485,7 +526,7 @@ Vielen Dank für die hervorragende und tolle Arbeit!
 
 ## Entwickler
 
-Seit nunmehr über 10 Jahren fasziniert mich das Thema Haussteuerung. In den letzten Jahren betätige ich mich auch intensiv in der IP-Symcon Community und steuere dort verschiedenste Skript und Module bei. Ihr findet mich dort unter dem Namen @pitti ;-)
+Seit nunmehr über 10 Jahren fasziniert mich das Thema Haussteuerung. In den letzten Jahren betätige ich mich auch intensiv in der Symcon Community und steuere dort verschiedenste Skript und Module bei. Ihr findet mich dort unter dem Namen @pitti ;-)
 
 [![GitHub](https://img.shields.io/badge/GitHub-@wilkware-181717.svg?style=for-the-badge&logo=github)](https://wilkware.github.io/)
 

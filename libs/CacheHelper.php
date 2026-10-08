@@ -3,11 +3,11 @@
 /**
  * CacheHelper.php
  *
- * Part of the Trait-Libraray for IP-Symcon Modules.
+ * Part of the Trait-Library for Symcon Modules.
  *
  * @package       traits
  * @author        Heiko Wilknitz <heiko@wilkware.de>
- * @copyright     2025 Heiko Wilknitz
+ * @copyright     2026 Heiko Wilknitz
  * @link          https://wilkware.de
  * @license       https://creativecommons.org/licenses/by-nc-sa/4.0/ CC BY-NC-SA 4.0
  */
@@ -105,7 +105,7 @@ trait CacheHelper
      */
     protected function GetCacheInfo(string $name): array
     {
-        $cache = json_decode($this->GetCache('UrlCache'), true);
+        $cache = json_decode($this->GetCache($name), true);
 
         if (!is_array($cache)) {
             return [];

@@ -140,25 +140,22 @@
             deathday: { label: translate('Death day'), boolVar: 'IsDeathday', strVar: 'Deathday' },
             eclipse: { label: translate('Eclipse'), boolVar: 'IsEclipse', strVar: 'Eclipse' },
             moonphase: { label: translate('Moon phase'), boolVar: 'IsMoonphase', strVar: 'Moonphase' },
-            summer: { label: translate('Summer time'), boolVar: 'IsSummer', strVar: null, fmt: v => v ? 'MESZ (UTC+2)' : 'MEZ (UTC+1)' },
-            leapyear: { label: translate('Leap year'), boolVar: 'IsLeapYear', strVar: null, fmt: v => v ? 'Ja' : 'Nein' },
-            weekend: { label: translate('Weekend'), boolVar: 'IsWeekend', strVar: null, fmt: v => v ? 'Ja' : 'Nein' },
+            summer: { label: translate('Summer time'), boolVar: 'IsSummer', strVar: null, fmt: v => v ? translate('CEST (UTC+2)') : translate('CET (UTC+1)') },
+            leapyear: { label: translate('Leap year'), boolVar: 'IsLeapYear', strVar: null, fmt: v => v ? translate('Yes') : translate('No') },
+            weekend: { label: translate('Weekend'), boolVar: 'IsWeekend', strVar: null, fmt: v => v ? translate('Yes') : translate('No') },
             season: { label: translate('Season'), boolVar: null, strVar: 'Season' },
             weekday: { label: translate('Weekday'), boolVar: null, strVar: 'DayLong' },
-            weeknumber: { label: translate('Week number'), boolVar: null, strVar: 'WeekNumber', fmt: v => 'KW\u00a0' + v },
-            daysinmonth: { label: translate('Days in month'), boolVar: null, strVar: 'DaysInMonth', fmt: v => v + '\u00a0Tage' },
-            dayofyear: { label: translate('Day of year'), boolVar: null, strVar: 'DayOfYear', fmt: v => v + '. Tag' },
-            workingdays: { label: translate('Workdays'), boolVar: null, strVar: 'WorkingDays', fmt: v => v + '\u00a0Arbeitstage' },
+            weeknumber: { label: translate('Week number'), boolVar: null, strVar: 'WeekNumber', fmt: v => translate('CW') + '\u00a0' + v },
+            daysinmonth: { label: translate('Days in month'), boolVar: null, strVar: 'DaysInMonth', fmt: v => v + '\u00a0' + translate('days') },
+            dayofyear: { label: translate('Day of year'), boolVar: null, strVar: 'DayOfYear', fmt: v => v + '.\u00a0' + translate('day') },
+            workingdays: { label: translate('Workdays'), boolVar: null, strVar: 'WorkingDays', fmt: v => v + '\u00a0' + translate('working days') },
             quote: { label: translate('Quote of the day'), boolVar: null, strVar: 'QuoteOfDay' },
         };
 
         // Hier werden die Daten vom Modul verarbeitet.
         function handleMessage(data) {
-            //console.log('Rohdaten empfangen:', data);
             const decodedData = JSON.parse(data);
-            //console.log('Decodierte Daten:', decodedData);
             for (const parameter in decodedData) {
-                console.log('Parameter:', parameter, 'Wert:', decodedData[parameter]);
                 switch (parameter) {
                     case 'config':
                         _config = decodedData[parameter]
@@ -167,11 +164,20 @@
                         _data = decodedData[parameter]
                         break;
                     default:
-                        console.log('Unbekannter Parameter:', parameter);
                         break;
                 }
             }
             render();
+        }
+
+        // Escape text for safe output via innerHTML
+        function escapeHtml(value) {
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
         }
 
         function resolveIcon(ipsName) {
@@ -288,9 +294,9 @@
 
                 return `<div class="compl ${stateClass}"
         style="grid-column:span ${cs}; grid-row:span ${rs}; height:${height}px;">
-      <i class="fa-light ${icon} compl-icon" aria-hidden="true"></i>
-      <div class="compl-label">${def.label}</div>
-      <div class="compl-val">${strVal}</div>
+      <i class="fa-light ${escapeHtml(icon)} compl-icon" aria-hidden="true"></i>
+      <div class="compl-label">${escapeHtml(def.label)}</div>
+      <div class="compl-val">${escapeHtml(strVal)}</div>
     </div>`;
             }).join('');
         }

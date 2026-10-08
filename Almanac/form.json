@@ -37,16 +37,20 @@
                     "onChange": "IPS_RequestAction($id,'OnPublicCountry',$PublicCountry);",
                     "options": [
                         {
-                            "label": "Deutschland",
+                            "caption": "Germany",
                             "value": "de"
                         },
                         {
-                            "label": "Österreich",
+                            "caption": "Austria",
                             "value": "at"
                         },
                         {
-                            "label": "Schweiz",
+                            "caption": "Switzerland",
                             "value": "ch"
+                        },
+                        {
+                            "caption": "Croatia",
+                            "value": "hr"
                         }
                     ]
                 },
@@ -69,16 +73,20 @@
                     "onChange": "IPS_RequestAction($id,'OnSchoolCountry',$SchoolCountry);",
                     "options": [
                         {
-                            "label": "Deutschland",
+                            "caption": "Germany",
                             "value": "de"
                         },
                         {
-                            "label": "Österreich",
+                            "caption": "Austria",
                             "value": "at"
                         },
                         {
-                            "label": "Schweiz",
+                            "caption": "Switzerland",
                             "value": "ch"
+                        },
+                        {
+                            "caption": "Croatia",
+                            "value": "hr"
                         }
                     ]
                 },
@@ -147,11 +155,11 @@
                             "caption": "Send notification message:",
                             "options": [
                                 {
-                                    "label": "No",
+                                    "caption": "No",
                                     "value": 0
                                 },
                                 {
-                                    "label": "Yes",
+                                    "caption": "Yes",
                                     "value": 1
                                 }
                             ]
@@ -172,11 +180,11 @@
                             "caption": "Send message to dashboard:",
                             "options": [
                                 {
-                                    "label": "No",
+                                    "caption": "No",
                                     "value": 0
                                 },
                                 {
-                                    "label": "Yes",
+                                    "caption": "Yes",
                                     "value": 1
                                 }
                             ]
@@ -187,31 +195,31 @@
                             "caption": "Message life time:",
                             "options": [
                                 {
-                                    "label": "Always",
+                                    "caption": "Always",
                                     "value": 0
                                 },
                                 {
-                                    "label": "5 min",
+                                    "caption": "5 min",
                                     "value": 5
                                 },
                                 {
-                                    "label": "15 min",
+                                    "caption": "15 min",
                                     "value": 15
                                 },
                                 {
-                                    "label": "30 min",
+                                    "caption": "30 min",
                                     "value": 30
                                 },
                                 {
-                                    "label": "45 min",
+                                    "caption": "45 min",
                                     "value": 45
                                 },
                                 {
-                                    "label": "60 min",
+                                    "caption": "60 min",
                                     "value": 60
                                 },
                                 {
-                                    "label": "2 h",
+                                    "caption": "2 h",
                                     "value": 120
                                 }
                             ]
@@ -241,11 +249,11 @@
                             "caption": "Write text to variable:",
                             "options": [
                                 {
-                                    "label": "No",
+                                    "caption": "No",
                                     "value": 0
                                 },
                                 {
-                                    "label": "Yes",
+                                    "caption": "Yes",
                                     "value": 1
                                 }
                             ]
@@ -304,11 +312,11 @@
                             "caption": "Send notification message:",
                             "options": [
                                 {
-                                    "label": "No",
+                                    "caption": "No",
                                     "value": 0
                                 },
                                 {
-                                    "label": "Yes",
+                                    "caption": "Yes",
                                     "value": 1
                                 }
                             ]
@@ -329,11 +337,11 @@
                             "caption": "Send message to dashboard:",
                             "options": [
                                 {
-                                    "label": "No",
+                                    "caption": "No",
                                     "value": 0
                                 },
                                 {
-                                    "label": "Yes",
+                                    "caption": "Yes",
                                     "value": 1
                                 }
                             ]
@@ -344,31 +352,31 @@
                             "caption": "Message life time:",
                             "options": [
                                 {
-                                    "label": "Always",
+                                    "caption": "Always",
                                     "value": 0
                                 },
                                 {
-                                    "label": "5 min",
+                                    "caption": "5 min",
                                     "value": 5
                                 },
                                 {
-                                    "label": "15 min",
+                                    "caption": "15 min",
                                     "value": 15
                                 },
                                 {
-                                    "label": "30 min",
+                                    "caption": "30 min",
                                     "value": 30
                                 },
                                 {
-                                    "label": "45 min",
+                                    "caption": "45 min",
                                     "value": 45
                                 },
                                 {
-                                    "label": "60 min",
+                                    "caption": "60 min",
                                     "value": 60
                                 },
                                 {
-                                    "label": "2 h",
+                                    "caption": "2 h",
                                     "value": 120
                                 }
                             ]
@@ -398,11 +406,11 @@
                             "caption": "Write text to variable:",
                             "options": [
                                 {
-                                    "label": "No",
+                                    "caption": "No",
                                     "value": 0
                                 },
                                 {
-                                    "label": "Yes",
+                                    "caption": "Yes",
                                     "value": 1
                                 }
                             ]
@@ -461,11 +469,11 @@
                             "caption": "Send notification message:",
                             "options": [
                                 {
-                                    "label": "No",
+                                    "caption": "No",
                                     "value": 0
                                 },
                                 {
-                                    "label": "Yes",
+                                    "caption": "Yes",
                                     "value": 1
                                 }
                             ]
@@ -486,11 +494,11 @@
                             "caption": "Send message to dashboard:",
                             "options": [
                                 {
-                                    "label": "No",
+                                    "caption": "No",
                                     "value": 0
                                 },
                                 {
-                                    "label": "Yes",
+                                    "caption": "Yes",
                                     "value": 1
                                 }
                             ]
@@ -501,31 +509,31 @@
                             "caption": "Message life time:",
                             "options": [
                                 {
-                                    "label": "Always",
+                                    "caption": "Always",
                                     "value": 0
                                 },
                                 {
-                                    "label": "5 min",
+                                    "caption": "5 min",
                                     "value": 5
                                 },
                                 {
-                                    "label": "15 min",
+                                    "caption": "15 min",
                                     "value": 15
                                 },
                                 {
-                                    "label": "30 min",
+                                    "caption": "30 min",
                                     "value": 30
                                 },
                                 {
-                                    "label": "45 min",
+                                    "caption": "45 min",
                                     "value": 45
                                 },
                                 {
-                                    "label": "60 min",
+                                    "caption": "60 min",
                                     "value": 60
                                 },
                                 {
-                                    "label": "2 h",
+                                    "caption": "2 h",
                                     "value": 120
                                 }
                             ]
@@ -555,11 +563,11 @@
                             "caption": "Write text to variable:",
                             "options": [
                                 {
-                                    "label": "No",
+                                    "caption": "No",
                                     "value": 0
                                 },
                                 {
-                                    "label": "Yes",
+                                    "caption": "Yes",
                                     "value": 1
                                 }
                             ]
@@ -1440,6 +1448,7 @@
                 },
                 {
                     "type": "Label",
+                    "name": "Version",
                     "color": 8421504
                 }
             ]
